@@ -2,7 +2,9 @@ AUTHOR = 'Ryan Tsang'
 SITENAME = 'cs492-stevens'
 SITEURL = ""
 
-PATH = "content"
+PATH = 'content'
+
+THEME = 'theme/editorial'
 
 TIMEZONE = 'US/Eastern'
 
@@ -14,6 +16,10 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
+
+INDEX_SAVE_AS = 'blog.html'
+
+READERS = { 'html': None }
 
 # Blogroll
 LINKS = (
