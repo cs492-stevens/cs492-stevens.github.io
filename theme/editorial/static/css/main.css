@@ -1346,7 +1346,7 @@ ul.icons {
   padding-left: 0; }
   ul.icons li {
     display: inline-block;
-    padding: 0 1em 0 0; }
+    padding: 0 0.5em 0 0; }
     ul.icons li:last-child {
       padding-right: 0; }
     ul.icons li .icon {
@@ -1360,8 +1360,8 @@ ul.icons {
   content: "" !important;
   display: inline-block;
   background-color: currentColor;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1em;
+  height: 1em;
 
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;

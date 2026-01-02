@@ -15,10 +15,11 @@
 			<div id="main">
 				<div class="inner">
 
+					{#
 					<!-- Header -->
 					<header id="header">
 						<a href="index.html" class="logo"><strong>{{ SITENAME }}</strong></a>
-						{% block contacts %}
+						{% block links %}
 						{% if LINKS %}
 						<ul class="icons">
 							{% for name, icon, link in LINKS %}
@@ -28,6 +29,7 @@
 						{% endif %}
 						{% endblock %}
 					</header>
+					#}
 
 					{% block content %}
 					{% endblock %}
@@ -38,17 +40,21 @@
 			<div id="sidebar">
 				<div class="inner">
 
+					{#
 					<!-- Search -->
+					<!-- pagefind: https://pagefind.app/ -->
 					<section id="search" class="alt">
 						<form method="post" action="#">
 							<input type="text" name="query" id="query" placeholder="Search" />
 						</form>
 					</section>
+					#}
+					{# <div id="search" class="alt"></div> #}
 
 					<!-- Menu -->
 					<nav id="menu">
 						<header class="major">
-							<h2>Menu</h2>
+							<a href="index.html" class="logo"><h2>{{ SITENAME }}</h2></a>
 						</header>
 						<ul>
 							<li><a href="index.html">Homepage</a></li>
@@ -68,6 +74,22 @@
 						</ul>
 					</nav>
 
+					<section>
+						<header class="major">
+							<h2>links</h2>
+						</header>
+						{% block links %}
+						{% if LINKS %}
+						<ul class="icons">
+							{% for name, icon, link in LINKS %}
+								<li><a href="{{ link }}" class="icon brands override-fa fa-{{ icon }}">&nbsp;<span>{{ name }}</span></a></li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+						{% endblock %}
+					</section>
+
+					{#
 					<!-- Section -->
 					<section>
 						<header class="major">
@@ -91,31 +113,30 @@
 							<li><a href="#" class="button">More</a></li>
 						</ul>
 					</section>
+					#}
 
 					<!-- Section -->
 					{% if STAFF %}
 					<section>
 						<header class="major">
-							<h2>Course Staff</h2>
+							<h2>course staff</h2>
 						</header>
 						<ul class="contact">
 							{% for name, email, oh in STAFF %}
 							<li class="icon solid fa-address-card">
 								{{ name }}
-								<a href="mailto:{{ email }}" class="icon solid fa-envelope">{{ email }}</a>
-								<span class="icon solid fa-calendar">{{ oh }}</span>
+								<br>
+								<span class="icon solid fa-envelope">&nbsp;<a href="mailto:{{ email }}">{{ email }}</a></span>
+								<br>
+								<span class="icon solid fa-calendar">&nbsp;{{ oh }}</span>
 							</li>
 							{% endfor %}
-							<li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
-							<li class="icon solid fa-phone">(000) 000-0000</li>
-							<li class="icon solid fa-home">1234 Somewhere Road #8254<br />
-							Nashville, TN 00000-0000</li>
 						</ul>
 					</section>
 					{% endif %}
 
-					<!-- Footer -->
 					{# original
+					<!-- Footer -->
 					<footer id="footer">
 						<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
 					</footer>
@@ -127,11 +148,19 @@
 		</div>
 
 		<!-- Scripts -->
-			<script src="{{ SITEURL }}/theme/js/jquery.min.js"></script>
-			<script src="{{ SITEURL }}/theme/js/browser.min.js"></script>
-			<script src="{{ SITEURL }}/theme/js/breakpoints.min.js"></script>
-			<script src="{{ SITEURL }}/theme/js/util.js"></script>
-			<script src="{{ SITEURL }}/theme/js/main.js"></script>
+		{#
+		<script src="{{ SITEURL }}/pagefind/pagefind-ui.js"></script>
+		<script>
+			window.addEventListener('DOMContentLoaded', (event) => {
+				new PagefindUI({ element: "#search", showSubResults: true })
+			});
+		</script>
+		#}
+		<script src="{{ SITEURL }}/theme/js/jquery.min.js"></script>
+		<script src="{{ SITEURL }}/theme/js/browser.min.js"></script>
+		<script src="{{ SITEURL }}/theme/js/breakpoints.min.js"></script>
+		<script src="{{ SITEURL }}/theme/js/util.js"></script>
+		<script src="{{ SITEURL }}/theme/js/main.js"></script>
 
 	</body>
 </html>
