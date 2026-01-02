@@ -18,7 +18,8 @@
 			@include mixins.icon;
 			border-top: solid 1px functions.palette(border);
 			margin: 1.5em 0 0 0;
-			padding: 1.5em 0 0 3em;
+			// padding: 1.5em 0 0 3em;
+			padding: 1.5em 0 0 0;
 			position: relative;
 
 			&:before {

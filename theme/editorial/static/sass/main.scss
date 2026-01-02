@@ -44,6 +44,7 @@
 	@include meta.load-css('components/list');
 	@include meta.load-css('components/actions');
 	@include meta.load-css('components/icons');
+	@include meta.load-css('components/links');
 	@include meta.load-css('components/contact');
 	@include meta.load-css('components/pagination');
 	@include meta.load-css('components/table');

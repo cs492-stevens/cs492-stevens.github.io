@@ -12,6 +12,7 @@ THEME = 'theme/editorial'
 TIMEZONE = 'US/Eastern'
 
 DEFAULT_LANG = 'en'
+DEFAULT_CATEGORY = 'misc'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -20,7 +21,7 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-INDEX_SAVE_AS = 'blog.html'
+# INDEX_SAVE_AS = 'blog.html'
 
 READERS = { 'html': None }
 

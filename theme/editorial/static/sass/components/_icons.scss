@@ -28,39 +28,3 @@
 			}
 		}
 	}
-
-/* Custom Icons */
-
-	.icon.override-fa:before {
-		content: "" !important;
-		display: inline-block;
-		background-color: currentColor;
-		width: 1em;
-		height: 1em;
-
-		-webkit-mask-repeat: no-repeat;
-		mask-repeat: no-repeat;
-		-webkit-mask-size: contain;
-		mask-size: contain;
-	}
-
-	.icon.fa-canvas:before {
-		-webkit-mask-image: url('../icons/canvas.svg');
-		mask-image: url('../icons/canvas.svg');
-	}
-
-	.icon.fa-gradescope:before {
-		-webkit-mask-image: url('../icons/gradescope.svg');
-		mask-image: url('../icons/gradescope.svg');
-	}
-
-	.icon.fa-discord:before {
-		-webkit-mask-image: url('../icons/discord.svg');
-		mask-image: url('../icons/discord.svg');
-	}
-
-
-	.icon.fa-git-alt:before {
-		-webkit-mask-image: url('../icons/git-alt.svg');
-		mask-image: url('../icons/git-alt.svg');
-	}

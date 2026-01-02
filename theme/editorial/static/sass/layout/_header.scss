@@ -16,7 +16,9 @@
 		@include vendor.vendor('display', 'flex');
 		border-bottom: solid 5px functions.palette(accent);
 		padding: 6em 0 1em 0;
+		// padding: 3em 0 1em 0;
 		position: relative;
+		// position: fixed;
 
 		> * {
 			@include vendor.vendor('flex', '1');
