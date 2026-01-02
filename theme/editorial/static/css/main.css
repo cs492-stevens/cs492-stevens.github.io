@@ -1354,6 +1354,43 @@ ul.icons {
       ul.icons li .icon:before {
         font-size: 1.25em; }
 
+/* Custom Icons */
+
+.icon.override-fa:before {
+  content: "" !important;
+  display: inline-block;
+  background-color: currentColor;
+  width: 1.5em;
+  height: 1.5em;
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.icon.fa-canvas:before {
+  -webkit-mask-image: url('../icons/canvas.svg');
+  mask-image: url('../icons/canvas.svg');
+}
+
+.icon.fa-gradescope:before {
+  -webkit-mask-image: url('../icons/gradescope.svg');
+  mask-image: url('../icons/gradescope.svg');
+}
+
+.icon.fa-discord:before {
+  -webkit-mask-image: url('../icons/discord.svg');
+  mask-image: url('../icons/discord.svg');
+}
+
+
+.icon.fa-git-alt:before {
+  -webkit-mask-image: url('../icons/git-alt.svg');
+  mask-image: url('../icons/git-alt.svg');
+}
+
+
 /* Contact */
 ul.contact {
   list-style: none;

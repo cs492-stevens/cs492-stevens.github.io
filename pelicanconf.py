@@ -3,6 +3,9 @@ SITENAME = 'cs492-stevens'
 SITEURL = ""
 
 PATH = 'content'
+STATIC_PATHS = [
+    'images',
+]
 
 THEME = 'theme/editorial'
 
@@ -23,6 +26,10 @@ READERS = { 'html': None }
 
 # Blogroll
 LINKS = (
+    ("Canvas", "canvas", "https://sit.instructure.com/courses/85333"),
+    ("Gradescope", "gradescope", "https://www.gradescope.com/courses/1206265"),
+    ("Discord", "discord", "#"),
+    ("Github", "git-alt", "https://github.com/cs492-stevens"),
     # ("Pelican", "https://getpelican.com/"),
     # ("Python.org", "https://www.python.org/"),
     # ("Jinja2", "https://palletsprojects.com/p/jinja/"),
