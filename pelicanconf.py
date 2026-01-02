@@ -30,16 +30,19 @@ LINKS = (
     ("Gradescope", "gradescope", "https://www.gradescope.com/courses/1206265"),
     ("Discord", "discord", "#"),
     ("Github", "git-alt", "https://github.com/cs492-stevens"),
-    # ("Pelican", "https://getpelican.com/"),
-    # ("Python.org", "https://www.python.org/"),
-    # ("Jinja2", "https://palletsprojects.com/p/jinja/"),
-    # ("You can modify those links in your config file", "#"),
 )
 
 # Social widget
 SOCIAL = (
     # ("You can add links in your config file", "#"),
     # ("Another social link", "#"),
+)
+
+STAFF = (
+    ("Ryan Tsang", "rtsang1@stevens.edu", "GS247 M 3:00 - 5:00pm"),
+    ("Aya Salama", "asalama@stevens.edu", "TBD"),
+    ("Brayden Abo", "babo@stevens.edu", "TBD"),
+    ("Nicole Young", "nyoung2@stevens.edu", "TBD"),
 )
 
 DEFAULT_PAGINATION = False
