@@ -43,11 +43,11 @@
 					color: functions.palette(bg) !important;
 
 					&:hover {
-						background-color: color.adjust(functions.palette(accent), $lightness: 3);
+						background-color: color.adjust(functions.palette(accent), $lightness: 3%);
 					}
 
 					&:active {
-						background-color: color.adjust(functions.palette(accent), $lightness: -3);
+						background-color: color.adjust(functions.palette(accent), $lightness: -3%);
 					}
 				}
 			}

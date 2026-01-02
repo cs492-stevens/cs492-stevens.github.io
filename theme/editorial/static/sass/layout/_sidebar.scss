@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use "sass:color";
 @use "../libs/breakpoints";
 @use "../libs/functions";
@@ -24,14 +26,14 @@
 				cursor: default;
 				display: block;
 				font-size: 1.5em;
-				height: functions.size(element-height) / 1.375;
-				line-height: functions.size(element-height) / 1.375;
+				height: math.div(functions.size(element-height), 1.375);
+				line-height: math.div(functions.size(element-height), 1.375);
 				opacity: 0.325;
 				position: absolute;
 				right: 0;
 				text-align: center;
 				top: 0;
-				width: functions.size(element-height) / 1.375;
+				width: math.div(functions.size(element-height), 1.375);
 			}
 
 			input[type="text"] {
@@ -41,7 +43,7 @@
 	}
 
 	#sidebar {
-		$pad: 2em / 0.9;
+		$pad: math.div(2em, 0.9);
 
 		@include vendor.vendor('flex-grow', '0');
 		@include vendor.vendor('flex-shrink', '0');
@@ -55,7 +57,7 @@
 		width: functions.size(sidebar-width);
 
 		h2 {
-			font-size: (1.25em / 0.9);
+			font-size: math.div(1.25em, 0.9);
 		}
 
 		> .inner {
@@ -80,7 +82,7 @@
 			}
 
 			> .alt {
-				background-color: color.adjust(functions.palette(bg-alt), $lightness: -2);
+				background-color: color.adjust(functions.palette(bg-alt), $lightness: -2%);
 				border-bottom: 0;
 				margin: ($pad * -1) 0 ($pad * 2) ($pad * -1);
 				padding: $pad;
@@ -125,7 +127,7 @@
 		}
 
 		@include breakpoints.breakpoint('<=xlarge') {
-			$pad: 1.5em / 0.9;
+			$pad: math.div(1.5em, 0.9);
 
 			width: functions.size(sidebar-width-alt);
 
@@ -192,7 +194,7 @@
 
 				&:before {
 					font-size: 1.5rem;
-					margin-left: (-0.875em / 2);
+					margin-left: (-0.875em * 0.5);
 				}
 			}
 
@@ -208,14 +210,14 @@
 
 				&:before {
 					color: functions.palette(fg);
-					margin-left: (-0.125em / 2);
-					margin-top: (-0.5em / 2);
+					margin-left: (-0.125em * 0.5);
+					margin-top: (-0.5em * 0.5);
 					font-size: 1.1rem;
 					z-index: 1;
 				}
 
 				&:after {
-					background: color.adjust(color.adjust(functions.palette(fg), $lightness: 35), $alpha: -0.25);
+					background: color.adjust(color.adjust(functions.palette(fg), $lightness: 35%), $alpha: -0.25);
 					border-radius: functions.size(border-radius);
 					content: '';
 					height: 3.5em;

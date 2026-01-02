@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "../libs/functions";
 @use "../libs/mixins";
 
@@ -29,7 +30,7 @@
 				line-height: 1.125em;
 				position: absolute;
 				text-align: center;
-				top: (1.5em / 1.5);
+				top: math.div(1.5em, 1.5);
 				width: 1.5em;
 			}
 
