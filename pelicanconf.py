@@ -6,6 +6,9 @@ PATH = 'content'
 STATIC_PATHS = [
     'images',
 ]
+PAGE_PATHS = [
+    'pages',
+]
 
 THEME = 'theme/editorial'
 
@@ -23,7 +26,7 @@ AUTHOR_FEED_RSS = None
 
 # INDEX_SAVE_AS = 'blog.html'
 
-READERS = { 'html': None }
+# READERS = { 'html': None }
 
 # Blogroll
 LINKS = (
