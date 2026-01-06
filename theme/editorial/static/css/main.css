@@ -2684,7 +2684,7 @@ button:disabled,
 }
 
 #main > .inner > section {
-  padding: 6em 0 4em 0;
+  padding: 4em 0 2em 0;
   border-top: solid 2px rgba(210, 215, 217, 0.75);
 }
 
@@ -2697,7 +2697,7 @@ button:disabled,
     padding: 0 5em 0.1em 5em;
   }
   #main > .inner > section {
-    padding: 5em 0 3em 0;
+    padding: 3em 0 1em 0;
   }
 }
 @media screen and (max-width: 1280px) {
@@ -2705,7 +2705,7 @@ button:disabled,
     padding: 0 4em 0.1em 4em;
   }
   #main > .inner > section {
-    padding: 4em 0 2em 0;
+    padding: 2em 0 0.1em 0;
   }
 }
 @media screen and (max-width: 736px) {
@@ -2713,7 +2713,7 @@ button:disabled,
     padding: 0 2em 0.1em 2em;
   }
   #main > .inner > section {
-    padding: 3em 0 1em 0;
+    padding: 2em 0 0.1em 0;
   }
 }
 /* Sidebar */
@@ -2793,8 +2793,8 @@ button:disabled,
 
 #sidebar > .inner > * {
   border-bottom: solid 2px rgba(210, 215, 217, 0.75);
-  margin: 0 0 3.5em 0;
-  padding: 0 0 3.5em 0;
+  margin: 0 0 2em 0;
+  padding: 0 0 1em 0;
 }
 
 #sidebar > .inner > * > :last-child {
