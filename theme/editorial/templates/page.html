@@ -10,6 +10,17 @@
   {% if translations.entry_hreflang(page) %}
     {{ translations.entry_hreflang(page) }}
   {% endif %}
+
+  {% if page.styles is defined %}
+  {% for stylesheet in page.styles.split(',') %}
+    <link rel="stylesheet" href="{{ SITEURL }}/static/css/{{ stylesheet }}">
+  {% endfor %}
+  {% endif %}
+  {% if page.scripts is defined %}
+  {% for script in page.scripts.split(',') %}
+    <script src="{{ SITEURL }}/static/js/{{ script }}"></script>
+  {% endfor %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}

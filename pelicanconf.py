@@ -5,6 +5,8 @@ SITEURL = ""
 PATH = 'content'
 STATIC_PATHS = [
     'images',
+    'static/css',
+    'static/js',
 ]
 PAGE_PATHS = [
     'pages',
