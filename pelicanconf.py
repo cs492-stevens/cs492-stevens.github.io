@@ -47,7 +47,7 @@ SOCIAL = (
 STAFF = (
     ("Ryan Tsang", "rtsang1@stevens.edu", "GS247 M 3:00 - 5:00pm"),
     ("Aya Salama", "asalama@stevens.edu", "TBD"),
-    ("Brayden Abo", "babo@stevens.edu", "TBD"),
+    ("Brayden Abo", "babo@stevens.edu", "GS226 T 12:00 - 2:00pm"),
     ("Nicole Young", "nyoung2@stevens.edu", "TBD"),
 )
 
