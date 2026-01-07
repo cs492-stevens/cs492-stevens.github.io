@@ -1,0 +1,76 @@
+@use "../libs/mixins";
+
+///
+/// Editorial by HTML5 UP
+/// html5up.net | @ajlkn
+/// Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+///
+
+/* Icon */
+
+	.icon {
+		@include mixins.icon;
+		border-bottom: none;
+		position: relative;
+
+		> .label {
+			display: none;
+		}
+
+		&:before {
+			line-height: inherit;
+		}
+
+		&.solid {
+			&:before {
+				font-weight: 900;
+			}
+		}
+
+		&.brands {
+			&:before {
+				font-family: 'Font Awesome 5 Brands';
+			}
+		}
+	}
+
+/* Custom Icons */
+
+	.icon.override-fa:before {
+		content: "" !important;
+		display: inline-block;
+		background-color: currentColor;
+		width: 1em;
+		height: 1em;
+		// vertical-align: baseline;
+		// vertical-align: middle;
+		// vertical-align: text-top;
+		// vertical-align: -0.125em;
+		vertical-align: -0.2em;
+
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-size: contain;
+		mask-size: contain;
+	}
+
+	.icon.fa-canvas:before {
+		-webkit-mask-image: url('../icons/canvas.svg');
+		mask-image: url('../icons/canvas.svg');
+	}
+
+	.icon.fa-gradescope:before {
+		-webkit-mask-image: url('../icons/gradescope.svg');
+		mask-image: url('../icons/gradescope.svg');
+	}
+
+	.icon.fa-discord:before {
+		-webkit-mask-image: url('../icons/discord.svg');
+		mask-image: url('../icons/discord.svg');
+	}
+
+
+	.icon.fa-git-alt:before {
+		-webkit-mask-image: url('../icons/git-alt.svg');
+		mask-image: url('../icons/git-alt.svg');
+	}
