@@ -11,6 +11,7 @@ STATIC_PATHS = [
 PAGE_PATHS = [
     'pages',
 ]
+OUTPUT_PATH = 'docs'
 
 THEME = 'theme/editorial'
 
