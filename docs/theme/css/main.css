@@ -2651,6 +2651,49 @@ button:disabled,
     display: none;
   }
 }
+/* Tabs */
+.tab {
+  overflow: hidden;
+}
+
+.tab button {
+  float: left;
+  border-top: 2px solid #ccc;
+  border-color: rgba(210, 215, 217, 0.75);
+  border-radius: 0px;
+  outline: none;
+  line-height: none;
+  box-shadow: none;
+}
+
+.tab button.active {
+  border-color: #58a4b0;
+}
+
+.tab-content {
+  display: none;
+  padding: 1em 2.25em;
+  border: 2px solid #ccc;
+  border-color: rgba(210, 215, 217, 0.75);
+  margin-bottom: 2em;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content {
+  animation: fadeEffect 0.75s;
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 /* Wrapper */
 #wrapper {
   display: -moz-flex;

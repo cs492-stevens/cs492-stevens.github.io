@@ -1,0 +1,46 @@
+@use "../libs/functions";
+
+/* Tabs */
+
+	.tab {
+		overflow: hidden;
+		// border: 1px solid #ccc;
+		// background-color: #f1f1f1;
+	}
+
+	.tab button {
+		float: left;
+		border-top: 2px solid #ccc;
+		border-color: functions.palette(border);
+		border-radius: 0px;
+		outline: none;
+		line-height: none;
+		box-shadow: none;
+	}
+
+	.tab button.active {
+		border-color: functions.palette(accent);
+	}
+
+	.tab-content {
+		display: none;
+		padding: 1em 2.25em;
+		border: 2px solid #ccc;
+		border-color: functions.palette(border);
+		margin-bottom: 2em;
+	}
+
+	.tab-content.active {
+		display: block;
+	}
+
+	// fade effect on tab buttons
+
+	.tab-content {
+		animation: fadeEffect 0.75s;
+	}
+
+	@keyframes fadeEffect {
+		from {opacity: 0;}
+		to {opacity: 1;}
+	}

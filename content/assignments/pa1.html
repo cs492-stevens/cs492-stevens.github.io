@@ -6,7 +6,7 @@
     <meta name="template" content="article">
     <meta name="title" content="programming assignment 1">
     <meta name="date" content="2026-01-21">
-    <meta name="modified" content="2026-01-08">
+    <meta name="modified" content="2026-01-09">
     <meta name="slug" content="pa1">
   </head>
   <body>
@@ -98,8 +98,8 @@
       </li>
     </ol>
     <h2 id="loc-3">os-specific steps</h2>
-    <div class="tab"><button class="tab-link" onclick="show_tab_class(event, windows)">windows</button><button class="tab-link" onclick="show_tab_class(event, macos)">macos</button></div>
-    <div class="tab-content windows">
+    <div class="tab"><button class="tab-link os-instructions windows active" onclick="show_tab_class(event, &quot;os-instructions&quot;, &quot;windows&quot;)">windows</button><button class="tab-link os-instructions macos" onclick="show_tab_class(event, &quot;os-instructions&quot;, &quot;macos&quot;)">macos</button></div>
+    <div class="tab-content os-instructions windows active">
       <h3 id="loc-4">windows</h3>
       <p><a href="https://en.wikipedia.org/wiki/VirtualBox">VirtualBox</a> is virtualization software (a <a href="https://en.wikipedia.org/wiki/Hypervisor#Classification">type-2 hypervisor</a>) you can install on your host machine to create and manage guest virtual machines running on top of your host OS.</p>
       <p>Before you install and use VirtualBox, first you need to make sure that Windows’ own Hyper-V VM software is disabled, otherwise it will conflict with VirtualBox, causing VirtualBox to fail or run in an extremely slow emulation mode.</p>
@@ -144,7 +144,7 @@
         </li>
       </ol>
     </div>
-    <div class="tab-content macos">
+    <div class="tab-content os-instructions macos">
       <h3 id="loc-5">macos</h3>
       <p><a href="https://en.wikipedia.org/wiki/VirtualBox">VirtualBox</a> should work without issue on Intel-based Apple computers. If you have an Intel-based computer, skip this section.</p>
       <p>Since VirtualBox does not support x86 emulation on Apple Silicon, we will need to use <a href="https://mac.getutm.app/">UTM</a>.</p>
@@ -225,8 +225,8 @@
     <h3 id="loc-8">virtualbox application</h3>
     <p>If you already have VirtualBox v7.x installed, you may skip this section.</p>
     <p>You can use a package manager to install VirtualBox, or install it manually:</p>
-    <div class="tab"><button class="tab-link" onclick="show_tab_class(event, manual)">manual</button><button class="tab-link" onclick="show_tab_class(event, choco)">choco</button></div>
-    <div class="tab-content manual">
+    <div class="tab"><button class="tab-link vbox-install-instructions manual active" onclick="show_tab_class(event, &quot;vbox-install-instructions&quot;, &quot;manual&quot;)">manual</button><button class="tab-link vbox-install-instructions choco" onclick="show_tab_class(event, &quot;vbox-install-instructions&quot;, &quot;choco&quot;)">choco</button></div>
+    <div class="tab-content vbox-install-instructions manual active">
       <ol>
         <li>Go to the VirtualBox <a href="https://www.virtualbox.org/wiki/Downloads">download page</a>.</li>
         <li>Under “VirtualBox Platform Packages”, download the correct version for your host platform and launch it.</li>
@@ -234,7 +234,7 @@
         <li>Ignore “Missing Dependencies Python Core” warnings.</li>
       </ol>
     </div>
-    <div class="tab-content choco">
+    <div class="tab-content vbox-install-instructions choco">
       <p><a href="https://community.chocolatey.org/">Chocolatey</a> is a Windows package manager.</p>
       <p>Once installed, you can install VirtualBox using:</p>
       <pre><code data-lang="powershell">choco install virtualbox</code></pre>
@@ -623,8 +623,8 @@
       </li>
       <li>
         <p>Eject the installation CD.</p>
-        <div class="tab"><button class="tab-link" onclick="show_tab_class(event, virtualbox)">virtualbox</button><button class="tab-link" onclick="show_tab_class(event, utm)">utm</button></div>
-        <div class="tab-content virtualbox">
+        <div class="tab"><button class="tab-link eject-instructions virtualbox active" onclick="show_tab_class(event, &quot;eject-instructions&quot;, &quot;virtualbox&quot;)">virtualbox</button><button class="tab-link eject-instructions utm" onclick="show_tab_class(event, &quot;eject-instructions&quot;, &quot;utm&quot;)">utm</button></div>
+        <div class="tab-content eject-instructions virtualbox active">
           <ol>
             <li>Open the VM’s settings.</li>
             <li>
@@ -638,7 +638,7 @@
             </li>
           </ol>
         </div>
-        <div class="tab-content utm">
+        <div class="tab-content eject-instructions utm">
           <ol>
             <li>Stop the VM if it’s status is “Suspended” (“Stop” button in upper right corner).</li>
             <li>Open the VM’s settings by right-clicking on the VM and selecting “Edit”.</li>
