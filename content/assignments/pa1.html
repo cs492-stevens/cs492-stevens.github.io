@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="lang" content="en">
+    <meta name="status" content="published">
+    <meta name="template" content="article">
+    <meta name="title" content="programming assignment 1">
+    <meta name="date" content="2026-01-21">
+    <meta name="modified" content="2026-01-08">
+    <meta name="slug" content="pa1">
+  </head>
+  <body>
+    <h2 id="loc-1">description</h2>
+    <p><strong>Warning: you must read <em>everything</em> carefully and be sure to complete <em>all</em> steps for your machine.</strong> Skipping steps can lead to unrecoverable states and you may be forced to fully restart the assignment. <em>Fully read the instructions for each step <strong>before</strong> doing that step</em>.</p>
+    <p>The goal of this assignment is for you to learn how to install different <a href="https://en.wikipedia.org/wiki/Unix">Unix</a>-based operating systems:</p>
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/OpenBSD">OpenBSD</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Arch_Linux">Arch Linux</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Debian">Debian</a> (which we will use for subsequent assignments)</li>
+    </ul>
+    <p>In CS 382 and CS 385, you may have learned how to install <a href="https://en.wikipedia.org/wiki/Ubuntu">Ubuntu</a>, but were likely relying on the installation software. In this assignment, you will be doing the installations manually to get a better understanding of the steps required to install a new operating system.</p>
+    <p>Terms:</p>
+    <ul>
+      <li>“host”: your own physical computer running either Windows or macOS.</li>
+      <li>“guest”: a virtual machine (VM) running a Unix-based operating system.</li>
+    </ul>
+    <div>
+      <nav role="doc-toc">
+        <h2>contents</h2>
+        <ol style="list-style-type: none">
+          <li><a href="#loc-1">description</a></li>
+          <li><a href="#loc-2">preliminary steps</a></li>
+          <li>
+            <div><a href="#loc-3">os-specific steps</a></div>
+            <ol style="list-style-type: none">
+              <li><a href="#loc-4">windows</a></li>
+              <li>
+                <div><a href="#loc-5">macos</a></div>
+                <ol style="list-style-type: none">
+                  <li><a href="#loc-6">utm</a></li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <div><a href="#loc-7">installing virtualbox</a></div>
+            <ol style="list-style-type: none">
+              <li><a href="#loc-8">virtualbox application</a></li>
+              <li><a href="#loc-9">virtualbox guest additions</a></li>
+            </ol>
+          </li>
+          <li>
+            <div><a href="#loc-10">installing openbsd</a></div>
+            <ol style="list-style-type: none">
+              <li><a href="#loc-11">creating the openbsd vm</a></li>
+              <li>
+                <div><a href="#loc-12">installing openbsd on the vm</a></div>
+                <ol style="list-style-type: none">
+                  <li><a href="#loc-13">booting the vm</a></li>
+                  <li><a href="#loc-14">network and user configuration</a></li>
+                  <li>
+                    <div><a href="#loc-15">hard disk configuration</a></div>
+                    <ol style="list-style-type: none">
+                      <li><a href="#loc-16">root disk and mbr configuration</a></li>
+                      <li><a href="#loc-17">file system configuration</a></li>
+                    </ol>
+                  </li>
+                  <li><a href="#loc-18">set installation</a></li>
+                </ol>
+              </li>
+              <li>
+                <div><a href="#loc-19">using openbsd</a></div>
+                <ol style="list-style-type: none">
+                  <li><a href="#loc-20">setting user admin privileges</a></li>
+                  <li><a href="#loc-21">starting the x window gui</a></li>
+                </ol>
+              </li>
+              <li><a href="#loc-22">deliverables</a></li>
+            </ol>
+          </li>
+          <li><a href="#loc-23">installing arch linux</a></li>
+        </ol>
+      </nav>
+    </div>
+    <h2 id="loc-2">preliminary steps</h2>
+    <ol>
+      <li>
+        <p>Make sure your host computer has enough disk space available. You will need about 60 GB of free disk space for installing Debian and completing future programming assignments. If you do not have enough disk space, you can delete some of your data, move it to a cloud, or consider purchasing an external drive to store your data.</p>
+        <ul>
+          <li><em>Note: it is recommended that you <strong>not</strong> attempt to do coursework in an external drive, as the access times can hurt performance</em>.</li>
+        </ul>
+      </li>
+      <li>
+        <p>Make sure your host computer has a reliable internet connection before you begin, as you will be downloading quite a bit of data in this assignment.</p>
+      </li>
+      <li>
+        <p>You may need to reboot your host machine. Be prepared for this.</p>
+      </li>
+    </ol>
+    <h2 id="loc-3">os-specific steps</h2>
+    <div class="tab"><button class="tab-link" onclick="show_tab_class(event, windows)">windows</button><button class="tab-link" onclick="show_tab_class(event, macos)">macos</button></div>
+    <div class="tab-content windows">
+      <h3 id="loc-4">windows</h3>
+      <p><a href="https://en.wikipedia.org/wiki/VirtualBox">VirtualBox</a> is virtualization software (a <a href="https://en.wikipedia.org/wiki/Hypervisor#Classification">type-2 hypervisor</a>) you can install on your host machine to create and manage guest virtual machines running on top of your host OS.</p>
+      <p>Before you install and use VirtualBox, first you need to make sure that Windows’ own Hyper-V VM software is disabled, otherwise it will conflict with VirtualBox, causing VirtualBox to fail or run in an extremely slow emulation mode.</p>
+      <ol>
+        <li>
+          <p>Open <code>Control Panel</code>.</p>
+        </li>
+        <li>
+          <p>Select “Programs and Features”.</p>
+        </li>
+        <li>
+          <p>Select “Turn Windows features on or off”.</p>
+        </li>
+        <li>
+          <p>Ensure the following features are unchecked if present in the list:</p>
+          <ul>
+            <li>“Hyper-V”</li>
+            <li>“Windows Hypervisor Platform”</li>
+            <li>“Virtual Machine Platform”</li>
+          </ul>
+        </li>
+        <li>
+          <p>Select “OK” and reboot your computer if prompted.</p>
+        </li>
+        <li>
+          <p>Open <code>Windows Security</code>.</p>
+        </li>
+        <li>
+          <p>Select “Device security” in the left column.</p>
+        </li>
+        <li>
+          <p>Select “Core isolation details” link.</p>
+        </li>
+        <li>
+          <p>Ensure “Memory Integrity” is turned off.</p>
+          <ul>
+            <li>Leaving this on will force VirtualBox to run in emulation mode rather than the faster virtualization mode.</li>
+          </ul>
+        </li>
+        <li>
+          <p>Reboot your computer if prompted.</p>
+        </li>
+      </ol>
+    </div>
+    <div class="tab-content macos">
+      <h3 id="loc-5">macos</h3>
+      <p><a href="https://en.wikipedia.org/wiki/VirtualBox">VirtualBox</a> should work without issue on Intel-based Apple computers. If you have an Intel-based computer, skip this section.</p>
+      <p>Since VirtualBox does not support x86 emulation on Apple Silicon, we will need to use <a href="https://mac.getutm.app/">UTM</a>.</p>
+      <p>Notes:</p>
+      <ul>
+        <li><a href="https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion">VMWare Fusion Pro for Mac</a> will work for subsequent programming assignments, but <a href="https://www.parallels.com/">Parallels</a> will <strong>not</strong>.</li>
+        <li>The virtualization software you use <strong>must allow you to select the kernel to boot at VM startup</strong>. (Multipass will not work)</li>
+      </ul>
+      <h4 id="loc-6">utm</h4>
+      <p>You can install UTM from the <a href="https://mac.getutm.app/">website</a> or using homebrew:</p>
+      <pre><code data-lang="bash"><span style="color: #4b69c6">brew</span> install --cask utm</code></pre>
+      <p>When using UTM, <strong>every time</strong> you create a new VM, you must do all of the following:</p>
+      <ol>
+        <li>
+          <p>Create the VM:</p>
+          <ol>
+            <li>Select an <em>emulation</em> VM, <strong>not</strong> a virtualization V, because you are going to install operating systems for amd64, not your native arm64 architecture.</li>
+            <li>Select “Other” when installing OpenBSD, or “Linux” when installing Arch or Debian.</li>
+            <li>Select the correct ISO file for the desired OS.</li>
+            <li>
+              <p>For “Disk Size”:</p>
+              <ul>
+                <li>OpenBSD: 6 GB</li>
+                <li>Arch: 6 GB</li>
+                <li>Debian: 60 GB</li>
+              </ul>
+            </li>
+            <li>Continue VM creation using <em>default</em> values and select “Save”. <strong>Do NOT start the new VM yet</strong>.</li>
+          </ol>
+        </li>
+        <li>
+          <p>Configure VM Settings <strong>before installing an OS</strong>:</p>
+          <ol>
+            <li>Select the Settings icon in the upper right corner of the UTM window.</li>
+            <li>
+              <p>Under “System”:</p>
+              <ol>
+                <li>
+                  <p>Under “CPU”:</p>
+                  <ol>
+                    <li>Select “Enables all features supported by the accelerator in the current host (max)”.</li>
+                  </ol>
+                </li>
+                <li>Enable “Force <a href="https://en.wikipedia.org/wiki/Multi-core_processor">Multicore</a>”</li>
+                <li>Ensure “CPU Cores” matches your host system (see <a href="https://support.macincloud.com/support/solutions/articles/8000087401-how-can-i-check-the-number-of-cpu-cores-on-a-mac#:~:text=Navigate%20towards%20the%20top%20left,of%20%22Total%20number%20of%20Cores%22">here</a>)</li>
+              </ol>
+            </li>
+            <li>
+              <p>Under “QEMU”:</p>
+              <ol>
+                <li>Disable “UEFI Boot”. (This assignment assumes VMs are using <a href="https://en.wikipedia.org/wiki/BIOS">BIOS</a>/<a href="https://en.wikipedia.org/wiki/Master_boot_record">MBR</a>, rather than <a href="https://en.wikipedia.org/wiki/UEFI">UEFI</a>/<a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT</a>)</li>
+                <li>Enable “Force <a href="https://en.wikipedia.org/wiki/PS/2_port">PS/2</a> controller”. (required for the virtual keyboard to work correctly, especially on OpenBSD)</li>
+                <li>Enable “Use local time for base clock”. (especially for Arch Linux)</li>
+              </ol>
+            </li>
+            <li>
+              <p>Under “Input”:</p>
+              <ol>
+                <li>Disable all USB options. (prevent conflict between PS/2 and USB virtual keyboards)</li>
+              </ol>
+            </li>
+            <li>
+              <p>Under “Display”:</p>
+              <ol>
+                <li>Set “Emulated Display Card” to “<a href="https://en.wikipedia.org/wiki/Video_Graphics_Array">VGA</a>” (Linux distros will have blank screen otherwise)</li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Save settings and start the VM.</p>
+        </li>
+      </ol>
+      <p>This process is not regularly tested, so please contact the instructor if you run into issues.</p>
+    </div>
+    <h2 id="loc-7">installing virtualbox</h2>
+    <p>This need only be done once. Skip this section if you are on Mac and have installed UTM.</p>
+    <h3 id="loc-8">virtualbox application</h3>
+    <p>If you already have VirtualBox v7.x installed, you may skip this section.</p>
+    <p>You can use a package manager to install VirtualBox, or install it manually:</p>
+    <div class="tab"><button class="tab-link" onclick="show_tab_class(event, manual)">manual</button><button class="tab-link" onclick="show_tab_class(event, choco)">choco</button></div>
+    <div class="tab-content manual">
+      <ol>
+        <li>Go to the VirtualBox <a href="https://www.virtualbox.org/wiki/Downloads">download page</a>.</li>
+        <li>Under “VirtualBox Platform Packages”, download the correct version for your host platform and launch it.</li>
+        <li>Use all default options during install.</li>
+        <li>Ignore “Missing Dependencies Python Core” warnings.</li>
+      </ol>
+    </div>
+    <div class="tab-content choco">
+      <p><a href="https://community.chocolatey.org/">Chocolatey</a> is a Windows package manager.</p>
+      <p>Once installed, you can install VirtualBox using:</p>
+      <pre><code data-lang="powershell">choco install virtualbox</code></pre>
+    </div>
+    <h3 id="loc-9">virtualbox guest additions</h3>
+    <p>You will need to install guest additions on Debian later in this assignment.</p>
+    <p>Download the <code>VboxGuestAdditions_X.Y.Z.iso</code> from the <code>X.Y.Z/</code> folder at <a href="https://download.virtualbox.org/virtualbox">download.virtualbox.org</a>.</p>
+    <h2 id="loc-10">installing openbsd</h2>
+    <p>OpenBSD is one of the members of the <a href="https://en.wikipedia.org/wiki/Berkeley_Software_Distribution">BSD family</a> of Unix operating systems. It is interesting for you to install and use because:</p>
+    <ul>
+      <li>It has a text-based installation procedure that clearly shows all required steps without being too difficult to use.</li>
+      <li>OpenBSD is designed to be self-contained and work well “out of the box” with little extra software or configuration required.</li>
+      <li>
+        <p>It makes it easy to see the difference between</p>
+        <ul>
+          <li>the <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a> (the early time software that allows you to select which kernel to boot)</li>
+          <li>the <a href="https://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a> proper</li>
+          <li>the <a href="https://en.wikipedia.org/wiki/Daemon_(computing)">operating system services</a></li>
+          <li>the text-based <a href="https://en.wikipedia.org/wiki/Virtual_console">console</a> with a <a href="https://en.wikipedia.org/wiki/Shell_(computing)#Command-line_shells">shell</a> command line interpreter</li>
+          <li>the <a href="https://en.wikipedia.org/wiki/X_Window_System">X Window</a> graphical user interface</li>
+        </ul>
+      </li>
+      <li>As a CS or CSE student, you should use a BSD system at least once in your life. Unix is more than just Linux!</li>
+    </ul>
+    <h3 id="loc-11">creating the openbsd vm</h3>
+    <ol>
+      <li>
+        <p>Download the ISO</p>
+        <ol>
+          <li>Visit the <a href="https://www.openbsd.org/">OpenBSD website</a>.</li>
+          <li>Click the “Download” link in the left column of the web page.</li>
+          <li>Download the CD/DVD <code>installXY.iso</code> file (note the extension) for the “<a href="https://en.wikipedia.org/wiki/X86-64">amd64</a>” architecture. (this includes students on Apple Silicon)</li>
+        </ol>
+      </li>
+      <li>
+        <p>Start VirtualBox and click the blue “New” button to create a new VM.</p>
+        <ol>
+          <li>Give the name “cs492-openbsd” to your new VM.</li>
+          <li>For the “ISO image”, select the <code>installXY.iso</code> file you just downloaded.</li>
+          <li>
+            <p>Under “Hardware”:</p>
+            <ul>
+              <li>Memory size: 4096 MB</li>
+              <li>Processors: max physical cores (green zone) (red zone indicates <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading">logical cores</a>, which is irrelevent because OpenBSD disables hardware multithreading for <a href="https://en.wikipedia.org/wiki/Hyper-threading#Security">security reasons</a>.)</li>
+            </ul>
+          </li>
+          <li>
+            <p>Under “Hard Disk”:</p>
+            <ul>
+              <li>Virtual hard disk size: 6 GB</li>
+            </ul>
+          </li>
+          <li>Hit “Finish”.</li>
+        </ol>
+        <p>At this point, you should have a VM with an empty 6GB virtual disk and a virtual CD containing the OpenBSD installation software.</p>
+      </li>
+      <li>
+        <p>Configure VM display:</p>
+        <ol>
+          <li>Select the orange “Settings” button in VirtualBox on the VM</li>
+          <li>
+            <p>Under “Display”:</p>
+            <ol>
+              <li>Change “<a href="https://en.wikipedia.org/wiki/Graphics_card">Graphics Controller</a>” to “VBoxSVGA”. (seems to work better with OpenBSD. ignore any warnings)</li>
+            </ol>
+          </li>
+          <li>
+            <p>Under “Storage”:</p>
+            <ol>
+              <li>Select “<a href="https://en.wikipedia.org/wiki/Disk_controller">Controller</a>” (with hard disk and CD as children):</li>
+              <li>Change “Type” to “<a href="https://en.wikipedia.org/wiki/Advanced_Host_Controller_Interface">AHCI</a>”</li>
+            </ol>
+          </li>
+          <li>Hit “OK”</li>
+        </ol>
+      </li>
+    </ol>
+    <h3 id="loc-12">installing openbsd on the vm</h3>
+    <p><em>Remember to read each step before doing it!</em></p>
+    <h4 id="loc-13">booting the vm</h4>
+    <ol>
+      <li>
+        <p>Click the green “Start” arrow to start your virtual machine.</p>
+        <ul>
+          <li>The virtual machine will automatically boot from its virtual CD and start the installation software, which is a special copy of OpenBSD.</li>
+        </ul>
+      </li>
+      <li>
+        <p>You should see a <code>boot></code> prompt. This is the OpenBSD <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a>, which allows you to select the kernel you want to use. In this case, you can wait 5 seconds or hit <code>Enter</code> to allow the bootloader to automatically select a kernel.</p>
+        <p>After the kernel is selected, for a brief time, you should see text with numbers. This is the bootloader copying the selected kernel from the virtual CD into VM memory.</p>
+      </li>
+      <li>
+        <p>When the background turns blue it means the <a href="https://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a> itself is running. The kernel will print a bunch of info to the screen describing the hardware it detects.</p>
+      </li>
+      <li>
+        <p>(VirtualBox-only) Enlarging the screen if needed:</p>
+        <ol>
+          <li>Click “View” in the window’s upper left corner</li>
+          <li>Click “Virtual Screen 1”</li>
+          <li>Select a scaling percentage (can be changed again later)</li>
+        </ol>
+      </li>
+    </ol>
+    <h4 id="loc-14">network and user configuration</h4>
+    <p>After the kernel has finished booting, the OpenBSD install script will begin automatically and you will be presented with the “Install, Upgrade, Autoinstall, Shell” prompt.</p>
+    <p>This installation script has many steps. Most are trivial, though a few are complex. Most will also have a default option between square brackets (<code>[]</code>), which is usually (but not always) correct.</p>
+    <p>If you make a mistake during the installation procedure, you can press <code>Ctrl-C</code> to abort the script and restart from the beginning by typing <code>install</code> at the <code>#</code> prompt.</p>
+    <ol>
+      <li>
+        <p>Type <code>I</code> and hit <code>Enter</code> to begin the install script.</p>
+        <p>For the first portion of the script, configure OpenBSD according to the table below.</p>
+        <table>
+          <thead>
+            <tr>
+              <th><strong>Setting</strong></th>
+              <th><strong>Value</strong></th>
+              <th><strong>Comment</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Keyboard Layout</td>
+              <td>Default (<code>US/English</code>)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>System Hostname</td>
+              <td><code>obsd</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Network Interface to Configure</td>
+              <td>Default (<code>em0</code>)</td>
+              <td>OpenBSD’s name for the (virtual) hardware <a href="https://en.wikipedia.org/wiki/Network_interface_controller">Ethernet nework controller</a></td>
+            </tr>
+            <tr>
+              <td><a href="https://en.wikipedia.org/wiki/Internet_Protocol_version_4">IPv4</a> Address</td>
+              <td>Default (<code>autoconf</code>)</td>
+              <td>
+                <p>OpenBSD will use the <a href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol">DHCP</a> network protocol to automatically configure an IP address for the Ethernet network interface of the VM.</p>
+                <p>The installation script will also configure the system to automatically use DHCP to get an IP address every time you reboot the VM.</p>
+              </td>
+            </tr>
+            <tr>
+              <td><a href="https://en.wikipedia.org/wiki/IPv6">IPv6</a> Address</td>
+              <td>Default (<code>none</code>)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Network Interface</td>
+              <td>Default (<code>done</code>)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><a href="https://en.wikipedia.org/wiki/Superuser#Unix_and_Unix-like"><code>root</code></a> Password</td>
+              <td><code>obsd</code></td>
+              <td>Note: on many Unix systems, passwords will not appear on-screen when typed in a shell.</td>
+            </tr>
+            <tr>
+              <td>Start <a href="https://en.wikipedia.org/wiki/Secure_Shell"><code>sshd</code></a></td>
+              <td><code>no</code></td>
+              <td>Note: we do not want anyone using ssh to login to the VM.</td>
+            </tr>
+            <tr>
+              <td>Run <a href="https://en.wikipedia.org/wiki/X_Window_System">X Window</a></td>
+              <td>Default (<code>yes</code>)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Use <code>xenodm</code></td>
+              <td>Default (<code>no</code>)</td>
+              <td>Note: you will learn how to start the X Window GUI manually later.</td>
+            </tr>
+            <tr>
+              <td>Setup User</td>
+              <td>Stevens login name</td>
+              <td>e.g. <code>rtsang1</code> from <code>rtsang1@stevens.edu</code>.</td>
+            </tr>
+            <tr>
+              <td>Full Name</td>
+              <td>Your full name</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Password</td>
+              <td><code>obsd</code></td>
+              <td>Your user account password.</td>
+            </tr>
+            <tr>
+              <td>Time Zone</td>
+              <td>Default (<code>EST</code>)</td>
+              <td>Note: you can input <code>?</code> for a list of available time zones.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+    <h4 id="loc-15">hard disk configuration</h4>
+    <p>At this point, you should be at <a href="https://en.wikipedia.org/wiki/Disk_partitioning">hard disk configuration</a>.</p>
+    <div id="aside-hard-disks" class="aside">A single hard disk can be divided into multiple “<a href="https://en.wikipedia.org/wiki/Disk_partitioning#Primary_partition">primary partitions</a>”, with each partition storing a different operating system (sort of). For example, one primary partition could store Windows while another stores OpenBSD, and the OS to run could be chosen at boot-time using the bootloader. This is called <a href="https://en.wikipedia.org/wiki/Multi-booting">multi-booting</a>.</div>
+    <p>In this stage we will first configure the <a href="https://en.wikipedia.org/wiki/Master_boot_record">Master Boot Record</a> (MBR), which stores the number of primary partitions, their type, and their size, in the first sector (data block) of the hard disk.</p>
+    <p>Then we will configure at least one <a href="https://en.wikipedia.org/wiki/File_system">file system</a>. For simplicity, we will use a single primary partition occupying the entire virtual hard disk that has a single FFS file system for the root directory.</p>
+    <div id="aside-file-systems" class="aside">
+      <p>Inside each primary partition, multiple file systems can be created for the same OS (if the OS supports it). For example, one OpenBSD <a href="https://en.wikipedia.org/wiki/Unix_File_System">FFS</a> file system for the <code>/</code> <a href="https://en.wikipedia.org/wiki/Root_directory">root directory</a>, and another FFS for the <code>/home</code> <a href="https://en.wikipedia.org/wiki/Home_directory">user home directories</a> can be created in the same primary partition.</p>
+      <p>Linux also supports multiple file systems in a partition, but uses <a href="https://en.wikipedia.org/wiki/Ext4">ext4</a>, but also supports <a href="https://en.wikipedia.org/wiki/Ext2">ext2</a> and <a href="https://en.wikipedia.org/wiki/Btrfs">btrfs</a> among others.</p>
+      <p>By contrast, Windows only has one <a href="https://en.wikipedia.org/wiki/NTFS">NTFS</a> file system per primary partition (e.g. <code>C:</code> and <code>D:</code> drives).</p>
+    </div>
+    <h5 id="loc-16">root disk and mbr configuration</h5>
+    <ol>
+      <li>
+        <p>Configure the root disk and MBR as follows:</p>
+        <table>
+          <thead>
+            <tr>
+              <th><strong>Setting</strong></th>
+              <th><strong>Value</strong></th>
+              <th><strong>Comment</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>root</code> Disk</td>
+              <td><code>sd0</code></td>
+              <td>
+                <p>To see a full list of available hard disks in the VM, type <code>?</code> and hit <code>Enter</code>. <code>sd0</code> should be the only option, with the name “VBOX HARDISK” (or “QEMU HARDISK” for Apple users on UTM), and a size of 6 GB.</p>
+                <p>This is the hard disk where the OpenBSD primary partition and root filesystem will be created.</p>
+              </td>
+            </tr>
+            <tr>
+              <td><code>root</code> Disk Encryption</td>
+              <td>Default (<code>no</code>)</td>
+              <td>This option encrypts the entire hard disk, which would affect performance if selected.</td>
+            </tr>
+            <tr>
+              <td>Whole disk MBR/GPT</td>
+              <td>Default (<code>whole</code>)</td>
+              <td>
+                <p>Since the disk is still empty, it does not yet have a <a href="https://en.wikipedia.org/wiki/Master_boot_record">Master Boot Record</a>. When you select <code>whole</code>, the installation script will create a single primary partition using <code>fdisk</code> that will occupy the entirety of the virtual hard disk. Then it will create a new MBR for the partition.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="aside-mbr" class="aside">
+          <p>Note that the primary partition does not start in disk sector 2 (which immediately follows the MBR). Some empty disk space must be left between the MBR and the start of the partition to store the OpenBSD bootloader. <code>fdisk</code> automatically accounts for this.</p>
+          <p><a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT</a> is a more recent and more advanced version of the same kind of partition table that allows you to create more than 4 primary partitions. MBR with up to 4 partitions is plenty for us.</p>
+        </div>
+      </li>
+    </ol>
+    <h5 id="loc-17">file system configuration</h5>
+    <p>Now we need to create a single <code>/</code> root file system (rfs) in our primary partition.</p>
+    <p>The install script automatically offers a default configuration of file systems, with a root file system in addition to <code>/usr</code>, <code>/home</code>, and “swap” file systems. (swap is used for memory management and will be revisited later in the course)</p>
+    <p>Since this is not what we want, we will configure our file system manually.</p>
+    <ol>
+      <li>
+        <p>Start the custom file system configuration by entering <code>c</code> into the prompt.</p>
+        <p>This will start OpenBSD’s <a href="https://en.wikipedia.org/wiki/BSD_disklabel">disklabel</a> interactive editor, and a new prompt (<code>sd0> </code>) will appear.</p>
+        <p>In this mode you will be able to specify the number of file systems to create, along with their location, size, type, and directory path (e.g. <code>/</code>, <code>/usr</code>, <code>/home</code>).</p>
+        <p>You can enter <code>?</code> into the prompt to get a list of available commands.</p>
+      </li>
+      <li>
+        <p>Enter <code>a</code> to add a new file system with the following configurations:</p>
+        <table>
+          <thead>
+            <tr>
+              <th><strong>Setting</strong></th>
+              <th><strong>Value</strong></th>
+              <th><strong>Comment</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Partition</td>
+              <td>Default (<code>a</code>)</td>
+              <td>
+                <p>File system “a” on disk “sd0” will have a full name “sd0a”.</p>
+                <p>Note that OpenBSD uses the word “partition” in place of “file system” for historical reasons.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>Offset</td>
+              <td>Default</td>
+              <td>
+                <p>The offset indicates the hard disk sector number where the start of the file system will be placed in the primary partition.</p>
+                <p>Do not try to change this unless you know how the file system is organized in the primary partition.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Default</td>
+              <td>
+                <p>Size of the file system in number of disk sectors.</p>
+                <p>The default value corresponds to the size of the entire primary partition. A different size (e.g. “3G”) could be specified to leave room for another file system.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>FS Type</td>
+              <td>Default (<code>4.2BSD</code>)</td>
+              <td>Standard file system type for BSD systems (also called “FFS” or “UFS”).</td>
+            </tr>
+            <tr>
+              <td>Mount point</td>
+              <td><code>/</code></td>
+              <td>Mount the file system at the root directory.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>When the prompt returns (<code>sd0*> </code>), you can enter <code>p</code> to show the current state.</p>
+        <p>You should see the <code>a</code> file system, and the unused <code>c</code> file system, which represents the whole primary partition.</p>
+        <p>The <code>*</code> in the prompt indicates that the changes are pending; <code>disklabel</code> has not yet changed anything on the hard disk (much like git staging before commits).</p>
+      </li>
+      <li>
+        <p>When you are ready to commit changes to the disk, enter <code>w</code>, then <code>q</code> to quit <code>disklabel</code>.</p>
+        <p>After quitting, the root file system should be initialized automatically, and you will see logs about <code>/dev/sd0a</code>.</p>
+        <p>Note that this new file system is mounted at <code>/mnt</code>, not <code>/</code>. This is because the virtual CD was mounted at <code>/</code> on boot, and the installer program is currently using it.</p>
+        <p><code>/mnt</code> is a temporary mount point and the newly configured file system will be mounted at <code>/</code> the next time the VM boots from the virtual hard disk.</p>
+      </li>
+    </ol>
+    <h4 id="loc-18">set installation</h4>
+    <p>“Installing the sets” refers to copying the OpenBSD operating system files (kernel, system utilities, man pages, GUI, etc.) to the root file system.</p>
+    <ol>
+      <li>
+        <p>Install the sets according to the table below:</p>
+        <table>
+          <thead>
+            <tr>
+              <th><strong>Setting</strong></th>
+              <th><strong>Value</strong></th>
+              <th><strong>Comment</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Location of sets</td>
+              <td><code>cd0</code></td>
+              <td>The virtual CD (located at <code>cd0</code>) includes all the required file sets (file packages).</td>
+            </tr>
+            <tr>
+              <td>Pathname to sets</td>
+              <td>Default (<code>X.Y/amd64</code>)</td>
+              <td>This is the path on the CD to the location of the <a href="https://www.openbsd.org/faq/faq4.html#FilesNeeded">file sets</a>.</td>
+            </tr>
+            <tr>
+              <td>Set names</td>
+              <td>Default (<code>all</code>, <code>done</code>)</td>
+              <td>
+                <ul>
+                  <li><code>bsd</code>: kernel for mono-processor machines</li>
+                  <li><code>bsd.mp</code>: kernel for multiprocessor machines (installer will select right kernel automatically based on detected number of cores)</li>
+                  <li><code>bsd.rd</code>: special kernel for installation (currently in use)</li>
+                  <li><code>baseXY.tgz</code>: basic utilities (<code>ls</code>, etc.)</li>
+                  <li><code>compXY.tgz</code>: C compiler and C headers</li>
+                  <li><code>manXY.tgz</code>: manual pages</li>
+                  <li><code>x*.tgz</code>: X Window GUI files</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Continue without verification</td>
+              <td><code>yes</code></td>
+              <td>The warning about missing <code>SHA256.sig</code> is normal for CD-based installation files, since adding a cryptographic signature file to the ISO file would alter the resulting file’s signature.</td>
+            </tr>
+            <tr>
+              <td>(Maybe) Location of sets</td>
+              <td>Default (<code>done</code>)</td>
+              <td>After the file sets are copied you may be prompted to install more software. We do not need to.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>If you get a warning that says “Time appears wrong”, hit <code>Enter</code> and continue.</p>
+      </li>
+      <li>
+        <p>At this point, the installation script will automatially create special files in the <code>/dev</code> directory of your new system to access the (virtual) hardware (“making all device nodes…”).</p>
+        <p>It will select the correct kernel (“using bsd.mp instead of bsd”).</p>
+        <p>It may apply a <a href="https://en.wikipedia.org/wiki/Firmware">firmware</a> update if needed (<code>fw_update</code>). Firmware is a separate bit of software that runs directly on a hardware device components, like the disk controller or network controller. Firmware is not part of OpenBSD and is usually hardware-specific.</p>
+        <p>OpenBSD wil “re-link” (randomize) kernel code locations for security reasons (think <a href="https://en.wikipedia.org/wiki/Address_space_layout_randomization">ASLR</a>).</p>
+        <p>Finally, the script will silently install the OpenBSD bootloader on the hard disk between the MBR and the start of the primary partition.</p>
+        <p>The bootloader is necessary so that the VM can locate and load the OpenBSD kernel.</p>
+      </li>
+      <li>
+        <p>Enter <code>h</code> to halt. Wait until you see “Please press any key to reboot”, then close the window. <em>Do not use the default (<code>reboot</code>) option!</em></p>
+        <p>The virtual installation CD needs to be ejected before we reboot the VM.</p>
+      </li>
+      <li>
+        <p>Eject the installation CD.</p>
+        <div class="tab"><button class="tab-link" onclick="show_tab_class(event, virtualbox)">virtualbox</button><button class="tab-link" onclick="show_tab_class(event, utm)">utm</button></div>
+        <div class="tab-content virtualbox">
+          <ol>
+            <li>Open the VM’s settings.</li>
+            <li>
+              <p>Under “Storage”:</p>
+              <ol>
+                <li>Select the <code>installXY.iso</code> CD file.</li>
+                <li>Select the blue CD icon to the right of the “Optical Drive” menu.</li>
+                <li>Select “Remove Disk from Virtual Drive” to simulate ejecting the installation CD.</li>
+                <li>Click “OK”.</li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+        <div class="tab-content utm">
+          <ol>
+            <li>Stop the VM if it’s status is “Suspended” (“Stop” button in upper right corner).</li>
+            <li>Open the VM’s settings by right-clicking on the VM and selecting “Edit”.</li>
+            <li>Select the “IDE Drive” that corresponds to the <code>installXY.iso</code> file.</li>
+            <li>Select “Clear” next to the “Path” entry to remove the file from the virtual CD drive.</li>
+          </ol>
+        </div>
+      </li>
+    </ol>
+    <h3 id="loc-19">using openbsd</h3>
+    <p>After starting the VM, you should see a similar sequence of steps. The <code>boot><span style="white-space: pre-wrap">&#x20;</span></code> prompt will appear for 5 seconds before copying the kernel into main memory. The text background will turn blue while the kernel is running. The difference this time is that the VM is booting from its own disk rather than the installation CD.</p>
+    <p>After the kernel finishes booting, the <a href="https://en.wikipedia.org/wiki/Daemon_(computing)">system services</a> will start, showing messages with a black background again.</p>
+    <p>Some things you might see:</p>
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Syslog"><code>syslogd</code></a>: the OS message loggin service</li>
+      <li><a href="https://en.wikipedia.org/wiki/Network_Time_Protocol"><code>ntpd</code></a>: the system time service</li>
+      <li><a href="https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol"><code>smtpd</code></a>: the system’s local email service</li>
+      <li><a href="https://en.wikipedia.org/wiki/Sndio"><code>sndiod</code></a>: system sound service</li>
+    </ul>
+    <p>All these services are part of the OpenBSD operating system, but they run as separate user-mode processes outside the kernel.</p>
+    <h4 id="loc-20">setting user admin privileges</h4>
+    <ol>
+      <li>
+        <p>Login as <code>root</code>, use <code>obsd</code> password. This will get you a <code>ksh</code> shell by default with a prompt <code>obsd#<span style="white-space: pre-wrap">&#x20;</span></code> (the system name followed by <code>#</code> to indicate admin user instead of the normal <code>$</code>).</p>
+      </li>
+      <li>
+        <p>Give your user account (your Stevens login name) admin privileges:</p>
+        <ol>
+          <li>
+            <p><code>cd /etc ; ls</code>. Most OpenBSD system config files live here.</p>
+          </li>
+          <li>
+            <p><code>cp examples/doas.conf .</code>. Create a <code>doas.conf</code> config file for the <code>doas</code> command (like <code>sudo</code> in Linux). The example config will automatically allow any user in the <code>wheel</code> user group to run commands as administrator.</p>
+            <p>You can view the contents of the file with <code>cat doas.conf</code>.</p>
+          </li>
+          <li>
+            <p>Add your user account to the <a href="https://en.wikipedia.org/wiki/Wheel_(computing)"><code>wheel</code></a> group.</p>
+            <p>Luckily, users created during the installation process are automatically added to the <code>wheel</code> group.</p>
+            <p>You can check who is in the <code>wheel</code> group with <a href="https://en.wikipedia.org/wiki/Grep"><code>grep</code></a> using the command <code>grep wheel /etc/group</code>.</p>
+          </li>
+          <li>
+            <p><code>exit</code> to exit the shell and return to the login prompt.</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <h4 id="loc-21">starting the x window gui</h4>
+    <p>The text-based screen, or text user interface (TUI), where your shell runs is called the <a href="https://en.wikipedia.org/wiki/Virtual_console">virtual console</a>. OpenBSD (and Linux) have multiple virtual consoles available, but these are not always the most convenient.</p>
+    <p>Instead, we will manually start the <a href="https://en.wikipedia.org/wiki/X_Window_System">X Window</a> GUI.</p>
+    <ol>
+      <li>
+        <p>Login with your Stevens username (e.g. <code>rtsang1</code>) and <code>obsd</code> as your password. You will be logged in to your user home directory.</p>
+        <p>Use <code>pwd</code> to see the current directory path, and <code>ls -la</code> to see a detailed list of files in the current directory.</p>
+      </li>
+      <li>
+        <p>Run <code>doas xenodm</code> to manually start the X Window GUI. Enter your the root password (<code>obsd</code>) and you should see the GUI.</p>
+        <div id="aside-x-window-doas" class="aside">OpenBSD users do not usually need to use admin privileges with <code>doas</code> to start the X Window Gui, but it is required here because the VM has a very basic virtual graphics card.</div>
+        <div id="aside-x-window-default-gui" class="aside">
+          <p>The default OpenBSD GUI is quite ugly. The bare X Window system minimally handles:</p>
+          <ul>
+            <li>the mouse</li>
+            <li>the keyboard</li>
+            <li>the computer screen</li>
+            <li>the <a href="https://en.wikipedia.org/wiki/FVWM">FVWM</a> <a href="https://en.wikipedia.org/wiki/X_window_manager">window manager</a> (allows you to have menus; create, move, and resize windows; etc.)</li>
+          </ul>
+          <p>OpenBSD has better GUIs available (e.g. <a href="https://en.wikipedia.org/wiki/KDE_Plasma_5">KDE</a>) but the bare GUI is enough for this assignment.</p>
+        </div>
+      </li>
+    </ol>
+    <h3 id="loc-22">deliverables</h3>
+    <p>To prove you have installed and used OpenBSD successfully, you will submit a screenshot showing the OpenBSD kernel version and the output of the <code>id</code> command.</p>
+    <ol>
+      <li>
+        <p>Enlarge the text in the <a href="https://en.wikipedia.org/wiki/Xterm"><code>xterm</code></a> terminal window.</p>
+        <ol>
+          <li>Hold <code>Ctrl+Right-Click</code> in the center of the <code>xterm</code> window to see text size options and select “Huge”.</li>
+        </ol>
+      </li>
+      <li>
+        <p>Run the following commands:</p>
+        <ol>
+          <li><code>uname -a</code> to show OpenBSD kernel version.</li>
+          <li><code>id</code> to show username and user groups.</li>
+        </ol>
+      </li>
+      <li>
+        <p>Take a screenshot of the OpenBSD screen. You can use VirtualBox’s built-in option <code>View -> Take Screenshot</code>, or your host OS screenshot tools.</p>
+        <p>An example can be seen in Figure <a href="#screenshot-openbsd">Figure 1</a>.</p>
+        <figure id="screenshot-openbsd">
+          <div class="image fit"><img src="/images/screenshot-openbsd.png"></div>
+          <figcaption>Figure 1: OpenBSD Deliverable Example</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>Once you have a screenshot, you can shut down OpenBSD by running <code>doas halt -p</code> in the xterm window and enter the root password. This will halt the virtual machine (<code>-p</code> means powerdown), save files to the hard disk (“synching disks…done”), then power down the VM.</p>
+      </li>
+      <li>
+        <p>After powerdown, you can delete the entire VM as it will not be used again in this course. You can also delete the <code>installXY.iso</code> file.</p>
+        <p>Congratulations on using OpenBSD!</p>
+      </li>
+    </ol>
+    <h2 id="loc-23">installing arch linux</h2>
+  </body>
+</html>
