@@ -23,10 +23,14 @@
         $tocInner.append($tocContent);
         $tocSidebar.append($tocInner);
 
-        // Insert TOC sidebar into wrapper (before main)
-        $tocSidebar.insertAfter($wrapper.children('#main'));
+        // Insert TOC sidebar BEFORE the main sidebar in DOM
+        // With row-reverse, this will make it appear on the right side visually
+        $tocSidebar.insertBefore($wrapper.children('#sidebar'));
 
         var $tocSidebar_inner = $tocSidebar.children('.inner');
+
+        // Start inactive by default (even in fullscreen)
+        $tocSidebar.addClass('inactive');
 
         // Inactive by default on <= large.
         breakpoints.on('<=large', function () {
@@ -34,7 +38,8 @@
         });
 
         breakpoints.on('>large', function () {
-            $tocSidebar.removeClass('inactive');
+            // Keep it inactive by default, user can toggle it
+            // Don't auto-remove inactive class
         });
 
         // Hack: Workaround for Chrome/Android scrollbar position bug.
@@ -62,22 +67,24 @@
         // Link clicks.
         $tocSidebar.on('click', 'a', function (event) {
 
-            // >large? Bail.
-            if (breakpoints.active('>large'))
-                return;
-
             // Vars.
             var $a = $(this),
                 href = $a.attr('href'),
                 target = $a.attr('target');
+
+            // Skip toggle button clicks (already handled above)
+            if ($a.hasClass('toggle'))
+                return;
 
             // Prevent default only for anchor links within the page.
             if (href && href.startsWith('#')) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                // Hide sidebar.
-                $tocSidebar.addClass('inactive');
+                // Hide sidebar on mobile/tablet.
+                if (breakpoints.active('<=large')) {
+                    $tocSidebar.addClass('inactive');
+                }
 
                 // Scroll to target.
                 var $target = $(href);
@@ -94,7 +101,9 @@
                 event.stopPropagation();
 
                 // Hide sidebar.
-                $tocSidebar.addClass('inactive');
+                if (breakpoints.active('<=large')) {
+                    $tocSidebar.addClass('inactive');
+                }
 
                 // Redirect to href.
                 setTimeout(function () {
@@ -121,7 +130,7 @@
 
         });
 
-        // Hide panel on body click/tap.
+        // Hide panel on body click/tap (only on mobile/tablet).
         $body.on('click touchend', function (event) {
 
             // >large? Bail.

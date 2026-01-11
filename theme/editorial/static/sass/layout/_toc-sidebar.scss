@@ -52,12 +52,12 @@
 
     .toggle {
         @include mixins.icon(false, solid);
-        @include vendor.vendor('transition', 'right 0.5s ease');
+        @include vendor.vendor('transition', 'left 0.5s ease');
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         border: 0;
         display: block;
         height: 7.5em;
-        right: functions.size(sidebar-width);
+        left: -6em; // Position toggle to the LEFT of the sidebar
         line-height: 7.5em;
         outline: 0;
         overflow: hidden;
@@ -84,6 +84,13 @@
 
     &.inactive {
         margin-right: (functions.size(sidebar-width) * -1);
+
+        // When inactive, move toggle button to the right edge
+        .toggle {
+            left: auto;
+            right: 0;
+            text-indent: 0;
+        }
     }
 
     @include breakpoints.breakpoint('<=xlarge') {
@@ -98,7 +105,7 @@
 
         .toggle {
             height: 6.25em;
-            right: functions.size(sidebar-width-alt);
+            left: -5em;
             line-height: 6.25em;
             text-indent: 5em;
             width: 5em;
@@ -110,6 +117,12 @@
 
         &.inactive {
             margin-right: (functions.size(sidebar-width-alt) * -1);
+
+            .toggle {
+                left: auto;
+                right: 0;
+                text-indent: 0;
+            }
         }
     }
 
@@ -145,10 +158,19 @@
         .toggle {
             text-indent: 6em;
             width: 6em;
+            left: -6em;
 
             &:before {
                 font-size: 1.5rem;
                 margin-left: (-0.875em * 0.5);
+            }
+        }
+
+        &.inactive {
+            .toggle {
+                left: auto;
+                right: 0;
+                text-indent: 0;
             }
         }
 
@@ -161,6 +183,7 @@
         .toggle {
             text-indent: 7.25em;
             width: 7.25em;
+            left: -7.25em;
 
             &:before {
                 color: functions.palette(fg);
@@ -179,6 +202,14 @@
                 position: absolute;
                 top: 1em;
                 width: 5em;
+            }
+        }
+
+        &.inactive {
+            .toggle {
+                left: auto;
+                right: 0;
+                text-indent: 0;
             }
         }
     }

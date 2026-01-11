@@ -3067,15 +3067,15 @@ button:disabled,
 }
 
 #toc-sidebar .toggle {
-  -moz-transition: right 0.5s ease;
-  -webkit-transition: right 0.5s ease;
-  -ms-transition: right 0.5s ease;
-  transition: right 0.5s ease;
+  -moz-transition: left 0.5s ease;
+  -webkit-transition: left 0.5s ease;
+  -ms-transition: left 0.5s ease;
+  transition: left 0.5s ease;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   border: 0;
   display: block;
   height: 7.5em;
-  right: 26em;
+  left: -6em;
   line-height: 7.5em;
   outline: 0;
   overflow: hidden;
@@ -3104,6 +3104,12 @@ button:disabled,
   margin-right: -26em;
 }
 
+#toc-sidebar.inactive .toggle {
+  left: auto;
+  right: 0;
+  text-indent: 0;
+}
+
 @media screen and (max-width: 1680px) {
   #toc-sidebar {
     width: 24em;
@@ -3114,7 +3120,7 @@ button:disabled,
   }
   #toc-sidebar .toggle {
     height: 6.25em;
-    right: 24em;
+    left: -5em;
     line-height: 6.25em;
     text-indent: 5em;
     width: 5em;
@@ -3124,6 +3130,11 @@ button:disabled,
   }
   #toc-sidebar.inactive {
     margin-right: -24em;
+  }
+  #toc-sidebar.inactive .toggle {
+    left: auto;
+    right: 0;
+    text-indent: 0;
   }
 }
 @media screen and (max-width: 1280px) {
@@ -3156,10 +3167,16 @@ button:disabled,
   #toc-sidebar .toggle {
     text-indent: 6em;
     width: 6em;
+    left: -6em;
   }
   #toc-sidebar .toggle:before {
     font-size: 1.5rem;
     margin-left: -0.4375em;
+  }
+  #toc-sidebar.inactive .toggle {
+    left: auto;
+    right: 0;
+    text-indent: 0;
   }
   body.is-preload #toc-sidebar {
     display: none;
@@ -3169,6 +3186,7 @@ button:disabled,
   #toc-sidebar .toggle {
     text-indent: 7.25em;
     width: 7.25em;
+    left: -7.25em;
   }
   #toc-sidebar .toggle:before {
     color: #7f888f;
@@ -3186,6 +3204,11 @@ button:disabled,
     position: absolute;
     top: 1em;
     width: 5em;
+  }
+  #toc-sidebar.inactive .toggle {
+    left: auto;
+    right: 0;
+    text-indent: 0;
   }
 }
 #main-content nav[role=doc-toc] {
