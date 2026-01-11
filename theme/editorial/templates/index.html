@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<section>
   {# {% block title %}all articles{% endblock %} #}
 
   {% for article in articles_page.object_list %}
@@ -21,5 +20,4 @@
   {% if articles_page.has_other_pages() %}
     {% include 'pagination.html' %}
   {% endif %}
-</section>
 {% endblock content %}

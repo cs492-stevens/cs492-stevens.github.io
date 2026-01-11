@@ -3,12 +3,10 @@
 {% block title %}{{ SITENAME|striptags }} - {{ period | reverse | join(' ') | lower }} archives{% endblock %}
 
 {% block content %}
-<section>
   <dl>
     {% for article in dates %}
       <dt>{{ article.locale_date }}</dt>
       <dd><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></dd>
     {% endfor %}
   </dl>
-</section>
 {% endblock %}

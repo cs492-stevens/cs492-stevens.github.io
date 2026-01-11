@@ -24,14 +24,12 @@
 {% endblock %}
 
 {% block content %}
-  <section>
-    {% import 'translations.html' as translations with context %}
-    {{ translations.translations_for(page) }}
+  {% import 'translations.html' as translations with context %}
+  {{ translations.translations_for(page) }}
 
-    {% if page.modified %}
-    <p>Last updated: {{ page.locale_modified }}</p>
-    {% endif %}
+  {% if page.modified %}
+  <p>Last updated: {{ page.locale_modified }}</p>
+  {% endif %}
 
-    {{ page.content }}
-  </section>
+  {{ page.content }}
 {% endblock %}

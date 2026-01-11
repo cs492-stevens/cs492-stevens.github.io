@@ -3,11 +3,9 @@
 {% block title %}{{ SITENAME|striptags }} - categories{% endblock %}
 
 {% block content %}
-<section>
   <ul>
     {% for category, articles in categories|sort %}
       <li><a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a> ({{ articles|count }})</li>
     {% endfor %}
   </ul>
-</section>
 {% endblock %}
