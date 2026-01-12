@@ -347,27 +347,7 @@
 							}, 500);
 						}, 500);
 					}
-				} else if (href && href !== '#' && href !== '') {
-					// External links - hide sidebar and navigate
-					event.preventDefault();
-					event.stopPropagation();
-
-					// Hide sidebar.
-					if (breakpoints.active('<=large')) {
-						$tocSidebar.addClass('inactive');
-					}
-
-					// Redirect to href.
-					setTimeout(function () {
-
-						if (target == '_blank')
-							window.open(href);
-						else
-							window.location.href = href;
-
-					}, 500);
 				}
-
 			});
 
 			// Prevent certain events inside the panel from bubbling.
