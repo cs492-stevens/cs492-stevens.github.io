@@ -12,5 +12,5 @@
 		@include vendor.vendor('display', 'flex');
 		@include vendor.vendor('flex-direction', 'row-reverse');
 		min-height: 100vh;
-		position: relative;
+		// position: relative;
 	}

@@ -2705,7 +2705,6 @@ button:disabled,
   -ms-flex-direction: row-reverse;
   flex-direction: row-reverse;
   min-height: 100vh;
-  position: relative;
 }
 
 /* Main */
@@ -3013,10 +3012,10 @@ button:disabled,
   -webkit-flex-shrink: 0;
   -ms-flex-shrink: 0;
   flex-shrink: 0;
-  -moz-transition: margin-right 0.5s ease, box-shadow 0.5s ease;
-  -webkit-transition: margin-right 0.5s ease, box-shadow 0.5s ease;
-  -ms-transition: margin-right 0.5s ease, box-shadow 0.5s ease;
-  transition: margin-right 0.5s ease, box-shadow 0.5s ease;
+  -moz-transition: 0.5s ease, box-shadow 0.5s ease;
+  -webkit-transition: 0.5s ease, box-shadow 0.5s ease;
+  -ms-transition: 0.5s ease, box-shadow 0.5s ease;
+  transition: 0.5s ease, box-shadow 0.5s ease;
   background-color: #f5f6f7;
   font-size: 0.9em;
   position: relative;
@@ -3101,11 +3100,11 @@ button:disabled,
 }
 
 #toc-sidebar.inactive {
-  display: hidden;
-  margin-right: -26em;
+  width: 0;
 }
 
 #toc-sidebar.inactive .toggle {
+  visibility: visible;
   left: -6em;
   right: 0;
   text-indent: 0;
@@ -3117,7 +3116,6 @@ button:disabled,
   }
   #toc-sidebar > .inner {
     padding: 1.6666666667em 1.6666666667em 1.3333333333em 1.6666666667em;
-    width: 24em;
   }
   #toc-sidebar .toggle {
     height: 6.25em;
@@ -3130,9 +3128,10 @@ button:disabled,
     font-size: 1.5rem;
   }
   #toc-sidebar.inactive {
-    margin-right: -24em;
+    width: 0;
   }
   #toc-sidebar.inactive .toggle {
+    visibility: visible;
     left: -5em;
     right: 0;
     text-indent: 0;
@@ -3174,7 +3173,11 @@ button:disabled,
     font-size: 1.5rem;
     margin-left: -0.4375em;
   }
+  #toc-sidebar.inactive {
+    width: 0;
+  }
   #toc-sidebar.inactive .toggle {
+    visibility: visible;
     left: -6em;
     right: 0;
     text-indent: 0;
@@ -3206,7 +3209,11 @@ button:disabled,
     top: 1em;
     width: 5em;
   }
+  #toc-sidebar.inactive {
+    width: 0;
+  }
   #toc-sidebar.inactive .toggle {
+    visibility: visible;
     left: -7.25em;
     right: 0;
     text-indent: 0;

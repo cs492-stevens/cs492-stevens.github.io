@@ -377,6 +377,77 @@
 				$tocSidebar.addClass('inactive');
 
 			});
+
+		// Scroll lock.
+		// Note: If you do anything to change the height of the sidebar's content, be sure to
+		// trigger 'resize.toc-sidebar-lock' on $window so stuff doesn't get out of sync.
+
+			$window.on('load.toc-sidebar-lock', function () {
+
+				var sh, wh, st;
+
+				// Reset scroll position to 0 if it's 1.
+				if ($window.scrollTop() == 1)
+					$window.scrollTop(0);
+
+				$window
+					.on('scroll.toc-sidebar-lock', function () {
+
+						var x, y;
+
+						// <=large? Bail.
+						if (breakpoints.active('<=large')) {
+
+							$tocSidebar_inner
+								.data('locked', 0)
+								.css('position', '')
+								.css('top', '');
+
+							return;
+
+						}
+
+						// Calculate positions.
+						x = Math.max(sh - wh, 0);
+						y = Math.max(0, $window.scrollTop() - x);
+
+						// Lock/unlock.
+						if ($tocSidebar_inner.data('locked') == 1) {
+
+							if (y <= 0)
+								$tocSidebar_inner
+									.data('locked', 0)
+									.css('position', '')
+									.css('top', '');
+							else
+								$tocSidebar_inner
+									.css('top', -1 * x);
+
+						}
+						else {
+
+							if (y > 0)
+								$tocSidebar_inner
+									.data('locked', 1)
+									.css('position', 'fixed')
+									.css('top', -1 * x);
+
+						}
+
+					})
+					.on('resize.toc-sidebar-lock', function () {
+
+						// Calculate heights.
+						wh = $window.height();
+						sh = $tocSidebar_inner.outerHeight() + 30;
+
+						// Trigger scroll.
+						$window.trigger('scroll.toc-sidebar-lock');
+
+					})
+					.trigger('resize.toc-sidebar-lock');
+
+			});
 		}
 
 })(jQuery);

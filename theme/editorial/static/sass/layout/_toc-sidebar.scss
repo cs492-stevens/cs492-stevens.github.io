@@ -16,12 +16,13 @@
 
     @include vendor.vendor('flex-grow', '0');
     @include vendor.vendor('flex-shrink', '0');
-    @include vendor.vendor('transition', ('margin-right 0.5s ease',
+    @include vendor.vendor('transition', ('0.5s ease',
             'box-shadow 0.5s ease'
         ));
     background-color: functions.palette(bg-alt);
     font-size: 0.9em;
     position: relative;
+    // overflow: hidden;
     width: functions.size(sidebar-width);
 
     h2 {
@@ -83,11 +84,12 @@
     }
 
     &.inactive {
-        display: hidden;
-        margin-right: (functions.size(sidebar-width) * -1);
+        width: 0;
+        // margin-right: (functions.size(sidebar-width) * -1);
 
         // When inactive, move toggle button to the right edge
         .toggle {
+            visibility: visible;
             left: -6em;
             right: 0;
             text-indent: 0;
@@ -101,7 +103,7 @@
 
         >.inner {
             @include mixins.padding($pad, $pad, (0, 0, $pad, 0));
-            width: functions.size(sidebar-width-alt);
+            // width: functions.size(sidebar-width-alt);
         }
 
         .toggle {
@@ -117,9 +119,11 @@
         }
 
         &.inactive {
-            margin-right: (functions.size(sidebar-width-alt) * -1);
+            width: 0;
+            // margin-right: (functions.size(sidebar-width-alt) * -1);
 
             .toggle {
+                visibility: visible;
                 left: -5em;
                 right: 0;
                 text-indent: 0;
@@ -168,7 +172,10 @@
         }
 
         &.inactive {
+            width: 0;
+
             .toggle {
+                visibility: visible;
                 left: -6em;
                 right: 0;
                 text-indent: 0;
@@ -207,7 +214,10 @@
         }
 
         &.inactive {
+            width: 0;
+
             .toggle {
+                visibility: visible;
                 left: -7.25em;
                 right: 0;
                 text-indent: 0;
