@@ -11,6 +11,7 @@
 	#wrapper {
 		@include vendor.vendor('display', 'flex');
 		@include vendor.vendor('flex-direction', 'row-reverse');
+		overflow: hidden;
 		min-height: 100vh;
 		// position: relative;
 	}

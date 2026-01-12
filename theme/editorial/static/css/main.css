@@ -2704,6 +2704,7 @@ button:disabled,
   -webkit-flex-direction: row-reverse;
   -ms-flex-direction: row-reverse;
   flex-direction: row-reverse;
+  overflow: hidden;
   min-height: 100vh;
 }
 
