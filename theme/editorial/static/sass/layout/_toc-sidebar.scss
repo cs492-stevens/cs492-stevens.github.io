@@ -21,7 +21,7 @@
         ));
     background-color: functions.palette(bg-alt);
     font-size: 0.9em;
-    position: fixed;
+    position: relative;
     width: functions.size(sidebar-width);
 
     h2 {

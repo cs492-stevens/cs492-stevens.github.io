@@ -277,7 +277,7 @@
 
 			// Insert TOC sidebar BEFORE the main sidebar in DOM
 			// With row-reverse, this will make it appear on the right side visually
-			$tocSidebar.insertBefore($("#wrapper").children('#sidebar'));
+			$tocSidebar.insertBefore($("#wrapper").children('#main'));
 
 			var $tocSidebar_inner = $tocSidebar.children('.inner');
 
