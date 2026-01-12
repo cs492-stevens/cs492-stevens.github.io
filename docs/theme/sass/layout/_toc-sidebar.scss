@@ -21,7 +21,7 @@
         ));
     background-color: functions.palette(bg-alt);
     font-size: 0.9em;
-    position: relative;
+    position: fixed;
     width: functions.size(sidebar-width);
 
     h2 {
@@ -70,7 +70,7 @@
         z-index: functions.misc(z-index-base);
 
         &:before {
-            content: '\f0c9';
+            content: '\f03a';
             font-size: 2rem;
             height: inherit;
             left: 0;
@@ -83,11 +83,12 @@
     }
 
     &.inactive {
+        display: hidden;
         margin-right: (functions.size(sidebar-width) * -1);
 
         // When inactive, move toggle button to the right edge
         .toggle {
-            left: auto;
+            left: -6em;
             right: 0;
             text-indent: 0;
         }
@@ -119,7 +120,7 @@
             margin-right: (functions.size(sidebar-width-alt) * -1);
 
             .toggle {
-                left: auto;
+                left: -5em;
                 right: 0;
                 text-indent: 0;
             }
@@ -168,7 +169,7 @@
 
         &.inactive {
             .toggle {
-                left: auto;
+                left: -6em;
                 right: 0;
                 text-indent: 0;
             }
@@ -207,7 +208,7 @@
 
         &.inactive {
             .toggle {
-                left: auto;
+                left: -7.25em;
                 right: 0;
                 text-indent: 0;
             }

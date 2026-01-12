@@ -49,7 +49,7 @@
                 .appendTo($head);
 
         // Toggle.
-        $('<a href="#toc-sidebar" class="toggle">Toggle</a>')
+        $('<a href="#toc-sidebar" class="toggle"></a>')
             .appendTo($tocSidebar)
             .on('click', function (event) {
 

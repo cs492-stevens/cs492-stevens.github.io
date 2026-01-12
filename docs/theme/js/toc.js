@@ -25,7 +25,7 @@
 
         // Insert TOC sidebar BEFORE the main sidebar in DOM
         // With row-reverse, this will make it appear on the right side visually
-        $tocSidebar.insertBefore($wrapper.children('#main-content'));
+        $tocSidebar.insertBefore($wrapper.children('#sidebar'));
 
         var $tocSidebar_inner = $tocSidebar.children('.inner');
 
@@ -49,7 +49,7 @@
                 .appendTo($head);
 
         // Toggle.
-        $('<a href="#toc-sidebar" class="toggle">Toggle</a>')
+        $('<a href="#toc-sidebar" class="toggle"></a>')
             .appendTo($tocSidebar)
             .on('click', function (event) {
 
