@@ -22,8 +22,10 @@
     background-color: functions.palette(bg-alt);
     font-size: 0.9em;
     position: relative;
-    // overflow: hidden;
-    width: functions.size(sidebar-width);
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 100vh;
+    min-height: 0;
 
     h2 {
         font-size: math.div(1.25em, 0.9);
@@ -93,135 +95,6 @@
             left: -6em;
             right: 0;
             text-indent: 0;
-        }
-    }
-
-    @include breakpoints.breakpoint('<=xlarge') {
-        $pad: math.div(1.5em, 0.9);
-
-        width: functions.size(sidebar-width-alt);
-
-        >.inner {
-            @include mixins.padding($pad, $pad, (0, 0, $pad, 0));
-            // width: functions.size(sidebar-width-alt);
-        }
-
-        .toggle {
-            height: 6.25em;
-            left: -5em;
-            line-height: 6.25em;
-            text-indent: 5em;
-            width: 5em;
-
-            &:before {
-                font-size: 1.5rem;
-            }
-        }
-
-        &.inactive {
-            width: 0;
-            // margin-right: (functions.size(sidebar-width-alt) * -1);
-
-            .toggle {
-                visibility: visible;
-                left: -5em;
-                right: 0;
-                text-indent: 0;
-            }
-        }
-    }
-
-    @include breakpoints.breakpoint('<=large') {
-        box-shadow: 0 0 5em 0 rgba(0, 0, 0, 0.175);
-        height: 100%;
-        right: 0;
-        position: fixed;
-        top: 0;
-        z-index: functions.misc(z-index-base);
-
-        &.inactive {
-            box-shadow: none;
-        }
-
-        >.inner {
-            -webkit-overflow-scrolling: touch;
-            height: 100%;
-            left: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: absolute;
-            top: 0;
-
-            &:after {
-                content: '';
-                display: block;
-                height: 4em;
-                width: 100%;
-            }
-        }
-
-        .toggle {
-            text-indent: 6em;
-            width: 6em;
-            left: -6em;
-
-            &:before {
-                font-size: 1.5rem;
-                margin-left: (-0.875em * 0.5);
-            }
-        }
-
-        &.inactive {
-            width: 0;
-
-            .toggle {
-                visibility: visible;
-                left: -6em;
-                right: 0;
-                text-indent: 0;
-            }
-        }
-
-        body.is-preload & {
-            display: none;
-        }
-    }
-
-    @include breakpoints.breakpoint('<=small') {
-        .toggle {
-            text-indent: 7.25em;
-            width: 7.25em;
-            left: -7.25em;
-
-            &:before {
-                color: functions.palette(fg);
-                margin-left: (-0.125em * 0.5);
-                margin-top: (-0.5em * 0.5);
-                font-size: 1.1rem;
-                z-index: 1;
-            }
-
-            &:after {
-                background: color.adjust(color.adjust(functions.palette(fg), $lightness: 35%), $alpha: -0.25);
-                border-radius: functions.size(border-radius);
-                content: '';
-                height: 3.5em;
-                left: 1em;
-                position: absolute;
-                top: 1em;
-                width: 5em;
-            }
-        }
-
-        &.inactive {
-            width: 0;
-
-            .toggle {
-                visibility: visible;
-                left: -7.25em;
-                right: 0;
-                text-indent: 0;
-            }
         }
     }
 }

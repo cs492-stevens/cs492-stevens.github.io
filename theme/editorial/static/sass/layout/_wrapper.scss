@@ -1,4 +1,5 @@
 @use "../libs/vendor";
+@use "../libs/functions";
 
 ///
 /// Editorial by HTML5 UP
@@ -9,9 +10,18 @@
 /* Wrapper */
 
 	#wrapper {
-		@include vendor.vendor('display', 'flex');
-		@include vendor.vendor('flex-direction', 'row-reverse');
+		height: 100%;
+		display: grid;
+		grid-template-columns: 0em 1fr;
+		transition: grid-template-columns 0.3s ease;
+
+		// @include vendor.vendor('display', 'flex');
+		// @include vendor.vendor('flex-direction', 'row-reverse');
 		overflow: hidden;
 		min-height: 100vh;
 		// position: relative;
+
+		&.sidebar-active {
+			grid-template-columns: functions.size(sidebar-width-alt) 1fr;
+		}
 	}

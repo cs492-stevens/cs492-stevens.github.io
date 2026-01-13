@@ -11,27 +11,10 @@
 	<body class="is-preload">
 
 		<!-- Wrapper -->
-		<div id="wrapper">
-
-			<!-- Main -->
-			<div id="main">
-				<div class="inner">
-					{% block header %}
-					<!-- Header -->
-					<header id="header">
-						<h2>{% block title %}{% endblock %}</h2>
-					</header>
-					{% endblock %}
-
-					<section id="main-content">
-					{% block content %}
-					{% endblock %}
-					</section>
-				</div>
-			</div>
+		<div class="container" id="wrapper">
 
 			<!-- Sidebar -->
-			<div id="sidebar">
+			<div class="sidebar" id="sidebar">
 				<div class="inner">
 
 					{#
@@ -139,6 +122,23 @@
 					</footer>
 					#}
 
+				</div>
+			</div>
+
+			<!-- Main -->
+			<div class="content" id="main">
+				<div class="inner">
+					{% block header %}
+					<!-- Header -->
+					<header id="header">
+						<h2>{% block title %}{% endblock %}</h2>
+					</header>
+					{% endblock %}
+
+					<section id="main-content">
+					{% block content %}
+					{% endblock %}
+					</section>
 				</div>
 			</div>
 

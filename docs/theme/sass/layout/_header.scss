@@ -35,25 +35,4 @@
 		.icons {
 			text-align: right;
 		}
-
-		@include breakpoints.breakpoint('<=xlarge') {
-			padding-top: 5em;
-		}
-
-		@include breakpoints.breakpoint('<=small') {
-			padding-top: 6.5em;
-
-			.logo {
-				font-size: 1.25em;
-				margin: 0;
-			}
-
-			.icons {
-				height: math.div(6.25em, 1.25);
-				line-height: math.div(6.25em, 1.25);
-				position: absolute;
-				right: math.div(-0.625em, 1.25);
-				top: 0;
-			}
-		}
 	}

@@ -45,36 +45,4 @@
 				width: 100%;
 			}
 		}
-
-		@include breakpoints.orientation(portrait) {
-			@include vendor.vendor('flex-direction', 'column-reverse');
-
-			h1 {
-				br {
-					display: none;
-				}
-			}
-
-			.content {
-				@include vendor.vendor('flex-grow', '0');
-				@include vendor.vendor('flex-shrink', '0');
-				width: 100%;
-			}
-
-			.image {
-				@include vendor.vendor('flex-grow', '0');
-				@include vendor.vendor('flex-shrink', '0');
-				margin: 0 0 (functions.size(element-margin) * 2) 0;
-				height: 25em;
-				max-height: 50vh;
-				min-height: 18em;
-				width: 100%;
-			}
-
-			@include breakpoints.breakpoint('<=xsmall') {
-				.image {
-					max-height: 35vh;
-				}
-			}
-		}
 	}

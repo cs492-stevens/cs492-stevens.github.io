@@ -12,9 +12,15 @@
 /* Main */
 
 	#main {
-		@include vendor.vendor('flex-grow', '1');
-		@include vendor.vendor('flex-shrink', '1');
+		// @include vendor.vendor('flex-grow', '1');
+		// @include vendor.vendor('flex-shrink', '1');
+		display: grid;
+		grid-template-columns: 1fr 0;
+		transition: grid-template-columns 0.3s ease;
+
 		width: 100%;
+		max-height: 100vh;
+		overflow-y: auto;
 
 		> .inner {
 			@include mixins.padding(0, 6em);
@@ -30,34 +36,8 @@
 				}
 			}
 		}
+	}
 
-		@include breakpoints.breakpoint('<=xlarge') {
-			> .inner {
-				@include mixins.padding(0, 5em);
-
-				> section {
-					@include mixins.padding(3em, 0);
-				}
-			}
-		}
-
-		@include breakpoints.breakpoint('<=large') {
-			> .inner {
-				@include mixins.padding(0, 4em);
-
-				> section {
-					@include mixins.padding(2em, 0);
-				}
-			}
-		}
-
-		@include breakpoints.breakpoint('<=small') {
-			> .inner {
-				@include mixins.padding(0, 2em);
-
-				> section {
-					@include mixins.padding(2em, 0);
-				}
-			}
-		}
+	#main.toc-active {
+		grid-template-columns: 1fr functions.size(sidebar-width);
 	}
