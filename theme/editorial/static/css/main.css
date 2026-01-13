@@ -5,6 +5,10 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+html {
+  scroll-behavior: smooth;
+}
+
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -2713,6 +2717,7 @@ button:disabled,
   display: grid;
   grid-template-columns: 1fr 5em 0;
   transition: grid-template-columns 0.3s ease;
+  scroll-behavior: smooth;
   width: 100%;
   max-height: 100vh;
   overflow-y: auto;

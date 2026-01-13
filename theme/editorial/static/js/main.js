@@ -150,40 +150,6 @@
 
 			// Events.
 
-			// Link clicks.
-			$tocSidebar.on('click', 'a', function (event) {
-
-				// Vars.
-				var $a = $(this),
-					href = $a.attr('href'),
-					target = $a.attr('target');
-
-				// Skip toggle button clicks (already handled above)
-				if ($a.hasClass('toggle'))
-					return;
-
-				// Prevent default only for anchor links within the page.
-				if (href && href.startsWith('#')) {
-					event.preventDefault();
-					event.stopPropagation();
-
-					// Hide sidebar on mobile/tablet.
-					if (breakpoints.active('<=large')) {
-						$tocSidebar.addClass('inactive');
-					}
-
-					// Scroll to target.
-					var $target = $(href);
-					if ($target.length) {
-						setTimeout(function () {
-							$('html, body').animate({
-								scrollTop: $target.offset().top - 100
-							}, 500);
-						}, 500);
-					}
-				}
-			});
-
 			// Prevent certain events inside the panel from bubbling.
 			$tocSidebar.on('click touchend touchstart touchmove', function (event) {
 
