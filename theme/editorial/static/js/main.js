@@ -70,8 +70,15 @@
 				});
 
 	// Sidebar.
-		var $sidebar = $('#sidebar'),
-			$sidebar_inner = $sidebar.children('.inner');
+		var $wrapper = $('#wrapper');
+		var $sidebar_toggle = $('#sidebar-toggle');
+
+		$sidebar_toggle.on('click', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			$wrapper.toggleClass('sidebar-active');
+		});
 
 		
 	// Menu.
@@ -103,6 +110,108 @@
 	// TOC Sidebar.
 		// Find TOC in content
 		var $tocNav = $('#main-content nav[role="doc-toc"]');
+
+		if ($tocNav.length > 0) {
+			console.log("appending toc...");
+
+			// Create TOC sidebar
+			var $tocSidebar = $('<div id="toc-sidebar"></div>');
+			var $tocSpacing = $('<div class="toc-spacing"></div>');
+			var $tocToggle = $('<a href="#toc-sidebar" id="toc-sidebar-toggle"></a>');
+			var $tocInner = $('<div class="inner"></div>');
+
+			// Create TOC button
+			$tocSpacing.append($tocToggle);
+
+			// Clone and move TOC content
+			var $tocContent = $tocNav.clone();
+			$tocInner.append($tocContent);
+			$tocSidebar.append($tocInner);
+
+			// Insert TOC sidebar BEFORE the main sidebar in DOM
+			// With row-reverse, this will make it appear on the right side visually
+			$tocSpacing.insertAfter($('#main > .inner'));
+			$tocSidebar.insertAfter($tocSpacing);
+
+			var $tocSidebar_inner = $tocSidebar.children('.inner');
+
+			// Toggle.
+			$tocToggle
+				.on('click', function (event) {
+
+					// Prevent default.
+					event.preventDefault();
+					event.stopPropagation();
+
+					// Toggle.
+					$('#main').toggleClass('toc-active');
+
+				});
+
+			// Events.
+
+			// Link clicks.
+			$tocSidebar.on('click', 'a', function (event) {
+
+				// Vars.
+				var $a = $(this),
+					href = $a.attr('href'),
+					target = $a.attr('target');
+
+				// Skip toggle button clicks (already handled above)
+				if ($a.hasClass('toggle'))
+					return;
+
+				// Prevent default only for anchor links within the page.
+				if (href && href.startsWith('#')) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					// Hide sidebar on mobile/tablet.
+					if (breakpoints.active('<=large')) {
+						$tocSidebar.addClass('inactive');
+					}
+
+					// Scroll to target.
+					var $target = $(href);
+					if ($target.length) {
+						setTimeout(function () {
+							$('html, body').animate({
+								scrollTop: $target.offset().top - 100
+							}, 500);
+						}, 500);
+					}
+				}
+			});
+
+			// Prevent certain events inside the panel from bubbling.
+			$tocSidebar.on('click touchend touchstart touchmove', function (event) {
+
+				// >large? Bail.
+				if (breakpoints.active('>large'))
+					return;
+
+				// Prevent propagation.
+				event.stopPropagation();
+
+			});
+
+			// Hide panel on body click/tap (only on mobile/tablet).
+			$body.on('click touchend', function (event) {
+
+				// >large? Bail.
+				if (breakpoints.active('>large'))
+					return;
+
+				// Check if click was on TOC sidebar or its toggle.
+				if ($(event.target).closest('#toc-sidebar').length)
+					return;
+
+				// Deactivate.
+				$tocSidebar.removeClass('toc-active');
+
+			});
+		}
 
 
 })(jQuery);

@@ -12,7 +12,7 @@
 	#wrapper {
 		height: 100%;
 		display: grid;
-		grid-template-columns: 0em 1fr;
+		grid-template-columns: 0em 5em 1fr;
 		transition: grid-template-columns 0.3s ease;
 
 		// @include vendor.vendor('display', 'flex');
@@ -22,6 +22,6 @@
 		// position: relative;
 
 		&.sidebar-active {
-			grid-template-columns: functions.size(sidebar-width-alt) 1fr;
+			grid-template-columns: functions.size(sidebar-width-alt) 5em 1fr;
 		}
 	}
