@@ -117,7 +117,11 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "Home": "/"
+  "<i class='icon home'></i>": "/"
+  "<i class='icon canvas'></i>": "https://sit.instructure.com/courses/85333"
+  "<i class='icon gradescope'></i>": "https://www.gradescope.com/courses/1206265"
+  "<i class='icon discord'></i>": "#"
+  "<i class='icon git-alt'></i>": "https://github.com/cs492-stevens"
   # "Just the Docs on GitHub":
   #   - "https://github.com/just-the-docs/just-the-docs"
 

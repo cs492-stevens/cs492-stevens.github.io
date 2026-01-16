@@ -1,5 +1,50 @@
 // _sass/custom/custom.scss
 
+// fit table cells to content
 td, th {
   min-width: 0 !important;
 }
+
+// custom icons
+.icon {
+  content: "" !important;
+  display: inline-block;
+  background-color: currentColor;
+  vertical-align: -0.125em;
+  border-bottom: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  &:before {
+    line-height: inherit;
+  }
+
+  &.home {
+    -webkit-mask-image: url('/static/icons/home.svg');
+    mask-image: url('/static/icons/home.svg');
+  }
+
+  &.canvas {
+    -webkit-mask-image: url('/static/icons/canvas.svg');
+    mask-image: url('/static/icons/canvas.svg');
+  }
+
+  &.gradescope {
+    -webkit-mask-image: url('/static/icons/gradescope.svg');
+    mask-image: url('/static/icons/gradescope.svg');
+  }
+
+  &.discord {
+    -webkit-mask-image: url('/static/icons/discord.svg');
+    mask-image: url('/static/icons/discord.svg');
+  }
+
+  &.git-alt {
+    -webkit-mask-mage: url('/static/icons/git-alt.svg');
+    mask-image: url('/static/icons/git-alt.svg');
+  }
+}
+
+

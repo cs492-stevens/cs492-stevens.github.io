@@ -7682,4 +7682,39 @@ td, th {
   min-width: 0 !important;
 }
 
+.icon {
+  content: "" !important;
+  display: inline-block;
+  background-color: currentColor;
+  vertical-align: -0.125em;
+  border-bottom: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.icon:before {
+  line-height: inherit;
+}
+.icon.home {
+  -webkit-mask-image: url("/static/icons/home.svg");
+  mask-image: url("/static/icons/home.svg");
+}
+.icon.canvas {
+  -webkit-mask-image: url("/static/icons/canvas.svg");
+  mask-image: url("/static/icons/canvas.svg");
+}
+.icon.gradescope {
+  -webkit-mask-image: url("/static/icons/gradescope.svg");
+  mask-image: url("/static/icons/gradescope.svg");
+}
+.icon.discord {
+  -webkit-mask-image: url("/static/icons/discord.svg");
+  mask-image: url("/static/icons/discord.svg");
+}
+.icon.git-alt {
+  -webkit-mask-mage: url("/static/icons/git-alt.svg");
+  mask-image: url("/static/icons/git-alt.svg");
+}
+
 /*# sourceMappingURL=just-the-docs-default.css.map */
