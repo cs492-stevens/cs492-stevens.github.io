@@ -164,7 +164,7 @@ color_scheme: nil
 # callouts_level: quiet # or loud
 callouts:
   aside:
-    color: grey-dk-000
+    color: grey-dk
   highlight:
     color: yellow
   important:
