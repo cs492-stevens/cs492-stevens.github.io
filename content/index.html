@@ -1,0 +1,465 @@
+---
+deps:
+- /static/js/home-goto-wk.js
+- /static/css/home-schedule.css
+description: CS492 @ Stevens Institute of Technology
+layout: home
+nav_order: 1
+permalink: /
+title: Home
+
+---
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <h2>sections</h2>
+    <table>
+      <tr>
+        <td><strong>section</strong></td>
+        <td><strong>location</strong></td>
+        <td><strong>time</strong></td>
+      </tr>
+      <tr>
+        <td>Section A</td>
+        <td>Howe 102</td>
+        <td>MWF 10:00am - 10:50am</td>
+      </tr>
+      <tr>
+        <td>Section B</td>
+        <td>Howe 102</td>
+        <td>MWF 11:00am - 11:50am</td>
+      </tr>
+      <tr>
+        <td>Section C</td>
+        <td>McLean 114</td>
+        <td>MWF 1:00pm - 1:50pm</td>
+      </tr>
+    </table>
+    <h2>schedule</h2>
+    <button type="button" id="goto-wk" style="margin-bottom: 1em">Goto Current Week</button>
+    <div id="schedule">
+      <table>
+        <tr>
+          <td><strong>wk</strong></td>
+          <td><strong>date</strong></td>
+          <td><strong>#</strong></td>
+          <td><strong>lecture</strong></td>
+          <td><strong>reminders</strong></td>
+          <td><strong>notes</strong></td>
+          <td><strong>recording</strong></td>
+          <td><strong>assignments</strong></td>
+        </tr>
+        <tr>
+          <td rowspan="2"><span id="wk1"><strong>1</strong></span></td>
+          <td>01/21</td>
+          <td>1</td>
+          <td>syllabus, intro</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="5"><a href="/assignments/pa1.html">pa1</a> (due 1/30)</td>
+        </tr>
+        <tr>
+          <td>01/23</td>
+          <td>2</td>
+          <td>os history</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk2"><strong>2</strong></span></td>
+          <td>01/26</td>
+          <td>3</td>
+          <td>os concepts and structure</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>01/28</td>
+          <td>4</td>
+          <td>hardware review</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>01/30</td>
+          <td>5</td>
+          <td>intro to linux pt1</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk3"><strong>3</strong></span></td>
+          <td>02/02</td>
+          <td>6</td>
+          <td>intro to linux pt2</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="12">pa2 (due 2/27)</td>
+        </tr>
+        <tr>
+          <td>02/04</td>
+          <td>7</td>
+          <td>syscalls</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/06</td>
+          <td>8</td>
+          <td>processes</td>
+          <td>quiz</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk4"><strong>4</strong></span></td>
+          <td>02/09</td>
+          <td>9</td>
+          <td>processes</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/11</td>
+          <td>10</td>
+          <td>processes</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/13</td>
+          <td>11</td>
+          <td>processes</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk5"><strong>5</strong></span></td>
+          <td>02/16</td>
+          <td>-</td>
+          <td>holiday (president’s day)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/18</td>
+          <td>12</td>
+          <td>linux processes</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/20</td>
+          <td>13</td>
+          <td>threads</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk6"><strong>6</strong></span></td>
+          <td>02/23</td>
+          <td>14</td>
+          <td>threads</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/25</td>
+          <td>15</td>
+          <td>threads</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>02/27</td>
+          <td>16</td>
+          <td>scheduling</td>
+          <td>quiz</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk7"><strong>7</strong></span></td>
+          <td>03/02</td>
+          <td>17</td>
+          <td>scheduling</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="6">pa3 (due 3/13)</td>
+        </tr>
+        <tr>
+          <td>03/04</td>
+          <td>18</td>
+          <td>scheduling</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/06</td>
+          <td>19</td>
+          <td>scheduling</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk8"><strong>8</strong></span></td>
+          <td>03/09</td>
+          <td>20</td>
+          <td>concurrency</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/11</td>
+          <td>21</td>
+          <td>concurrency</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/13</td>
+          <td>22</td>
+          <td>midterm</td>
+          <td>midterm</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk9"><strong>9</strong></span></td>
+          <td>03/16</td>
+          <td>-</td>
+          <td>spring break</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="9">pa4 (due 4/3)</td>
+        </tr>
+        <tr>
+          <td>03/18</td>
+          <td>-</td>
+          <td>spring break</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/20</td>
+          <td>-</td>
+          <td>spring break</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk10"><strong>10</strong></span></td>
+          <td>03/23</td>
+          <td>23</td>
+          <td>midterm review</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/25</td>
+          <td>24</td>
+          <td>concurrency</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>03/27</td>
+          <td>25</td>
+          <td>concurrency</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk11"><strong>11</strong></span></td>
+          <td>03/30</td>
+          <td>26</td>
+          <td>concurrency</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/01</td>
+          <td>27</td>
+          <td>synchronization</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/03</td>
+          <td>-</td>
+          <td>holiday (good friday)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk12"><strong>12</strong></span></td>
+          <td>04/06</td>
+          <td>28</td>
+          <td>memory management</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="6">pa5 (due 4/17)</td>
+        </tr>
+        <tr>
+          <td>04/08</td>
+          <td>29</td>
+          <td>memory management</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/10</td>
+          <td>30</td>
+          <td>virtual memory</td>
+          <td>quiz</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk13"><strong>13</strong></span></td>
+          <td>04/13</td>
+          <td>31</td>
+          <td>page replacement</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/15</td>
+          <td>32</td>
+          <td>page replacement</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/17</td>
+          <td>33</td>
+          <td>page replacement</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk14"><strong>14</strong></span></td>
+          <td>04/20</td>
+          <td>34</td>
+          <td>page replacement</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="8">project (due 5/6)</td>
+        </tr>
+        <tr>
+          <td>04/22</td>
+          <td>35</td>
+          <td>file systems</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/24</td>
+          <td>36</td>
+          <td>file systems</td>
+          <td>quiz</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk15"><strong>15</strong></span></td>
+          <td>04/27</td>
+          <td>37</td>
+          <td>io</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>04/29</td>
+          <td>38</td>
+          <td>io</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>05/01</td>
+          <td>39</td>
+          <td>disks</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="3"><span id="wk16"><strong>16</strong></span></td>
+          <td>05/04</td>
+          <td>40</td>
+          <td>disks</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>05/06</td>
+          <td>41</td>
+          <td>disks</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>05/08</td>
+          <td>-</td>
+          <td>finals</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td rowspan="2"></td>
+        </tr>
+        <tr>
+          <td><span id="wk17"><strong>17</strong></span></td>
+          <td>5/11 - 5/16</td>
+          <td>-</td>
+          <td>finals</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+  <p><span style="display: inline-block"></span></p>
+</html>

@@ -1,0 +1,16 @@
+
+    .tabs {
+      overflow: hidden;
+    }
+
+    .btn tab-btn {}
+
+    .tab-content {
+      display: none;
+      animation: fadeEffect 0.75s;
+    }
+
+    .tab-content.selected {
+      display: block;
+    }
+    

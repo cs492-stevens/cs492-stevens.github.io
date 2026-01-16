@@ -1,0 +1,11 @@
+{% if page.deps %}
+	{% for dep in page.deps %}
+		{% assign dep_ext = dep | split: "." | last %}
+		{% if dep_ext == "css" %}
+			<link rel="stylesheet" href="{{ dep | relative_url }}">
+		{% elsif dep_ext == "js" %}
+			<script src="{{ dep | relative_url }}"></script>
+		{% endif %}
+	{% endfor %}
+{% endif %}
+
