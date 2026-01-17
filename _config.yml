@@ -54,17 +54,7 @@ theme: just-the-docs
 source: content
 destination: docs
 
-collections:
-  assignments:
-    output: true
-
 # just-the-docs configs
-
-just_the_docs:
-  collections:
-    assignments:
-      name: Assignments
-      nav_fold: true
 
 # Enable or disable the site search
 # Supports true (default) or false
@@ -117,16 +107,16 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "<i class='icon home'></i>": "/"
-  "<i class='icon canvas'></i>": "https://sit.instructure.com/courses/85333"
-  "<i class='icon gradescope'></i>": "https://www.gradescope.com/courses/1206265"
-  "<i class='icon discord'></i>": "#"
-  "<i class='icon git-alt'></i>": "https://github.com/cs492-stevens"
+  "<i class='icon custom-icon home'></i>": "/"
+  "<i class='icon custom-icon canvas'></i>": "https://sit.instructure.com/courses/85333"
+  "<i class='icon custom-icon gradescope'></i>": "https://www.gradescope.com/courses/1206265"
+  "<i class='icon custom-icon discord'></i>": "#"
+  "<i class='icon custom-icon git-alt'></i>": "https://github.com/cs492-stevens"
   # "Just the Docs on GitHub":
   #   - "https://github.com/just-the-docs/just-the-docs"
 
 # Makes Aux links open in a new tab. Default is false
-aux_links_new_tab: true
+aux_links_new_tab: false
 
 # Enable or disable the side/mobile menu globally
 # Nav menu can also be selectively enabled or disabled using page variables or the minimal layout
@@ -198,7 +188,8 @@ callouts:
 # ga_tracking: UA-2709176-10,G-5FG1HLH3XQ
 # ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
-# plugins:
+plugins:
+  - jekyll-target-blank
 #   - jekyll-seo-tag
 #   - jekyll-github-metadata
 #   - jekyll-include-cache

@@ -34,3 +34,7 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 # use just-the-docs theme
 gem "just-the-docs"
+
+# to open external links in a new tab
+gem "jekyll-target-blank"
+

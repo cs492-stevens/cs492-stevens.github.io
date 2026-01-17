@@ -7682,7 +7682,7 @@ td, th {
   min-width: 0 !important;
 }
 
-.icon {
+.custom-icon {
   content: "" !important;
   display: inline-block;
   background-color: currentColor;
@@ -7693,26 +7693,26 @@ td, th {
   -webkit-mask-size: contain;
   mask-size: contain;
 }
-.icon:before {
+.custom-icon:before {
   line-height: inherit;
 }
-.icon.home {
+.custom-icon.home {
   -webkit-mask-image: url("/static/icons/home.svg");
   mask-image: url("/static/icons/home.svg");
 }
-.icon.canvas {
+.custom-icon.canvas {
   -webkit-mask-image: url("/static/icons/canvas.svg");
   mask-image: url("/static/icons/canvas.svg");
 }
-.icon.gradescope {
+.custom-icon.gradescope {
   -webkit-mask-image: url("/static/icons/gradescope.svg");
   mask-image: url("/static/icons/gradescope.svg");
 }
-.icon.discord {
+.custom-icon.discord {
   -webkit-mask-image: url("/static/icons/discord.svg");
   mask-image: url("/static/icons/discord.svg");
 }
-.icon.git-alt {
+.custom-icon.git-alt {
   -webkit-mask-mage: url("/static/icons/git-alt.svg");
   mask-image: url("/static/icons/git-alt.svg");
 }
