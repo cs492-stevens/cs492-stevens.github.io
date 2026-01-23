@@ -1638,7 +1638,7 @@ title: Programming Assignment 1
                 <li>Type <code>o</code> to insert a new line below the current line and enter Insert mode.</li>
                 <li>
                   <p>Add the following lines to the file:</p>
-                  <pre><code># UTM Shared Folder<br>share /mnt/shared 9p trans=vertio,version=9p2000.L,rw,_netdev,nofail,auto 0 0</code></pre>
+                  <pre><code># UTM Shared Folder<br>share /mnt/shared 9p trans=virtio,version=9p2000.L,rw,_netdev,nofail,auto 0 0</code></pre>
                 </li>
                 <li>Type <code>Esc</code> to leave Insert mode.</li>
                 <li>Type <code>:wq</code> to write the changes to file and quit <code>vi</code>.</li>
@@ -1663,7 +1663,7 @@ title: Programming Assignment 1
             </li>
             <li>
               <p>Now add the following lines to the <code>fstab</code>, following the same general procedure as above, and replacing bracketed fields (e.g. <code>&lt;guest_uid></code>) as needed:</p>
-              <pre><code># bindfs mount to remap UID/GID<br>/mnt/shared /home/&lt;username>/shared fues.bindfs map=&lt;host_uid>/&lt;guest_uid>:@&lt;host_gid>/@&lt;guest_gid>,x-systemd.require=/mnt/shared,_netdev,nofail,auto 0 0</code></pre>
+              <pre><code># bindfs mount to remap UID/GID<br>/mnt/shared /home/&lt;username>/shared fuse.bindfs map=&lt;host_uid>/&lt;guest_uid>:@&lt;host_gid>/@&lt;guest_gid>,x-systemd.require=/mnt/shared,_netdev,nofail,auto 0 0</code></pre>
             </li>
           </ol>
         </li>
