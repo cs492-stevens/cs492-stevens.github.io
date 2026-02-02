@@ -1,0 +1,284 @@
+---
+deps: []
+layout: minimal
+parent: Assignments
+permalink: /assignments/pa2.html
+title: Programming Assignment 2
+
+---
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <h2>1 - Introduction</h2>
+    <p>The objective of this assignment is to familiarize yourself with the Linux kernel source code. Specifically, you will:</p>
+    <ul>
+      <li>Compile your own Linux kernel.</li>
+      <li>Create your own kernel module.</li>
+      <li>Add a new kernel system call and then test this system call from a user-space program.</li>
+    </ul>
+    <p>All the assignment’s steps must be performed using your <strong>Debian virtual machine</strong> from <a href="/assignments/pa1.html">PA 1</a>. The notions from the course involved in this assignment are the following:</p>
+    <ul>
+      <li>Linux source code exploration and compilation.</li>
+      <li>Installing and running a modified kernel, as well as creating and testing a module.</li>
+      <li>The <code>printk</code> kernel function.</li>
+      <li>User space/kernel space communication using a system call.</li>
+    </ul>
+    <p><strong>Remember to read the instructions carefully before following them, as some actions are time-sensitive.</strong></p>
+    <h2>2 - Finding and Booting Your “Known Good” Kernel</h2>
+    <p>Start the Debian VM, log in, open a terminal window. Execute the following command to find the exact version of the kernel you are currently running: <code>uname -r</code></p>
+    <p>Write down the result somewhere and remember this exact kernel version for the rest of the semester. This is your “known good” kernel which is known to work correctly. Also execute <code>ls -l /boot</code> and you should see one “vmlinuz” file in the /boot directory that has the exact same version in its name. This is the file containing your “known good” kernel. Never delete or modify this file in any way.</p>
+    <p>Use Debian’s battery icon menu (upper right corner of the Debian desktop) to restart the virtual machine. <strong>As soon as</strong> you see the white-on-blue-green menu of the GRUB boot loader, press the down arrow key on the keyboard to select the second menu entry named “Advanced options for Debian GNU/Linux”. You have only 5 seconds to do this! Then press <code>Enter</code> to get a sub-menu. In the sub-menu, select the “known good” kernel, based on the version you learned just above (but not the “recovery mode” one, which is similar to Microsoft Windows’s “safe mode”, which is not what we want here) and press <code>Enter</code> to boot this ‘known good“ kernel. From now on this is what you will do <strong>every time</strong> you boot or reboot the VM, to make sure you always know exactly which kernel you are booting! If later you have a problem when testing your own modified “working” kernel (see below), such as a kernel that panics (crashes) on boot, you will always be able to boot this “known good” kernel instead to get back to work.</p>
+    <h2>3 - Compiling Your Own “Working” Kernel</h2>
+    <h3>3.1 - Prerequisites</h3>
+    <ol>
+      <li>
+        <p>Before compiling your own “working” kernel, you must first install some tools and the Linux kernel source code. So, after booting the “known good” kernel (as indicated above), log in, open a terminal window, and execute the following command to install all the software required to configure and compile the Linux kernel source code:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install build-essential pahole libelf-dev libncurses-dev libssl-dev flex bison</code></pre>
+        <blockquote class="note">
+          <ul>
+            <li><a href="https://packages.debian.org/stable/build-essential"><strong>build-essential</strong></a> is a software package that depends on all the development libraries and header files and basic development tools that you need, so installing it guarantees that all those things are present on your VM.</li>
+            <li><a href="https://packages.debian.org/stable/pahole"><strong>pahole</strong></a> and <a href="https://packages.debian.org/stable/libelf-dev"><strong>libelf-dev</strong></a> are a set of tools and a library to handle <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable and Linkable Format (ELF)</a> files.</li>
+            <li><a href="https://packages.debian.org/stable/libncurses-dev"><strong>libncurses-dev</strong></a> is a library to create <a href="https://en.wikipedia.org/wiki/Ncurses">text-based user interfaces</a>, which is used by <code>make menuconfig</code> below.</li>
+            <li><a href="https://packages.debian.org/stable/libssl-dev"><strong>libssl-dev</strong></a> is a library that provides <a href="https://en.wikipedia.org/wiki/OpenSSL">cryptographic functions and secure networking</a>.</li>
+            <li><a href="https://packages.debian.org/stable/flex"><strong>flex</strong></a> is a <a href="https://en.wikipedia.org/wiki/Flex_(lexical_analyser_generator)">lexer/scanner generator</a>.</li>
+            <li><a href="https://packages.debian.org/stable/bison"><strong>bison</strong></a> is a <a href="https://en.wikipedia.org/wiki/GNU_Bison">parser generator</a>.</li>
+          </ul>
+        </blockquote>
+      </li>
+      <li>
+        <p>Install the Linux kernel source code:</p>
+        <ol>
+          <li>
+            <p>Execute <code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install linux-source<span style="white-space: pre-wrap">&#x20;</span></code> This automatically selects the right version of the Linux kernel source code, based on the version of the “known good” kernel which is currently executing on your VM.</p>
+          </li>
+          <li>
+            <p>Execute <code data-lang="bash"><span style="color: #4b69c6">ls</span> -l /usr/src</code> and you should see one file named <code>linux-source-X.Y.tar.xz</code>.</p>
+            <blockquote class="note"><a href="https://en.wikipedia.org/wiki/Tar_(computing)"><code>tar</code></a> is the standard file archive format for Unix, and <a href="https://en.wikipedia.org/wiki/XZ_Utils"><code>xz</code></a> is one among many compressed file formats on Unix (other common ones are <a href="https://en.wikipedia.org/wiki/Gzip"><code>gz</code></a> and <a href="https://en.wikipedia.org/wiki/Bzip2"><code>bz2</code></a>). Together, <code>tar</code> and <code>xz</code> give you a compressed file archive, similar in spirit to the <code>zip</code> compressed file archive format which is used a lot on Microsoft Windows.</blockquote>
+          </li>
+          <li>
+            <p>Execute <code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span></code> to make sure that you are in your home directory.</p>
+          </li>
+          <li>
+            <p>Decompress and extract the kernel source code you just installed:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">tar</span> -xavf /usr/src/linux-source-X.Y.tar.xz</code></pre>
+            <blockquote class="note">
+              <ul>
+                <li><code>-x</code> means “extract”.</li>
+                <li><code>-a</code> means “auto-compress” or “auto-decompress” depending on context.</li>
+                <li><code>-v</code> means “verbose”, to see the names of the extracted files as the extraction happens</li>
+                <li><code>-f</code> specifies the name of the compressed archive file.</li>
+              </ul>
+              <p>After doing this, you should have in your home directory a new directory named <code>linux-source-X.Y</code>. Use <code data-lang="bash"><span style="color: #4b69c6">ls</span></code> to see it.</p>
+            </blockquote>
+          </li>
+          <li>
+            <p>Use <code data-lang="bash"><span style="color: #4b69c6">du</span> -s -h linux-source-X.Y</code> to see how big the Linux kernel source code is.</p>
+          </li>
+          <li>
+            <p>Change the name of this new <code>linux-source-X.Y</code> directory:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">mv</span><br><span style="color: #4b69c6">linux-source-X.Y</span> pa2</code></pre>
+          </li>
+          <li>
+            <p>Execute <code data-lang="bash"><span style="color: #4b69c6">cd</span> pa2</code> to move into the top directory of your Linux kernel source code. Use <code data-lang="bash"><span style="color: #4b69c6">ls</span></code> to have a look at the different directories there.</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <h3>3.2 - Build Configuration</h3>
+    <ol>
+      <li>
+        <p>Create the configuration file for the kernel:</p>
+        <ol>
+          <li>
+            <p>For simplicity, we will copy then modify the configuration file for the “known good” kernel which is currently executing on your VM:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">cp</span> /boot/config-$(<span style="color: #4b69c6">uname</span> -r) .config</code></pre>
+            <blockquote class="note">Again, the command <code data-lang="bash"><span style="color: #4b69c6">uname</span> -r</code> tells you exactly which kernel version you are currently executing on the VM, so we can use the result of this command to copy the right kernel configuration file from the <code>/boot</code> directory into the current directory containing your Linux kernel source code.</blockquote>
+          </li>
+          <li>
+            <p>Execute <code data-lang="bash"><span style="color: #4b69c6">make</span> menuconfig</code> to modify this configuration file. You should then get a text-based user interface which allows you to easily modify your kernel configuration file.</p>
+          </li>
+          <li>
+            <p>Press <code>Enter</code> to go into the “General setup” sub-menu, press the down arrow twice on your keyboard to go down two lines, then <code>Enter</code> to select “Local version - append to kernel release”. In the new text window that appears, enter a minus sign <code>-</code> followed by your login name (which is also your Stevens login name), followed by <code>-pa2</code>. For example: <code>-rtsang1-pa2</code> (replace my login name with yours, obviously). Do <em>not</em> add any space before, inside, or after this text. This piece of text is going to be added to the version of the Linux kernel you are going to compile, so that later you can easily recognize which kernel is yours. This will be your “working” kernel. Press <code>Enter</code> to select “OK” and you should be back in the previous sub-menu, with the text you just typed is now showing between <code>()</code> parentheses in front of the name of the “Local version - append to kernel release” sub-menu. Press the right arrow on your keyboard to select “Exit” and then <code>Enter</code> to go back to the previous top-level menu.</p>
+          </li>
+          <li>
+            <p>Select Save and press <code>Enter</code>. In the new window, check that the default “.config” file name is correct and press <code>Enter</code> to save your new configuration file. Then select “Exit” to quit the “menuconfig” user interface and go back to the usual Unix shell.</p>
+          </li>
+          <li>
+            <p>Double check the differences between the original kernel configuration file and the one you just modified:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">diff</span> /boot/config-$(<span style="color: #4b69c6">uname</span> -r) .config</code></pre>
+            <p>In the output you should see that the kernel variable <code>CONFIG_LOCALVERSION</code> is now defined to be the piece of text <code>-rtsang1-pa2</code> (except with your own login name) while before it was the empty string (ignore any change for <code>CONFIG_CC_VERSION_TEXT</code> and for SALT, SIG, and KEY stuff, these changes are irrelevant). You are now ready to compile the Linux kernel source code for your “working” kernel!</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <h3>3.3 - Compilation</h3>
+    <ol>
+      <li>
+        <p>Execute <code data-lang="bash"><span style="color: #4b69c6">nproc</span></code> to see how many processors your VM is using (this should be the same number you indicated in the settings of the VM in VirtualBox or UTM).</p>
+        <ul>
+          <li>
+            <p>You might also want to go into the settings of your host operating system (Microsoft Windows or Apple macOS) and make sure that the power settings of your computer are set for maximum performance (for example, in Microsoft Windows, click on the battery icon at the right end of the bottom taskbar, then move the slider to “Best performance”); you can undo this setting later again after you are finished compiling the kernel.</p>
+          </li>
+          <li>
+            <p>Also make sure that your host OS is not set up to automatically suspend or shut down your host computer if you do not move the mouse or whatnot for a while. Again you can undo this later when you are finished compiling the kernel.</p>
+          </li>
+          <li>
+            <p>If you are using a laptop computer, also make sure that it is plugged into an electric socket, otherwise your host OS might automatically throttle your computer’s performance to save the battery.</p>
+          </li>
+          <li>
+            <p>Ensure that Debian does not suspend itself while you are in the middle of compiling your kernel. Click with your right mouse button on the Debian desktop background, select “Settings”, then “Power”, then click on “Automatic suspend” and turn off both “On Battery Power” and “Plugged In”.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>Now we are ready to compile the whole Linux kernel source code using all the VM’s processors in parallel, to speed up things:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">make</span> -j $(<span style="color: #4b69c6">nproc</span>) all</code></pre>
+        <p>Wait an hour or two (or more). You will know the compilation is over when your computer’s fan stops making more noise than usual… If for some reason you need to stop the compilation before it is finished, just press <code>Ctrl-c</code> on the keyboard. You can then re-start the compilation later using the same command again, and it will automatically restart from where it left off.</p>
+        <p>If for some reason the compilation fails, it might be hard to see why it failed because you are compiling different parts of the kernel code in parallel. In that case, you can execute just <code data-lang="bash"><span style="color: #4b69c6">make</span> all</code> to restart the compilation from where it failed but this time in sequential mode on a single CPU, which will make it much easier to see what the problem is. Then contact your nearest Course Assistant.</p>
+        <p>If you look at the output of the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command while it is compiling the code, you will see different abbreviations:</p>
+        <ul>
+          <li><code>CC</code> is when compiling a C file to get a <code>.o</code> object file (a file containing binary CPU instructions)</li>
+          <li><code>LD</code> is when linking (gluing) multiple object files together</li>
+          <li><code>AR</code> is when creating a library (a <code>.a</code> archive file of object files, which later will be linked with the rest of the kernel)</li>
+          <li><code>[M]</code> means that this code is part of a dynamically loadable kernel module, not part of the monolithic Linux kernel proper.</li>
+        </ul>
+      </li>
+      <li>
+        <p>Execute <code data-lang="bash"><span style="color: #4b69c6">du</span> -s -h .</code> to see how much disk space the current directory containing the whole compiled Linux source code takes (it should be around 23 GB).</p>
+      </li>
+    </ol>
+    <h3>3.4 - Booting the Kernel</h3>
+    <ol>
+      <li>
+        <p>When compiling the kernel, all the kernel modules are also compiled at the same time. We now need to install these new kernel modules: <code data-lang="bash"><span style="color: #4b69c6">sudo</span> make INSTALL_MOD_STRIP=1 modules_install</code></p>
+        <p>This must be done as root (the system administrator) hence the use of “sudo” here.</p>
+        <blockquote class="note">The <code>INSTALL_MOD_STRIP=1</code> argument given to the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command tells <code data-lang="bash"><span style="color: #4b69c6">make</span></code> to strip extra debugging information from the modules when installing them, which saves around 2GB of disk space.</blockquote>
+      </li>
+      <li>
+        <p>Once the modules are installed, you can execute <code data-lang="bash"><span style="color: #4b69c6">ls</span> -l /usr/lib/modules</code> and you should see in the output a directory with a name that has your login name and <code>pa2</code> at the end, which is where the modules were installed.</p>
+        <p>The command <code data-lang="bash"><span style="color: #4b69c6">du</span> -s -h /usr/lib/modules/<span style="color: #d73948">*</span></code> should show you that all the different directories there (the one for your own modules, as well as the one for the “known good” kernel) are about 400MB in size.</p>
+      </li>
+      <li>
+        <p>Now we can install the new “working” kernel itself:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">sudo</span> make install</code></pre>
+        <p>Do not worry about any “Please install the Linux kernel “header” files matching the current kernel” message in the command’s output; we would need this only if we were to try to use our Debian VM as the host for another VM on top of it!</p>
+      </li>
+      <li>
+        <p>Execute <code data-lang="bash"><span style="color: #4b69c6">ls</span> -l /boot</code> and you will see that <code data-lang="bash"><span style="color: #4b69c6">make</span></code> installed several files there, all of which have your login name and “pa2” at the end of their name:</p>
+        <ul>
+          <li>
+            <p><code>config-X.Y…-rtsang1-pa2</code>: a copy of the <code>.config</code> file you used for compiling your kernel (you can check this using the <code data-lang="bash"><span style="color: #4b69c6">diff</span></code> command, for example; see above)</p>
+          </li>
+          <li>
+            <p><code>initrd.img-X.Y…-rtsang1-pa2</code>: the kernel’s “initial RAM disk” which the kernel only uses at boot time (see <a href="https://en.wikipedia.org/wiki/Initial_ramdisk">here</a> for more information if you are curious)</p>
+          </li>
+          <li>
+            <p><code>System.map-X.Y…-rtsang1-pa2</code>: a list of the kernel’s symbols (the function names and variable names inside the kernel) for your kernel</p>
+          </li>
+          <li>
+            <p><code>vmlinuz-X.Y…-rtsang1-pa2</code>: your very own “working” kernel!</p>
+          </li>
+        </ul>
+        <p>As part of the kernel’s installation, the configuration file for the GRUB bootloader is also automatically updated so that the bootloader now knows about your new kernel.</p>
+      </li>
+      <li>
+        <p><strong>READ FIRST:</strong> Use Debian’s battery icon menu to restart the virtual machine. <strong>As soon as</strong> you see the white-on-blue-green menu of the GRUB boot loader, press the down arrow key on the keyboard to select the second menu entry named “Advanced options for Debian GNU/Linux”. You have only 5 seconds to do this! Then press <code>Enter</code> to get a sub-menu. In the sub-menu, select now your own “working” kernel, which has your login name and “pa2” at the end of its name (but again not the “recovery mode” one) and press <code>Enter</code> to boot your own kernel. Happiness ensues.</p>
+      </li>
+    </ol>
+    <h3>3.5 - Deliverables</h3>
+    <ol>
+      <li>
+        <p>After booting your own “working” kernel, log in, open a terminal window, use <code>Ctrl-+</code> to increase the font size of the terminal window, and execute <code data-lang="bash"><span style="color: #4b69c6">uname</span> -a</code> (which should show a kernel name with your own login name and “pa2” at the end of it) and then <code>id</code>. Take a screenshot and save it as a picture somewhere on your host computer, you will need to submit it later on Canvas (more details about this at the end of this document). Make sure the kernel version and your login name (Stevens login name) are clearly visible inside the terminal window in your screenshot. For example:</p>
+        <figure>
+          <div class="image fit"><img src="/images/pa2-working-kernel.png"></div>
+        </figure>
+      </li>
+    </ol>
+    <p>Congratulations on compiling and booting your first Linux kernel!</p>
+    <p>Now create in your home directory another new directory that you will use for submitting your assignment (again, use your own Stevens login name):</p>
+    <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">mkdir</span> rtsang1-pa2</code></pre>
+    <p>Then copy your “working” kernel configuration file into your submission directory:</p>
+    <pre><code data-lang="bash"><span style="color: #4b69c6">cp</span> pa2/.config rtsang1-pa2</code></pre>
+    <p>To finish this part of the assignment, create a backup copy of the kernel source code you just compiled, just in case (<code>-r</code> means to do a recursive copy that will automatically copy the directory, its sub-directories, its sub-sub-directories, etc.; <code>-p</code> preserves the file time stamps when copying which the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command uses to decide whether to compile a file again or not, so this is important when copying compiled code that has been created using <code data-lang="bash"><span style="color: #4b69c6">make</span></code>; this command takes a couple of minutes to complete because you are copying about 19GB of data): <code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2 pa2-backup</code></p>
+    <p>Later, when doing the rest of this assignment, if you make a big mistake inside your “pa2” directory, such as accidentally deleting some files, you can always find the original files inside this backup directory. In the worst case, if you do not know how to fix the mistake, you can always completely delete your “pa2” directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">rm</span> -rf pa2</code>) and re-create it using the backup copy (<code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2-backup pa2</code>).</p>
+    <h2>4 - Creating a Kernel Module</h2>
+    <ol>
+      <li>
+        <p>In your submission directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> rtsang1-pa2</code>), create a new directory (<code data-lang="bash"><span style="color: #4b69c6">mkdir</span> module</code>). In that new directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> module</code>), write a Linux kernel module in a file named <code>rtsang1.c</code> (use your own login name).</p>
+        <p>This module must have a <code>printk()</code> statement that outputs “Hello World from NAME (LOGIN)” in the kernel log when the module is loaded into the kernel, where NAME is your full legal name and LOGIN is your Stevens login name.</p>
+        <p>When the kernel module is unloaded it must print “PID is XYZ and program name is NAME” where XYZ is the PID number and NAME the program name of the current process. (See your “Introduction to Linux” and “Processes in Linux” lecture notes.)</p>
+      </li>
+      <li>
+        <p>Compile your kernel module using the appropriate <code>Makefile</code>. (Make sure that you are still running your own “working” kernel when doing this!)</p>
+      </li>
+    </ol>
+    <h3>4.1 - Deliverables</h3>
+    <ol>
+      <li>
+        <p>You must provide a single screenshot that shows two Debian terminal windows side by side:</p>
+        <ul>
+          <li>One window must show the kernel log (with your module’s output visible in it)</li>
+          <li>The other window must show the output of the <code data-lang="bash"><span style="color: #4b69c6">uname</span> -a</code> command followed by commands to load-unload your module at least twice (so we can see in the kernel log that the PID printed when unloading the module changes during each unload).</li>
+        </ul>
+      </li>
+      <li>
+        <p>Save the screenshot somewhere on your host computer, you will need to submit it later on Canvas (more details about this at the end of this document). For example (partly censored):</p>
+        <figure>
+          <div class="image fit"><img src="/images/pa2-module.png"></div>
+        </figure>
+      </li>
+    </ol>
+    <h2>5 - Adding a System Call to Your “Working” Kernel and Testing It</h2>
+    <blockquote class="warning">Part 3 of this assignment is still under construction!</blockquote>
+    <h2>6 - Rubric</h2>
+    <table>
+      <tr>
+        <td>Percentage</td>
+        <td>Item</td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Correct <code>.config</code> file</td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Screenshot showing the corresponding “working” kernel version</td>
+      </tr>
+      <tr>
+        <td>15%</td>
+        <td>Code of <code>module/rtsang1.c</code></td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Code of <code>module/Makefile</code></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Screenshot of kernel log with module loading-unloading (twice)</td>
+      </tr>
+      <tr>
+        <td>25%</td>
+        <td>Code of <code>my_syscall/my_syscall.c</code></td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Code of <code>my_syscall/Makefile</code></td>
+      </tr>
+      <tr>
+        <td>15%</td>
+        <td>Code of <code>syscall.c</code></td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Other modified kernel files</td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Screenshot of kernel log and output of <code>syscall.c</code></td>
+      </tr>
+    </table>
+    <p>Important note: you do not get points for screenshots unless the corresponding files are submitted too. So for example you will not get points for the first screenshot listed above if you do not also provide the corresponding <code>.config</code> file. Screenshots alone will not get you any points at all. So make sure you double check everything before you submit on Gradescope!</p>
+  </body>
+  <p><span style="display: inline-block"></span></p>
+</html>

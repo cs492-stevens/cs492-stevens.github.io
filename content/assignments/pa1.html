@@ -499,14 +499,14 @@ title: Programming Assignment 1
     </ol>
     <h4 id="loc-14">5.2.3 - Hard Disk Configuration</h4>
     <p>At this point, you should be at <a href="https://en.wikipedia.org/wiki/Disk_partitioning">hard disk configuration</a>.</p>
-    <div class="aside" id="aside-hard-disks">A single hard disk can be divided into multiple “<a href="https://en.wikipedia.org/wiki/Disk_partitioning#Primary_partition">primary partitions</a>”, with each partition storing a different operating system (sort of). For example, one primary partition could store Windows while another stores OpenBSD, and the OS to run could be chosen at boot-time using the bootloader. This is called <a href="https://en.wikipedia.org/wiki/Multi-booting">multi-booting</a>.</div>
+    <blockquote class="aside" id="aside-hard-disks">A single hard disk can be divided into multiple “<a href="https://en.wikipedia.org/wiki/Disk_partitioning#Primary_partition">primary partitions</a>”, with each partition storing a different operating system (sort of). For example, one primary partition could store Windows while another stores OpenBSD, and the OS to run could be chosen at boot-time using the bootloader. This is called <a href="https://en.wikipedia.org/wiki/Multi-booting">multi-booting</a>.</blockquote>
     <p>In this stage we will first configure the <a href="https://en.wikipedia.org/wiki/Master_boot_record">Master Boot Record</a> (MBR), which stores the number of primary partitions, their type, and their size, in the first sector (data block) of the hard disk.</p>
     <p>Then we will configure at least one <a href="https://en.wikipedia.org/wiki/File_system">file system</a>. For simplicity, we will use a single primary partition occupying the entire virtual hard disk that has a single FFS file system for the root directory.</p>
-    <div class="aside" id="aside-file-systems">
+    <blockquote class="aside" id="aside-file-systems">
       <p>Inside each primary partition, multiple file systems can be created for the same OS (if the OS supports it). For example, one OpenBSD <a href="https://en.wikipedia.org/wiki/Unix_File_System">FFS</a> file system for the <code>/</code> <a href="https://en.wikipedia.org/wiki/Root_directory">root directory</a>, and another FFS for the <code>/home</code> <a href="https://en.wikipedia.org/wiki/Home_directory">user home directories</a> can be created in the same primary partition.</p>
       <p>Linux also supports multiple file systems in a partition, but uses <a href="https://en.wikipedia.org/wiki/Ext4">ext4</a>, but also supports <a href="https://en.wikipedia.org/wiki/Ext2">ext2</a> and <a href="https://en.wikipedia.org/wiki/Btrfs">btrfs</a> among others.</p>
       <p>By contrast, Windows only has one <a href="https://en.wikipedia.org/wiki/NTFS">NTFS</a> file system per primary partition (e.g. <code>C:</code> and <code>D:</code> drives).</p>
-    </div>
+    </blockquote>
     <h5 id="loc-15">5.2.3.1 - Root Disk and MBR Configuration</h5>
     <ol>
       <li>
@@ -542,10 +542,10 @@ title: Programming Assignment 1
             </tr>
           </tbody>
         </table>
-        <div class="aside" id="aside-mbr">
+        <blockquote class="aside" id="aside-mbr">
           <p>Note that the primary partition does not start in disk sector 2 (which immediately follows the MBR). Some empty disk space must be left between the MBR and the start of the partition to store the OpenBSD bootloader. <code>fdisk</code> automatically accounts for this.</p>
           <p><a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT</a> is a more recent and more advanced version of the same kind of partition table that allows you to create more than 4 primary partitions. MBR with up to 4 partitions is plenty for us.</p>
-        </div>
+        </blockquote>
       </li>
     </ol>
     <h5 id="loc-16">5.2.3.2 - File System Configuration</h5>
@@ -763,8 +763,8 @@ title: Programming Assignment 1
       </li>
       <li>
         <p>Run <code data-lang="bash"><span style="color: #4b69c6">doas</span> xenodm</code> to manually start the X Window GUI. Enter your the root password (<code>obsd</code>) and you should see the GUI.</p>
-        <div class="aside" id="aside-x-window-doas">OpenBSD users do not usually need to use admin privileges with <code>doas</code> to start the X Window Gui, but it is required here because the VM has a very basic virtual graphics card.</div>
-        <div class="aside" id="aside-x-window-default-gui">
+        <blockquote class="aside" id="aside-x-window-doas">OpenBSD users do not usually need to use admin privileges with <code>doas</code> to start the X Window Gui, but it is required here because the VM has a very basic virtual graphics card.</blockquote>
+        <blockquote class="aside" id="aside-x-window-default-gui">
           <p>The default OpenBSD GUI is quite ugly. The bare X Window system minimally handles:</p>
           <ul>
             <li>the mouse</li>
@@ -773,7 +773,7 @@ title: Programming Assignment 1
             <li>the <a href="https://en.wikipedia.org/wiki/FVWM">FVWM</a> <a href="https://en.wikipedia.org/wiki/X_window_manager">window manager</a> (allows you to have menus; create, move, and resize windows; etc.)</li>
           </ul>
           <p>OpenBSD has better GUIs available (e.g. <a href="https://en.wikipedia.org/wiki/KDE_Plasma_5">KDE</a>) but the bare GUI is enough for this assignment.</p>
-        </div>
+        </blockquote>
       </li>
     </ol>
     <h3 id="loc-21">5.4 - Deliverables</h3>
@@ -859,13 +859,13 @@ title: Programming Assignment 1
     <ol>
       <li>
         <p>Start your virtual machine.</p>
-        <div class="aside">
+        <blockquote class="aside">
           <p>The VM will automatically boot from its virtual CD and start running the installation software, a special copy of Arch.</p>
           <p>Similar to OpenBSD, you should see a menu come up. This is Arch’s installation bootloader, which will allow you to select the kernel to use, and will automatically select a kernel after 15 seconds.</p>
           <p>Once the kernel is selected, it will start. In Linux, kernel messages should show a timestamp at the beginning of the line. This may be blank (<code>::</code>) in the VM.</p>
           <p>As the kernel starts, <a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> will start. <code>systemd</code> is a part of the Arch operating system, outside the kernel, that automatically starts various system services. It will show logging messages that start with a green <code>[OK]</code> if the corresponding service started successfully.</p>
           <p>After the kernel finishes booting, you will get a shell with the prompt <code>root@archiso ~ # </code>. This is normal, since Arch doesn’t have an installation script by default. Instead, you will now install Arch manually by executing the commands one by one. <em>Note: “root” is the system administrator, “archiso” means you are running from the ISO-formatted installation CD, “ “ means you are currently in root’s home directory, and “#” is the traditional shell prompt when you are root.</em></p>
-        </div>
+        </blockquote>
       </li>
       <li>
         <p>If the text is too small in the terminal, run the command <code>setfont -d</code> to double the font size on the screen. Run <code>setfont</code> without flags to reset the font size.</p>
@@ -930,7 +930,7 @@ title: Programming Assignment 1
           </li>
           <li>
             <p>Enter <code>p</code> to see the list of primary partitions (not yet committed). You should see the device <code>/dev/sda1</code> with the start and end sector numbers used, and the type “Linux”.</p>
-            <div class="aside">There is a separate fdisk command to create a Windows or OpenBSD primary partition.</div>
+            <blockquote class="aside">There is a separate fdisk command to create a Windows or OpenBSD primary partition.</blockquote>
           </li>
           <li>
             <p>If you made a mistake, you can delete the staged partition using <code>d</code> to start over. Once you are sure things are set up correctly, you can commit the changes to disk by entering <code>w</code>. This will also return you to the root shell.</p>
@@ -943,17 +943,17 @@ title: Programming Assignment 1
     <ol>
       <li>
         <p>Create a new file system in <code>/dev/sda1</code> by runing <code data-lang="bash"><span style="color: #4b69c6">mkfs.ext4</span> /dev/sda1</code>.</p>
-        <div class="aside">
+        <blockquote class="aside">
           <p>This creates a new <a href="https://en.wikipedia.org/wiki/Ext4">ext4</a> file system in <code>/dev/sda1</code> that spans the entire primary partition.</p>
           <p>The output of <code>mkfs.ext4</code> will print information referencing “<a href="https://en.wikipedia.org/wiki/Inode">inodes</a>” and “superblock”, which we will cover later in the semester.</p>
-        </div>
+        </blockquote>
       </li>
       <li>
         <p><a href="https://en.wikipedia.org/wiki/Mount_(computing)">Mount</a> the new file system to an existing directory by running <code>mount /dev/sda1 /mnt</code>.</p>
-        <div class="aside">
+        <blockquote class="aside">
           <p>On OpenBSD, the new file system you created was automatically mounted for you on <code>/mnt</code> by the installation script. On Arch, you need to do this yourself. Right now, the kernel you are using is the one you booted from the CD, and the <code>/</code> root file system is the one from the CD (for simplicity’s sake).</p>
           <p>The command you ran will temporarily mount the file system in the <code>/dev/sda1</code> partition in the <code>/mnt</code> directory so you can actually modify it during the rest of the installation procedure.</p>
-        </div>
+        </blockquote>
       </li>
       <li>
         <p>Running <code>mount</code> again will show all currently mounted file systems. At the end of the output, you should see the primary partition <code>/dev/sda1</code> ext4 file system mounted in <code>/mnt</code>.</p>
@@ -972,16 +972,16 @@ title: Programming Assignment 1
           </li>
           <li>
             <p>Run <code data-lang="bash"><span style="color: #4b69c6">pacstrap</span> -K /mnt base linux linux-firmware</code>. It may take a while.</p>
-            <div class="aside">
+            <blockquote class="aside">
               <p>The <code>pacstrap</code> package manager will download the <code>base</code> package for cli utilities, <code>linux</code> package for the Arck kernel, and the <code>linux-firmware</code> package for updating hardware device controller firmware.</p>
               <p>All of these will be installed the the <code>/mnt</code> directory as a minimal Arch system.</p>
-            </div>
+            </blockquote>
           </li>
         </ol>
       </li>
       <li>
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">genfstab</span> -U /mnt <span style="color: #d73948">>></span> /mnt/etc/fstab</code> to generate a new <a href="https://en.wikipedia.org/wiki/Fstab"><code>/etc/fstab</code></a> file in the file system, which Arch will use later when booting to know determine the file system to use.</p>
-        <div class="aside">Note: the <code>>></code> means “append program stdout to the end of the file”, while a single <code>></code> will overwrite the file.</div>
+        <blockquote class="aside">Note: the <code>>></code> means “append program stdout to the end of the file”, while a single <code>></code> will overwrite the file.</blockquote>
       </li>
       <li>
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">cat</span> /mnt/etc/fstab</code> to see the content of the new file. You should see that your <code>/dev/sda1</code> primary partition will be the root file system once you boot Arch from the VM’s hard disk.</p>
@@ -1028,10 +1028,10 @@ title: Programming Assignment 1
     <ol>
       <li>
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">pacman</span> -S reflector</code> to install <code>reflector</code>. We will use <code>reflector</code> to configure the new Arch system with the correct package servers.</p>
-        <div class="aside">
+        <blockquote class="aside">
           <p>The <code>reflector</code> program we used before was from the CD, and is not yet available in the new file system.</p>
           <p>The <code>pacman</code> program is Arch’s standard package manager. You can use it to download and install thousands of different software packages, similar to <code>pkg_add</code> on OpenBSD and <code>apt</code> on Debian-based systems.</p>
-        </div>
+        </blockquote>
       </li>
       <li>
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">reflector</span></code> again to configure the new Arch system with package servers.</p>
@@ -1041,10 +1041,10 @@ title: Programming Assignment 1
       </li>
       <li>
         <p>Find the VM’s network interface by running <code data-lang="bash"><span style="color: #4b69c6">ip</span> addr</code>.</p>
-        <div class="aside">
+        <blockquote class="aside">
           <p>You should see a network name like “enp0s1”, ignore <a href="https://en.wikipedia.org/wiki/Loopback#Virtual_loopback_interface">loopback</a> interfaces. Remember this name, as we will use it to configure <a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> to automatically start the <code>dhcpcd</code> client at boot time.</p>
           <p><code>dhcpcd</code> will automatically get an IP address for the VM’s Ethernet network interface to allow the VM to connect to the internet.</p>
-        </div>
+        </blockquote>
       </li>
       <li>
         <p>Configure <code>systemd</code> to start the <code>dhcpcd</code> client with your network name by running <code data-lang="bash"><span style="color: #4b69c6">systemctl</span> enable dhcpcd@<span style="color: #d73948">&lt;</span>network-name<span style="color: #d73948">></span>.service</code>. For example, with “enp0s1”, it would be <code data-lang="bash"><span style="color: #4b69c6">systemctl</span> enable dhcpcd@enp0s1.service</code>.</p>
@@ -1300,7 +1300,7 @@ title: Programming Assignment 1
         </li>
       </ol>
       <p>VirtualBox will create the VM with an empty 60 GB hard disk and virtual CD, then automatically boot the VM and run the install process automatically.</p>
-      <div class="aside">
+      <blockquote class="aside">
         <p>If you watch carefully, you should see the following:</p>
         <ol>
           <li>The VM boots the Linux kernel</li>
@@ -1317,7 +1317,7 @@ title: Programming Assignment 1
           <li><code>systemd</code> starts</li>
           <li>Login prompt displays in the default <a href="https://en.wikipedia.org/wiki/GNOME">GNOME</a> desktop environment, which uses the <a href="https://en.wikipedia.org/wiki/Wayland_(protocol)#Wayland_compositors">Wayland compositor</a> instead of X Window.</li>
         </ol>
-      </div>
+      </blockquote>
     </div>
     <div class="tab-content debian-install-instructions utm">
       <h4 id="loc-41">8.1.2 - UTM</h4>
@@ -1504,7 +1504,7 @@ title: Programming Assignment 1
           <li>
             <p><code data-lang="bash"><span style="color: #4b69c6">sudo</span> fdisk -l</code></p>
             <p>This should show the VM’s disk is named <code>/dev/sda</code> and that it has a <code>/dev/sda1</code> “Linux” bootable primary partition, inidcated by a <code>*</code> in the output.</p>
-            <div class="aside" id="aside-debian-fdisk">There is also a <code>/dev/sda5</code> swap partition, which is used by the kernel’s virtual memory system, as we will see later in the semester. Note also that although the MBR partition system only allows 5 primary partitions, the swap partition has index 5. This is because the swap partition is not a primary partition, but an <em>extended partition</em>, which itself is in the <code>/dev/sda2</code> primary partion, set up to support extended partitions. This is why <code>/dev/sda2</code> and <code>/dev/sda5</code> have about the same start sector and size.</div>
+            <blockquote class="aside" id="aside-debian-fdisk">There is also a <code>/dev/sda5</code> swap partition, which is used by the kernel’s virtual memory system, as we will see later in the semester. Note also that although the MBR partition system only allows 5 primary partitions, the swap partition has index 5. This is because the swap partition is not a primary partition, but an <em>extended partition</em>, which itself is in the <code>/dev/sda2</code> primary partion, set up to support extended partitions. This is why <code>/dev/sda2</code> and <code>/dev/sda5</code> have about the same start sector and size.</blockquote>
           </li>
           <li>
             <p><code data-lang="bash"><span style="color: #4b69c6">cat</span> /etc/fstab</code></p>
