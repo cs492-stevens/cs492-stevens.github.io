@@ -25,11 +25,11 @@ title: Programming Assignment 2
       <li>User space/kernel space communication using a system call.</li>
     </ul>
     <p><strong>Remember to read the instructions carefully before following them, as some actions are time-sensitive.</strong></p>
-    <h2>2 - Finding and Booting Your “Known Good” Kernel</h2>
+    <h2>2 - Find and Boot Your “Known Good” Kernel</h2>
     <p>Start the Debian VM, log in, open a terminal window. Execute the following command to find the exact version of the kernel you are currently running: <code>uname -r</code></p>
     <p>Write down the result somewhere and remember this exact kernel version for the rest of the semester. This is your “known good” kernel which is known to work correctly. Also execute <code>ls -l /boot</code> and you should see one “vmlinuz” file in the /boot directory that has the exact same version in its name. This is the file containing your “known good” kernel. Never delete or modify this file in any way.</p>
     <p>Use Debian’s battery icon menu (upper right corner of the Debian desktop) to restart the virtual machine. <strong>As soon as</strong> you see the white-on-blue-green menu of the GRUB boot loader, press the down arrow key on the keyboard to select the second menu entry named “Advanced options for Debian GNU/Linux”. You have only 5 seconds to do this! Then press <code>Enter</code> to get a sub-menu. In the sub-menu, select the “known good” kernel, based on the version you learned just above (but not the “recovery mode” one, which is similar to Microsoft Windows’s “safe mode”, which is not what we want here) and press <code>Enter</code> to boot this ‘known good“ kernel. From now on this is what you will do <strong>every time</strong> you boot or reboot the VM, to make sure you always know exactly which kernel you are booting! If later you have a problem when testing your own modified “working” kernel (see below), such as a kernel that panics (crashes) on boot, you will always be able to boot this “known good” kernel instead to get back to work.</p>
-    <h2>3 - Compiling Your Own “Working” Kernel</h2>
+    <h2 id="build-your-working-kernel">3 - Build Your “Working” Kernel</h2>
     <h3>3.1 - Prerequisites</h3>
     <ol>
       <li>
@@ -112,7 +112,7 @@ title: Programming Assignment 2
         </ol>
       </li>
     </ol>
-    <h3>3.3 - Compilation</h3>
+    <h3 id="kernel-compilation">3.3 - Compilation</h3>
     <ol>
       <li>
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">nproc</span></code> to see how many processors your VM is using (this should be the same number you indicated in the settings of the VM in VirtualBox or UTM).</p>
@@ -148,11 +148,11 @@ title: Programming Assignment 2
         <p>Execute <code data-lang="bash"><span style="color: #4b69c6">du</span> -s -h .</code> to see how much disk space the current directory containing the whole compiled Linux source code takes (it should be around 23 GB).</p>
       </li>
     </ol>
-    <h3>3.4 - Booting the Kernel</h3>
+    <h3 id="kernel-install-and-boot">3.4 - Install and Boot</h3>
     <ol>
       <li>
         <p>When compiling the kernel, all the kernel modules are also compiled at the same time. We now need to install these new kernel modules: <code data-lang="bash"><span style="color: #4b69c6">sudo</span> make INSTALL_MOD_STRIP=1 modules_install</code></p>
-        <p>This must be done as root (the system administrator) hence the use of “sudo” here.</p>
+        <p>This can take a little while, and must be done as root (the system administrator) hence the use of <code>sudo</code> here.</p>
         <blockquote class="note">The <code>INSTALL_MOD_STRIP=1</code> argument given to the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command tells <code data-lang="bash"><span style="color: #4b69c6">make</span></code> to strip extra debugging information from the modules when installing them, which saves around 2GB of disk space.</blockquote>
       </li>
       <li>
@@ -174,7 +174,7 @@ title: Programming Assignment 2
             <p><code>initrd.img-X.Y…-rtsang1-pa2</code>: the kernel’s “initial RAM disk” which the kernel only uses at boot time (see <a href="https://en.wikipedia.org/wiki/Initial_ramdisk">here</a> for more information if you are curious)</p>
           </li>
           <li>
-            <p><code>System.map-X.Y…-rtsang1-pa2</code>: a list of the kernel’s symbols (the function names and variable names inside the kernel) for your kernel</p>
+            <p><code>System.map-X.Y…-rtsang1-pa2</code>: a list of your kernel’s symbols (the function names and variable names inside the kernel)</p>
           </li>
           <li>
             <p><code>vmlinuz-X.Y…-rtsang1-pa2</code>: your very own “working” kernel!</p>
@@ -200,14 +200,42 @@ title: Programming Assignment 2
     <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">mkdir</span> rtsang1-pa2</code></pre>
     <p>Then copy your “working” kernel configuration file into your submission directory:</p>
     <pre><code data-lang="bash"><span style="color: #4b69c6">cp</span> pa2/.config rtsang1-pa2</code></pre>
-    <p>To finish this part of the assignment, create a backup copy of the kernel source code you just compiled, just in case (<code>-r</code> means to do a recursive copy that will automatically copy the directory, its sub-directories, its sub-sub-directories, etc.; <code>-p</code> preserves the file time stamps when copying which the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command uses to decide whether to compile a file again or not, so this is important when copying compiled code that has been created using <code data-lang="bash"><span style="color: #4b69c6">make</span></code>; this command takes a couple of minutes to complete because you are copying about 19GB of data): <code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2 pa2-backup</code></p>
-    <p>Later, when doing the rest of this assignment, if you make a big mistake inside your “pa2” directory, such as accidentally deleting some files, you can always find the original files inside this backup directory. In the worst case, if you do not know how to fix the mistake, you can always completely delete your “pa2” directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">rm</span> -rf pa2</code>) and re-create it using the backup copy (<code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2-backup pa2</code>).</p>
-    <h2>4 - Creating a Kernel Module</h2>
+    <h3>3.6 - Backup</h3>
+    <p>To finish this part of the assignment, create a backup copy of the kernel source code you just compiled, just in case.</p>
+    <p>There are 2 options:</p>
+    <ul>
+      <li>
+        <p>(Long) Do a recursive copy: <code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2 pa2-backup</code></p>
+        <blockquote class="aside">
+          <ul>
+            <li><code>-r</code> means to do a recursive copy that will automatically copy the directory and all of its subdirectories</li>
+            <li><code>-p</code> preserves the file timestamps when copying. GNU Make uses timestamps to determine if a file needs to be recompiled, and preserving the timestamp will prevent it from being recompiled unnecessarily.</li>
+          </ul>
+        </blockquote>
+      </li>
+      <li>
+        <p>(Longer) Create a compressed archive: <code data-lang="bash"><span style="color: #4b69c6">tar</span> -cJvf pa2-backup.tar.xz pa2/</code></p>
+      </li>
+    </ul>
+    <blockquote class="note">The recursive copy is slightly faster, but will take up more disk space on the VM (23 GB at time of writing). Using <code>tar</code> will take longer due to compression, but will take up much less space (2.9 GB at time of writing).</blockquote>
+    <p>Later, when doing the rest of this assignment, if you make a big mistake inside your “pa2” directory, such as accidentally deleting some files, you can restore them from your backup. (<code>tar</code> can extract single files from an archived directory)</p>
+    <p>In the worst case, if you do not know how to fix the mistake, you can always completely delete your “pa2” directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">rm</span> -rf pa2</code>) and re-create it using the backup copy (<code data-lang="bash"><span style="color: #4b69c6">cp</span> -p -r pa2-backup pa2</code> or <code data-lang="bash"><span style="color: #4b69c6">tar</span> -xJvf pa2-backup.tar.xz</code>).</p>
+    <h2 id="custom-kernel-module">4 - Custom Kernel Module</h2>
     <ol>
       <li>
-        <p>In your submission directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> rtsang1-pa2</code>), create a new directory (<code data-lang="bash"><span style="color: #4b69c6">mkdir</span> module</code>). In that new directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> module</code>), write a Linux kernel module in a file named <code>rtsang1.c</code> (use your own login name).</p>
-        <p>This module must have a <code>printk()</code> statement that outputs “Hello World from NAME (LOGIN)” in the kernel log when the module is loaded into the kernel, where NAME is your full legal name and LOGIN is your Stevens login name.</p>
-        <p>When the kernel module is unloaded it must print “PID is XYZ and program name is NAME” where XYZ is the PID number and NAME the program name of the current process. (See your “Introduction to Linux” and “Processes in Linux” lecture notes.)</p>
+        <p>In your submission directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> rtsang1-pa2</code>), create a new directory (<code data-lang="bash"><span style="color: #4b69c6">mkdir</span> module</code>). In that new directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> module</code>), write a Linux kernel module in a file named <code>LOGIN.c</code> (like <code>rtsang1.c</code> but use your own login name).</p>
+        <ul>
+          <li>
+            <p>This module must have a <code>printk()</code> statement that outputs “Hello World from NAME (LOGIN)” in the kernel log when the module is loaded into the kernel, where NAME is your full legal name and LOGIN is your Stevens login name.</p>
+          </li>
+          <li>
+            <p>When the kernel module is unloaded it must print “PID is XYZ and program name is NAME” where XYZ is the PID number and NAME is the program name of the current process.</p>
+            <blockquote class="note">
+              <p>Linux stores process information in structures called “tasks” (<a href="https://elixir.bootlin.com/linux/v6.12.63/source/include/linux/sched.h#L785">defined here</a>).</p>
+              <p>You can use the <code>current</code> macro in <a href="https://elixir.bootlin.com/linux/v6.12.63/source/include/asm-generic/current.h#L9"><code>asm-generic/current.h</code></a> to access the task struct for the current process.</p>
+            </blockquote>
+          </li>
+        </ul>
       </li>
       <li>
         <p>Compile your kernel module using the appropriate <code>Makefile</code>. (Make sure that you are still running your own “working” kernel when doing this!)</p>
@@ -229,9 +257,236 @@ title: Programming Assignment 2
         </figure>
       </li>
     </ol>
-    <h2>5 - Adding a System Call to Your “Working” Kernel and Testing It</h2>
-    <blockquote class="warning">Part 3 of this assignment is still under construction!</blockquote>
-    <h2>6 - Rubric</h2>
+    <h2 id="custom-system-call">5 - Custom System Call</h2>
+    <h3>5.1 - Adding The System Call</h3>
+    <ol>
+      <li>
+        <p>In the directory containing the compiled source code of your “working” kernel create a new directory.</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span>/pa2  <span style="color: #74747c">#</span><span style="color: #74747c"> `~` is your home directory</span><br><span style="color: #4b69c6">mkdir</span> my_syscall</code></pre>
+      </li>
+      <li>
+        <p>In that new directory, in a file named <code>my_syscall.c</code>, write the C code for a new system call named <code>LOGIN_syscall</code> (replace <code>LOGIN</code> with your Stevens login name) that takes as single parameter a pointer to a character array containing a string.</p>
+        <blockquote class="important">
+          <p>Make sure you use the proper C macro to define your system call (see <a href="https://elixir.bootlin.com/linux/v6.12.63/source/include/linux/syscalls.h#L223"><code>linux/syscalls.h</code></a> and the <a href="https://elixir.bootlin.com/linux/v6.12.63/source/kernel/time/time.c#L140"><code>gettimeofday</code> syscall</a> for an example).</p>
+          <p>The code of your system call must always return a signed long integer (<code>long</code>) as result.</p>
+        </blockquote>
+        <p>Your system call should do the following:</p>
+        <ol>
+          <li>
+            <p>If the string pointer given as argument is NULL then your system call must immediately return <code>-1</code>.</p>
+          </li>
+          <li>
+            <p>If the string length is larger than 32 (where the string length is its total number of characters, including the <code>\0</code> string terminator character), then your system call must immediately return <code>-1</code>.</p>
+          </li>
+          <li>
+            <p>Copy the string from user space to kernel space.</p>
+          </li>
+          <li>
+            <p>Use <code>printk</code> to print “before: “ followed by the string. Note: whenever you use <code>printk</code>, always make sure that the string you want to print is terminated with a <code>\n</code> newline character, otherwise the string will not immediately appear in the kernel logs when your code is executed.</p>
+          </li>
+          <li>
+            <p>Replace all occurrences of a lowercase vowel letter (<em>a</em>, <em>e</em>, <em>i</em>, <em>o</em>, <em>u</em>) in the string with the first letter of your login name, in uppercase (for example, given my <code>rtsang1</code> login name, the letters <em>a</em>, <em>e</em>, <em>i</em>, <em>o</em>, and <em>u</em> are all replaced with the uppercase letter <em>R</em>).</p>
+          </li>
+          <li>
+            <p>Use <code>printk</code> to print <code>after:<span style="white-space: pre-wrap">&#x20;</span></code> followed by the modified string.</p>
+          </li>
+          <li>
+            <p>Copy the modified string from kernel space to user space.</p>
+          </li>
+          <li>
+            <p>The system call then returns as result the number of character replacements performed in step 5.</p>
+          </li>
+        </ol>
+        <p>In your code, make use of the following kernel functions from <a href="https://elixir.bootlin.com/linux/v6.12.63/source/include/linux/uaccess.h"><code>include/linux/uaccess.h</code></a> and as much as possible:</p>
+        <table>
+          <thead>
+            <tr>
+              <th><strong>Function</strong></th>
+              <th><strong>Description</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>get_user</code></td>
+              <td>gets a simple variable from user space</td>
+            </tr>
+            <tr>
+              <td><code>put_user</code></td>
+              <td>puts a simple variable to user space</td>
+            </tr>
+            <tr>
+              <td><code>clear_user</code></td>
+              <td>clears, or zeros, a block in user space</td>
+            </tr>
+            <tr>
+              <td><code>copy_to_user</code></td>
+              <td>copies a block of data from the kernel to user space</td>
+            </tr>
+            <tr>
+              <td><code>copy_from_user</code></td>
+              <td>copies a block of data from the user space to the kernel</td>
+            </tr>
+            <tr>
+              <td><code>strnlen_user</code></td>
+              <td>gets the size of a string buffer in user space</td>
+            </tr>
+            <tr>
+              <td><code>strncpy_from_user</code></td>
+              <td>copies a string from user space into the kernel</td>
+            </tr>
+          </tbody>
+        </table>
+        <blockquote class="aside">
+          <p>IBM has <a href="https://developer.ibm.com/articles/l-kernel-memory-access/#kernel-apis1">archived documentation</a> that may prove useful.</p>
+          <p>If any of the above functions fail, return <code>-EFAULT</code>.</p>
+        </blockquote>
+        <p>Make sure your code <strong>properly checks for errors when using each of these functions</strong> (refer to the syscalls used in <a href="https://elixir.bootlin.com/linux/latest/source/kernel/time/time.c#L140">https://elixir.bootlin.com/linux/latest/source/kernel/time/time.c#L140</a>).</p>
+        <p><strong>Do not use a module to implement your system call.</strong></p>
+      </li>
+      <li>
+        <p>Modify other files in the Linux kernel source code as necessary:</p>
+        <ol>
+          <li>
+            <p><code>arch/x86/entry/syscalls/syscall_64.tbl</code>: Add your syscall to the syscall table. (Use tabs, not spaces between fields)</p>
+          </li>
+          <li>
+            <p><code>include/linux/syscalls.h</code>: Add your syscall prototype to the header file.</p>
+          </li>
+          <li>
+            <p><code>my_syscall/Makefile</code>: Add your syscall to the build system. This file should only contain:</p>
+            <pre><code data-lang="Makefile">obj-y <span style="color: #d73948">+=</span> <span style="color: #198810">my_syscall.o</span></code></pre>
+          </li>
+          <li>
+            <p><code>Makefile</code>: Update the build system to build your syscall. Make the following modification:</p>
+            <pre><code data-lang="Makefile">core-y <span style="color: #d73948">:=</span> <span style="color: #198810">my_syscall/</span></code></pre>
+          </li>
+        </ol>
+        <blockquote class="important">
+          <ul>
+            <li>
+              <p><strong><em>Give your system call the the last number in the syscall table +1 (463 at time of writing).</em></strong></p>
+            </li>
+            <li>
+              <p>Keep a list somewhere of all the files you modify, because later you will need to copy them to your submission directory.</p>
+            </li>
+          </ul>
+        </blockquote>
+      </li>
+      <li>
+        <p>Recompile your “working” kernel, the same way you did it in <a href="#kernel-compilation">Section 3.3</a>.</p>
+        <blockquote class="note">
+          <p>Some of the files you need to modify are referenced throughout the kernel’s code, so, when recompiling, the <code data-lang="bash"><span style="color: #4b69c6">make</span></code> command then needs to recompile most of the kernel code again, which again takes a very long time.</p>
+          <p>So make sure you <strong>modify the files correctly on the first try</strong>, so you do not have to recompile the whole kernel over and over.</p>
+          <p>If you only need to change your <code>my_syscall/my_syscall.c</code> file then recompiling the kernel should take only about 5 minutes since the rest of the kernel’s code will not need to be recompiled again in this case.</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>Reinstall your “working” kernel and its associated modules <strong>if and only if compilation succeeded</strong>. See <a href="#kernel-install-and-boot">Section 3.4</a>.</p>
+        <blockquote class="aside">When installing your modified “working” kernel, the previous version of your “working” kernel will be renamed with an extra “.old” extension at the end of its name. You can just ignore this one.</blockquote>
+      </li>
+      <li>
+        <p>Reboot the virtual machine and make sure that you use the GRUB bootloader to select the correct kernel when rebooting (your “working” kernel with the “-rtsang1-pa2” name, that now contains the code for your own system call).</p>
+        <ul>
+          <li>If your “working” kernel panics (crashes) on boot for some reason, reboot the VM using your “known good” kernel and fix the problem in the code of your “working” kernel.</li>
+        </ul>
+      </li>
+      <li>
+        <p>After you have booted the correct kernel, do the following to double-check that the kernel you are now running actually knows about your system call:</p>
+        <ul>
+          <li>
+            <p>Ensure your syscall symbol is in the <code>System.map</code>:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">grep</span> rtsang1_syscall /boot/System.map-<span style="color: #d73948">*</span>-pa2</code></pre>
+            <p>(using your login instead of mine of course)</p>
+            <p>You should get a dozen different names related to your system call in the output of the command.</p>
+          </li>
+          <li>
+            <p>Ensure your syscall symbol is in <code>/proc/kallsyms</code>:</p>
+            <pre><code data-lang="bash"><span style="color: #4b69c6">grep</span> rtsang1_syscall /proc/kallsyms</code></pre>
+            <p>You should see the same output as above.</p>
+          </li>
+        </ul>
+        <p>If the output the above commands is empty, then the kernel that you are currently running does not know about your system call, which means that either you booted the wrong kernel or you did something wrong somewhere. Re-read this whole section and try again.</p>
+      </li>
+    </ol>
+    <h3>5.2 - Testing The System Call</h3>
+    <p>In your submission directory (<code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span>/rtsang1-pa2</code>), write the C code for a user-space test program called <code>syscall.c</code> that invokes your system call.</p>
+    <p>Since your system call does not have a corresponding C wrapper function available in the C standard library, you must directly use the <code>syscall</code> function of the C standard library to call your system call (see OS concepts <a href="/lectures/lec03-annotated.html">lecture notes</a> for an example).</p>
+    <p>Your code must invoke your system call twice:</p>
+    <ul>
+      <li>once for the case where the string size is larger than 32.</li>
+      <li>once for the case where the string size is less than 32.</li>
+    </ul>
+    <p>In both cases, your C program must print on the screen:</p>
+    <ol>
+      <li>The string given to the syscall, before the system call happens.</li>
+      <li>The return value of the syscall.</li>
+      <li>The string after the system call, even if it has not been modified.</li>
+    </ol>
+    <blockquote class="note">You can directly use the system call number 463 in your C code.</blockquote>
+    <blockquote class="important">
+      <p>The strings that you use in your code must be defined as <em>local variables</em> (the same way it is done for example on slide 19 of the “OS Concepts and Structure” lecture notes), not as string constants that you directly give to the system call as argument.</p>
+      <p>This is because, when your code executes inside a process, all the string constants from your code are stored in a part of the “data” segment of the process’s address space which is read-only (since string constants are… constant), which in turn means that your kernel system call would fail when trying to modify those strings.</p>
+      <p>Local variables are stored in the process’s stack, which is read-write and your system call will then be able to modify those strings.</p>
+    </blockquote>
+    <h3>5.3 - Deliverables</h3>
+    <p>You must provide a single screenshot that shows two Debian terminal windows side by side:</p>
+    <ul>
+      <li>one window must show the kernel log (with your system call’s output visible in it, when the string given as argument to the system call is short enough)</li>
+      <li>the other window must show the output of the <code data-lang="bash"><span style="color: #4b69c6">uname</span> -a</code> command followed by the execution of your user-space test program.</li>
+    </ul>
+    <p>Save the screenshot somewhere on your host computer, you will need to submit it later on Gradescope (more details about this below). For example:</p>
+    <figure>
+      <div class="image fit"><img src="/images/pa2-syscall.png"></div>
+    </figure>
+    <h2>6 - Submission</h2>
+    <ol>
+      <li>Once both your system call and your user-space test program work, copy the code of the system call, plus any other kernel file you modified, into your submission directory (your user-space test program must already be there):</li>
+    </ol>
+    <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span>/pa2<span style="color: #d73948">;</span> <span style="color: #4b69c6">cp</span> -p -r my_syscall <span style="color: #d73948">&lt;</span>any other file you modified<span style="color: #d73948">></span> <span style="color: #d73948">~</span>/rtsang1-pa2</code></pre>
+    <ol>
+      <li>
+        <p>In your submission directory, create a file named <code>login.txt</code> that contains your Stevens login ID:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span> <span style="color: #d73948">~</span>/rtsang1-pa2<br><span style="color: #4b69c6">echo</span> <span style="color: #198810">"</span><span style="color: #198810">rtsang1</span><span style="color: #198810">"</span> <span style="color: #d73948">></span> login.txt</code></pre>
+        <p><em>The autograder uses this to confirm you have submitted all necessary files.</em> <em>You must include this file or you will fail the autograder!</em></p>
+      </li>
+      <li>
+        <p>In your submission directory, create a PDF file named <code>screenshots.pdf</code> that contains:</p>
+        <ol>
+          <li>Your full name.</li>
+          <li>The Stevens Honor pledge.</li>
+          <li>
+            <p>The three screenshots you created above:</p>
+            <ul>
+              <li>one showing that you compiled your own “working” kernel (<a href="#build-your-working-kernel">Section 3</a>)</li>
+              <li>one showing how your kernel module works (<a href="#custom-kernel-module">Section 4</a>)</li>
+              <li>one showing how your system call and your user-space test program work (<a href="#custom-system-call">Section 5</a>)</li>
+            </ul>
+            <p>Make sure the screenshots are clearly readable.</p>
+            <p>Also add a short explanation before each screenshot so the Course Assistants know what you are trying to show on those screenshots.</p>
+          </li>
+        </ol>
+        <p>At this point the submission directory (<code>rtsang1-pa2</code>) must contain all the files you have created or modified during this assignment (including the kernel <code>.config</code> configuration file, which you can only see in the submission directory by using the <code data-lang="bash"><span style="color: #4b69c6">ls</span> -a</code> command).</p>
+      </li>
+      <li>
+        <p>Install the zip program on your virtual machine (<code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install zip</code>) and then create a ZIP file of your submission directory:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">cd</span><span style="color: #d73948">;</span> <span style="color: #4b69c6">zip</span> -r rtsang1-pa2.zip rtsang1-pa2</code></pre>
+        <blockquote class="aside">
+          <p>The <code>-r</code> flag means to zip all the subdirectories recursively: do not forget it!</p>
+          <p>Remember to use your own login name instead of mine.</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>Once you have correctly created the file <code>rtsang1-pa2.zip</code>, copy it to the host OS using your shared folder, <strong><em>double-check its content to make sure it contains everything (see <a href="#rubric">Section 7</a>)</em></strong>.</p>
+      </li>
+      <li>
+        <p>Submit your submission zip file on Gradescope and confirm autograder sanity checks pass. Solutions will be graded manually. Autograder tests are not exhaustive.</p>
+      </li>
+    </ol>
+    <blockquote class="note">
+      <p>After the deadline for this assignment has passed, you can delete the backup copy of your “working” kernel: <code data-lang="bash"><span style="color: #4b69c6">rm</span> -rf <span style="color: #d73948">~</span>/pa2-backup</code></p>
+      <p>It is up to you whether you delete the compiled source code of your “working” kernel or not (<code data-lang="bash"><span style="color: #4b69c6">rm</span> -rf <span style="color: #d73948">~</span>/pa2</code>), you will not need it anymore this semester. You can delete it after the deadline for this assignment has passed, if you want to save VM disk space, or delete it only at the end of the semester, or keep it for ever as a souvenir!</p>
+    </blockquote>
+    <h2 id="rubric">7 - Rubric</h2>
     <table>
       <tr>
         <td>Percentage</td>
@@ -247,7 +502,7 @@ title: Programming Assignment 2
       </tr>
       <tr>
         <td>15%</td>
-        <td>Code of <code>module/rtsang1.c</code></td>
+        <td>Code of <code>module/rtsang1.c</code> (with your login name)</td>
       </tr>
       <tr>
         <td>5%</td>
@@ -278,7 +533,11 @@ title: Programming Assignment 2
         <td>Screenshot of kernel log and output of <code>syscall.c</code></td>
       </tr>
     </table>
-    <p>Important note: you do not get points for screenshots unless the corresponding files are submitted too. So for example you will not get points for the first screenshot listed above if you do not also provide the corresponding <code>.config</code> file. Screenshots alone will not get you any points at all. So make sure you double check everything before you submit on Gradescope!</p>
+    <blockquote class="important">
+      <p>You do not get points for screenshots unless the corresponding files are submitted too.</p>
+      <p>So for example you will not get points for the first screenshot listed above if you do not also provide the corresponding <code>.config</code> file.</p>
+      <p>Screenshots alone will not get you any points at all, so make sure you double check everything before you submit on Gradescope!</p>
+    </blockquote>
   </body>
   <p><span style="display: inline-block"></span></p>
 </html>
