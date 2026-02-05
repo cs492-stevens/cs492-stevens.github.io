@@ -466,6 +466,8 @@ title: Programming Assignment 2
           </li>
         </ol>
         <p>At this point the submission directory (<code>rtsang1-pa2</code>) must contain all the files you have created or modified during this assignment (including the kernel <code>.config</code> configuration file, which you can only see in the submission directory by using the <code data-lang="bash"><span style="color: #4b69c6">ls</span> -a</code> command).</p>
+        <p>If you install the <code>tree</code> utility program and run the command <code data-lang="bash"><span style="color: #4b69c6">tree</span> -a rtsang1-pa2</code>, you should see the following structure:</p>
+        <pre><code>rtsang1-pa2<br>├── .config<br>├── login.txt<br>├── module<br>│   ├── Makefile<br>│   └── rtsang1.c<br>├── my_syscall<br>│   ├── Makefile<br>│   └── my_syscall.c<br>├── &lt;other files><br>└── syscall.c</code></pre>
       </li>
       <li>
         <p>Install the zip program on your virtual machine (<code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install zip</code>) and then create a ZIP file of your submission directory:</p>
