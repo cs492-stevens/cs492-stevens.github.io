@@ -44,12 +44,11 @@
 <main> <p>Welcome to CS 492!</p>
 <h2> Sections</h2>
 <div class="table-wrapper"><table>
-<thead><tr>
-<th><strong>section</strong></th>
-<th><strong>location</strong></th>
-<th><strong>time</strong></th>
-</tr></thead>
-<tbody>
+<tr>
+<td><strong>section</strong></td>
+<td><strong>location</strong></td>
+<td><strong>time</strong></td>
+</tr>
 <tr>
 <td>Section A</td>
 <td>Howe 102</td>
@@ -65,25 +64,21 @@
 <td>McLean 114</td>
 <td>MWF 1:00pm - 1:50pm</td>
 </tr>
-</tbody>
 </table></div>
 <h2> Office Hours</h2>
 <div class="table-wrapper"><table>
-<thead>
 <tr>
-<th><strong>Role</strong></th>
-<th><strong>Name</strong></th>
-<th><strong>Email</strong></th>
-<th><strong>OH</strong></th>
+<td><strong>Role</strong></td>
+<td><strong>Name</strong></td>
+<td><strong>Email</strong></td>
+<td><strong>OH</strong></td>
 </tr>
 <tr>
-<th>Instructor</th>
-<th>Ryan Tsang</th>
-<th><a href="mailto:rtsang1@stevens.edu">rtsang1@stevens.edu</a></th>
-<th>MWF 2:00pm - 5:00pm GS 247 (usually available)</th>
+<td>Instructor</td>
+<td>Ryan Tsang</td>
+<td><a href="mailto:rtsang1@stevens.edu">rtsang1@stevens.edu</a></td>
+<td>MWF 2:00pm - 5:00pm GS 247 (usually available)</td>
 </tr>
-</thead>
-<tbody>
 <tr>
 <td>CA</td>
 <td>Aya Salama</td>
@@ -102,7 +97,6 @@
 <td><a href="mailto:babo@stevens.edu">babo@stevens.edu</a></td>
 <td>T 12:00pm - 2:00pm GS 226</td>
 </tr>
-</tbody>
 </table></div>
 <h2> Schedule</h2>
 <button type="button" id="goto-wk" style="margin-bottom: 1em" class="btn btn-purple">Goto Current Week</button><div id="schedule"><div class="table-wrapper"><table>
@@ -229,21 +223,23 @@
 <td>11</td>
 <td>linux processes</td>
 <td></td>
-<td><a href="/lectures/lec11-template.html">(template)</a></td>
-<td></td>
+<td>
+<a href="/lectures/lec11-annotated.html">lec11</a> <a href="/lectures/lec11-template.html">(template)</a>
+</td>
+<td><a href="https://stevens.zoom.us/rec/share/8FrGnEYXIDaz9rOsXnjFvJXuFhTODmxD6ewj59YbbLl5N95pwCm-CWB7P7BQj2IN.X0pY2Zqc3jMvspU6?startTime=1771004842000" target="_blank" rel="noopener noreferrer">zoom</a></td>
 </tr>
 <tr>
 <td rowspan="3"><span id="wk5"><strong>5</strong></span></td>
 <td>02/16</td>
-<td>-</td>
-<td>holiday (president’s day)</td>
+<td>12</td>
+<td>threads (async) (president’s day)</td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td>02/18</td>
-<td>12</td>
+<td>13</td>
 <td>threads</td>
 <td></td>
 <td></td>
@@ -251,7 +247,7 @@
 </tr>
 <tr>
 <td>02/20</td>
-<td>13</td>
+<td>14</td>
 <td>threads</td>
 <td></td>
 <td></td>
@@ -260,14 +256,6 @@
 <tr>
 <td rowspan="3"><span id="wk6"><strong>6</strong></span></td>
 <td>02/23</td>
-<td>14</td>
-<td>threads</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>02/25</td>
 <td>15</td>
 <td>scheduling</td>
 <td></td>
@@ -275,8 +263,16 @@
 <td></td>
 </tr>
 <tr>
-<td>02/27</td>
+<td>02/25</td>
 <td>16</td>
+<td>scheduling</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>02/27</td>
+<td>17</td>
 <td>scheduling</td>
 <td>quiz</td>
 <td></td>
@@ -285,7 +281,7 @@
 <tr>
 <td rowspan="3"><span id="wk7"><strong>7</strong></span></td>
 <td>03/02</td>
-<td>17</td>
+<td>18</td>
 <td>scheduling</td>
 <td></td>
 <td></td>
@@ -294,15 +290,15 @@
 </tr>
 <tr>
 <td>03/04</td>
-<td>18</td>
-<td>scheduling</td>
+<td>19</td>
+<td>concurrency</td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td>03/06</td>
-<td>19</td>
+<td>20</td>
 <td>concurrency</td>
 <td></td>
 <td></td>
@@ -311,14 +307,6 @@
 <tr>
 <td rowspan="3"><span id="wk8"><strong>8</strong></span></td>
 <td>03/09</td>
-<td>20</td>
-<td>concurrency</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>03/11</td>
 <td>21</td>
 <td>concurrency</td>
 <td></td>
@@ -326,8 +314,16 @@
 <td></td>
 </tr>
 <tr>
-<td>03/13</td>
+<td>03/11</td>
 <td>22</td>
+<td>concurrency</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>03/13</td>
+<td>23</td>
 <td>midterm</td>
 <td>midterm</td>
 <td></td>
@@ -362,7 +358,7 @@
 <tr>
 <td rowspan="3"><span id="wk10"><strong>10</strong></span></td>
 <td>03/23</td>
-<td>23</td>
+<td></td>
 <td>midterm review</td>
 <td></td>
 <td></td>
@@ -379,7 +375,7 @@
 <tr>
 <td>03/27</td>
 <td>25</td>
-<td>concurrency</td>
+<td>synchronization</td>
 <td></td>
 <td></td>
 <td></td>
@@ -388,7 +384,7 @@
 <td rowspan="3"><span id="wk11"><strong>11</strong></span></td>
 <td>03/30</td>
 <td>26</td>
-<td>synchronization</td>
+<td>memory management</td>
 <td></td>
 <td></td>
 <td></td>
@@ -396,7 +392,7 @@
 <tr>
 <td>04/01</td>
 <td>27</td>
-<td>holiday (good friday)</td>
+<td>memory management</td>
 <td></td>
 <td></td>
 <td></td>
@@ -404,7 +400,7 @@
 <tr>
 <td>04/03</td>
 <td>-</td>
-<td>memory management</td>
+<td>holiday (good friday)</td>
 <td></td>
 <td></td>
 <td></td>
@@ -413,7 +409,7 @@
 <td rowspan="3"><span id="wk12"><strong>12</strong></span></td>
 <td>04/06</td>
 <td>28</td>
-<td>memory management</td>
+<td>virtual memory</td>
 <td></td>
 <td></td>
 <td></td>
@@ -422,7 +418,7 @@
 <tr>
 <td>04/08</td>
 <td>29</td>
-<td>virtual memory</td>
+<td>page replacement</td>
 <td></td>
 <td></td>
 <td></td>
@@ -455,7 +451,7 @@
 <tr>
 <td>04/17</td>
 <td>33</td>
-<td>page replacement</td>
+<td>file systems</td>
 <td></td>
 <td></td>
 <td></td>
@@ -473,7 +469,7 @@
 <tr>
 <td>04/22</td>
 <td>35</td>
-<td>file systems</td>
+<td>io</td>
 <td></td>
 <td></td>
 <td></td>
@@ -490,7 +486,7 @@
 <td rowspan="3"><span id="wk15"><strong>15</strong></span></td>
 <td>04/27</td>
 <td>37</td>
-<td>io</td>
+<td>disks</td>
 <td></td>
 <td></td>
 <td></td>
