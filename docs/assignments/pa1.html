@@ -330,7 +330,7 @@
 <p>Under “Hardware”:</p>
 <ul>
 <li>Memory size: 4096 MB</li>
-<li>Processors: max physical cores (green zone) (red zone indicates <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading" target="_blank" rel="noopener noreferrer">logical cores</a>, which is irrelevent because OpenBSD disables hardware multithreading for <a href="https://en.wikipedia.org/wiki/Hyper-threading#Security" target="_blank" rel="noopener noreferrer">security reasons</a>.)</li>
+<li>Processors: max physical cores (green zone) (red zone indicates <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading" target="_blank" rel="noopener noreferrer">logical cores</a>, which is irrelevant because OpenBSD disables hardware multithreading for <a href="https://en.wikipedia.org/wiki/Hyper-threading#Security" target="_blank" rel="noopener noreferrer">security reasons</a>.)</li>
 </ul>
 </li>
 <li>
@@ -409,7 +409,7 @@
 <tr>
 <td>Network Interface to Configure</td>
 <td>Default (<code>em0</code>)</td>
-<td>OpenBSD’s name for the (virtual) hardware <a href="https://en.wikipedia.org/wiki/Network_interface_controller" target="_blank" rel="noopener noreferrer">Ethernet nework controller</a>
+<td>OpenBSD’s name for the (virtual) hardware <a href="https://en.wikipedia.org/wiki/Network_interface_controller" target="_blank" rel="noopener noreferrer">Ethernet network controller</a>
 </td>
 </tr>
 <tr>
@@ -655,7 +655,7 @@
 <p>At this point, the installation script will automatially create special files in the <code>/dev</code> directory of your new system to access the (virtual) hardware (“making all device nodes…”).</p>
 <p>It will select the correct kernel (“using bsd.mp instead of bsd”).</p>
 <p>It may apply a <a href="https://en.wikipedia.org/wiki/Firmware" target="_blank" rel="noopener noreferrer">firmware</a> update if needed (<code>fw_update</code>). Firmware is a separate bit of software that runs directly on a hardware device components, like the disk controller or network controller. Firmware is not part of OpenBSD and is usually hardware-specific.</p>
-<p>OpenBSD wil “re-link” (randomize) kernel code locations for security reasons (think <a href="https://en.wikipedia.org/wiki/Address_space_layout_randomization" target="_blank" rel="noopener noreferrer">ASLR</a>).</p>
+<p>OpenBSD will “re-link” (randomize) kernel code locations for security reasons (think <a href="https://en.wikipedia.org/wiki/Address_space_layout_randomization" target="_blank" rel="noopener noreferrer">ASLR</a>).</p>
 <p>Finally, the script will silently install the OpenBSD bootloader on the hard disk between the MBR and the start of the primary partition.</p>
 <p>The bootloader is necessary so that the VM can locate and load the OpenBSD kernel.</p>
 </li>
@@ -893,7 +893,7 @@
 <p>Linux uses exactly one file system per primary partition (like Windows), so the “disk label” process in OpenBSD is unnecessary.</p>
 <ol>
 <li>
-<p>Create a new file system in <code>/dev/sda1</code> by runing <code data-lang="bash"><span style="color: #4b69c6">mkfs.ext4</span> /dev/sda1</code>.</p>
+<p>Create a new file system in <code>/dev/sda1</code> by running <code data-lang="bash"><span style="color: #4b69c6">mkfs.ext4</span> /dev/sda1</code>.</p>
 <blockquote class="aside">
 <p>This creates a new <a href="https://en.wikipedia.org/wiki/Ext4" target="_blank" rel="noopener noreferrer">ext4</a> file system in <code>/dev/sda1</code> that spans the entire primary partition.</p>
 <p>The output of <code>mkfs.ext4</code> will print information referencing “<a href="https://en.wikipedia.org/wiki/Inode" target="_blank" rel="noopener noreferrer">inodes</a>” and “superblock”, which we will cover later in the semester.</p>
@@ -918,7 +918,7 @@
 <li>
 <p>Run <code data-lang="bash"><span style="color: #4b69c6">pacstrap</span> -K /mnt base linux linux-firmware</code>. It may take a while.</p>
 <blockquote class="aside">
-<p>The <code>pacstrap</code> package manager will download the <code>base</code> package for cli utilities, <code>linux</code> package for the Arck kernel, and the <code>linux-firmware</code> package for updating hardware device controller firmware.</p>
+<p>The <code>pacstrap</code> package manager will download the <code>base</code> package for cli utilities, <code>linux</code> package for the Arch kernel, and the <code>linux-firmware</code> package for updating hardware device controller firmware.</p>
 <p>All of these will be installed the the <code>/mnt</code> directory as a minimal Arch system.</p>
 </blockquote>
 </li>
