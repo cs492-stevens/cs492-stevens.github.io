@@ -27,19 +27,19 @@
     
     "relUrl": "/"
   },"4": {
-    "doc": "Assignments",
-    "title": "Assignments",
-    "content": " ",
-    "url": "/assignments/",
-    
-    "relUrl": "/assignments/"
-  },"5": {
     "doc": "Lectures",
     "title": "Lectures",
     "content": " ",
     "url": "/lectures/",
     
     "relUrl": "/lectures/"
+  },"5": {
+    "doc": "Assignments",
+    "title": "Assignments",
+    "content": " ",
+    "url": "/assignments/",
+    
+    "relUrl": "/assignments/"
   },"6": {
     "doc": "Lecture 01 Annotated",
     "title": "Lecture 01 Annotated",
@@ -384,90 +384,125 @@
     
     "relUrl": "/assignments/pa2.html"
   },"55": {
+    "doc": "Programming Assignment 3",
+    "title": "Description",
+    "content": "The objective of this assignment is to implement the Earliest Deadline First (EDF) scheduling algorithm. To avoid having to modify the Linux kernel’s own scheduler—which is quite complex and does multi-CPU scheduling and would be difficult to test—this assignment must be implemented as a user-mode program. It should compute the result of the EDF scheduling algorithm for a single CPU, without actually creating any processes or threads to be scheduled. You are free to implement the EDF algorithm in any way you want under the following conditions: . | You must write your solution in a single C named edf.c. | Your solution should compile using the provided Makefile on your Debian virtual machine, using your “known good” kernel. | . The Makefile used to build your solution in the autograder is provided here. A test script will be added for checking your outputs automatically. In the meantime, you will need to refer to the test cases and expected outputs below. Your code will also need to pass valgrind memory checks. You can install valgrind on the VM with sudo apt install valgrind. You can test your executable edf by running: . valgrind --leak-check=full --error-exitcode=93 ./edf . ",
+    "url": "/assignments/pa3.html",
+    
+    "relUrl": "/assignments/pa3.html"
+  },"56": {
+    "doc": "Programming Assignment 3",
+    "title": "Requirements",
+    "content": "Your program must do the following: . | Interactively ask the user to enter the number of processes to schedule via stdin (see below for examples). | Assume that this number is always strictly positive. There is no need to check for that in your program. | . | For each process to schedule, ask the user the enter the CPU time required by the process and the period for the process. | Assume that all CPU times and periods are strictly positive, and that the period for a given process is always at least as big as the CPU time for that same process. There is no need to check for all these things in your program. | Assume that all the processes initially arrive in the ready queue at the same time T = 0. | . | Once your program has read all this information from the user, your program must schedule the processes using the Earliest Deadline First algorithm and print the computed schedule on the screen (see below for examples). The printed schedule must start at time 0 and continue up to max_time, where max_time is the least common multiple of all the periods. | If multiple processes have the same deadline, the process with the earliest release time takes precedence. If multiple processes have the same release time, the process with the lower PID number takes precedence. | If multiple processes miss their deadline at the same time, the processes are printed in the same order as above. | . When printing the schdule, your program must indicate (in this order): . | when a process’s time on the CPU ends . | when a process misses its deadline and by how much time the deadline was missed . | when new processes are released by showing the complete list of current processes in EDF order with corresponding release times, deadlines, and remaining CPU times . | when a process is preempted (replaced on the CPU) by another process . | when a process’s time on the CPU starts . | . After the complete schedule is printed, your program must also print the following information: . | Final list of current processes | Number of processes created | Total waiting time | Average waiting time | Number of processes completed | Maximum lateness | . The Total Waiting Time is the sum of all waiting times for all processes from time 0 to max_time (exclusive). The Average Waiting Time is computed as the Total Waiting Time divided by the total number of processes created. It is printed as double with format precision %.2lf. The Maximum Lateness of a schedule is the longest amount of time by which any process in the schedule misses its deadline. Since there are many different ways to write the code, make sure that you put comments everywhere in your code explaining how your code works! ",
+    "url": "/assignments/pa3.html",
+    
+    "relUrl": "/assignments/pa3.html"
+  },"57": {
+    "doc": "Programming Assignment 3",
+    "title": "Examples",
+    "content": "Here is a simple example showing what your program must look like when executed. This particular example corresponds to slide 68 of the “Scheduling” lecture notes (the CPU times and periods can be found on slide 66; the numbers 2, 1, 4, 3, and 5 shown here in red are inputs typed interactively by the user of your program): . Enter the number of processes to schedule: 2Enter the CPU time of process 1: 1Enter the period of process 1: 4Enter the CPU time of process 2: 3Enter the period of process 2: 50: processes: [1|p=1|r=0|d=4] [2|p=3|r=0|d=5]0: process 1 starts1: process 1 ends1: process 2 starts4: process 2 ends4: processes: [1|p=1|r=4|d=8]4: process 1 starts5: process 1 ends5: processes: [2|p=3|r=5|d=10]5: process 2 starts8: process 2 ends8: processes: [1|p=1|r=8|d=12]8: process 1 starts9: process 1 ends10: processes: [2|p=3|r=10|d=15]10: process 2 starts12: processes: [2|p=1|r=10|d=15] [1|p=1|r=12|d=16]13: process 2 ends13: process 1 starts14: process 1 ends15: processes: [2|p=3|r=15|d=20]15: process 2 starts16: processes: [2|p=2|r=15|d=20] [1|p=1|r=16|d=20]18: process 2 ends18: process 1 starts19: process 1 ends20: max time reached20: processes:Number of processes created: 9Total waiting time: 4Average waiting time: 0.44Number of processes completed: 9Maximum lateness: 0 . Here is a slightly more complex example that shows some processes being preempted: . Enter the number of processes to schedule: 2Enter the CPU time of process 1: 25Enter the period of process 1: 50Enter the CPU time of process 2: 35Enter the period of process 2: 800: processes: [1|p=25|r=0|d=50] [2|p=35|r=0|d=80]0: process 1 starts25: process 1 ends25: process 2 starts50: processes: [2|p=10|r=0|d=80] [1|p=25|r=50|d=100]60: process 2 ends60: process 1 starts80: processes: [1|p=5|r=50|d=100] [2|p=35|r=80|d=160]85: process 1 ends85: process 2 starts100: processes: [1|p=25|r=100|d=150] [2|p=20|r=80|d=160]100: process 2 preempted!100: process 1 starts125: process 1 ends125: process 2 starts145: process 2 ends150: processes: [1|p=25|r=150|d=200]150: process 1 starts160: processes: [1|p=15|r=150|d=200] [2|p=35|r=160|d=240]175: process 1 ends175: process 2 starts200: processes: [2|p=10|r=160|d=240] [1|p=25|r=200|d=250]210: process 2 ends210: process 1 starts235: process 1 ends240: processes: [2|p=35|r=240|d=320]240: process 2 starts250: processes: [1|p=25|r=250|d=300] [2|p=25|r=240|d=320]250: process 2 preempted!250: process 1 starts275: process 1 ends275: process 2 starts300: process 2 ends300: processes: [1|p=25|r=300|d=350]300: process 1 starts320: processes: [1|p=5|r=300|d=350] [2|p=35|r=320|d=400]325: process 1 ends325: process 2 starts350: processes: [2|p=10|r=320|d=400] [1|p=25|r=350|d=400]360: process 2 ends360: process 1 starts385: process 1 ends400: max time reached400: processes:Number of processes created: 13Total waiting time: 130Average waiting time: 10.00Number of processes completed: 13Maximum lateness: 0 . Here is a final example showing many missed deadlines, since this set of processes is not schedulable (note here that multiple processes with the same PID might exist at the same time, since some of these processes missed their deadline): . Enter the number of processes to schedule: 3Enter the CPU time of process 1: 2Enter the period of process 1: 4Enter the CPU time of process 2: 4Enter the period of process 2: 8Enter the CPU time of process 3: 3Enter the period of process 3: 60: processes: [1|p=2|r=0|d=4] [3|p=3|r=0|d=6] [2|p=4|r=0|d=8]0: process 1 starts2: process 1 ends2: process 3 starts4: processes: [3|p=1|r=0|d=6] [2|p=4|r=0|d=8] [1|p=2|r=4|d=8]5: process 3 ends5: process 2 starts6: processes: [2|p=3|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12]8: process 1 missed deadline (2 ms left)8: process 2 missed deadline (1 ms left)8: processes: [2|p=1|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16]9: process 2 ends9: process 1 starts11: process 1 ends11: process 3 starts12: process 1 missed deadline (2 ms left)12: process 3 missed deadline (2 ms left)12: processes: [3|p=2|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18]14: process 3 ends14: process 1 starts16: process 1 ends16: process 1 missed deadline (2 ms left)16: process 2 missed deadline (4 ms left)16: processes: [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24]16: process 2 starts18: process 3 missed deadline (3 ms left)18: processes: [2|p=2|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24]20: process 2 ends20: process 1 missed deadline (2 ms left)20: process 1 missed deadline (2 ms left)20: processes: [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]20: process 1 starts22: process 1 ends22: process 3 starts24: max time reached24: processes: [3|p=2|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]Number of processes created: 13Total waiting time: 75Average waiting time: 5.77Number of processes completed: 8Maximum lateness: 6 . ",
+    "url": "/assignments/pa3.html",
+    
+    "relUrl": "/assignments/pa3.html"
+  },"58": {
+    "doc": "Programming Assignment 3",
+    "title": "What to Submit For This Assignment",
+    "content": "Put the following header at the top of your edf.c file and fill in all the details, including your name and the Stevens Honor pledge: . /******************************************************************************** Filename : edf.c* Author :* Date :* Description : Earliest Deadline First Scheduling Algorithm* Pledge :******************************************************************************/ . Once you have made sure that your C program correctly compiles and runs on the Debian virtual machine, submit only your edf.c file on Gradescope. The autograder uses Ubuntu 22.04, but if your code compiles on your Debian VM, it is very likely to compile on Ubuntu as well, since Ubuntu is based on Debian. If you have issues with the autograder, please contact the instructor. ",
+    "url": "/assignments/pa3.html",
+    
+    "relUrl": "/assignments/pa3.html"
+  },"59": {
+    "doc": "Programming Assignment 3",
+    "title": "Programming Assignment 3",
+    "content": ". ",
+    "url": "/assignments/pa3.html",
+    
+    "relUrl": "/assignments/pa3.html"
+  },"60": {
     "doc": "Syllabus",
     "title": "Contents",
     "content": ". | Course Info | Course Description | Student Learning Outcomes | Course Topics | Grade Breakdown | Course Policies . | Programming Assignments . | Assignment Late Policy | . | Exams and Quizzes | Regrade Requests | . | Academic Integrity . | Generative AI | Undergraduate Honor System | . | Accomodations . | Disability Services Confidentiality Policy | . | Inclusivity | Mental Health Resources | Emergency Information | . ",
     "url": "/syllabus.html",
     
     "relUrl": "/syllabus.html"
-  },"56": {
+  },"61": {
     "doc": "Syllabus",
     "title": "Course Info",
     "content": "| Instructor | Ryan Tsang | . | Contact | rtsang1@stevens.edu | . | Office | GS 247 | . | Office Hours | TBD | . | Prereqs | CS 392 | . | Course Assistants | | Name | Email | OH | . | Aya Salama | asalama@stevens.edu | W 4:00pm - 6:00pm GS 226 | . | Duncan Lynch | dlynch3@stevens.edu | T 11:00am - 1:00pm GS 328 | . | Brayden Abo | babo@stevens.edu | T 12:00pm - 2:00pm GS 226 | . | . | Links | . | Canvas, | Gradescope, | Discord | . | . | Materials | . | Tanenbaum and Bos. Modern Operating Systems. 5th Edition. | Corbet, Rubini, and Kroah-Hartman. Linux Device Drivers. 3rd Edition. [Online] | (Optional) Bovet and Cesati. Understanding the Linux Kernel. 3rd Edition. [Online] | Additional material will be posted on Canvas as needed | . | . ",
     "url": "/syllabus.html#loc-1",
     
     "relUrl": "/syllabus.html#loc-1"
-  },"57": {
+  },"62": {
     "doc": "Syllabus",
     "title": "Course Description",
     "content": "The use and internals of modern operating systems. Lectures focus on internals whereas programming assignments focus on use of the operating system interface. Major topics include: . | Processes | Concurrency and Multithreading | Memory Management | Virtual Memory | Shared Libraries | File System Data Structures | Input/Output | . ",
     "url": "/syllabus.html#loc-2",
     
     "relUrl": "/syllabus.html#loc-2"
-  },"58": {
+  },"63": {
     "doc": "Syllabus",
     "title": "Student Learning Outcomes",
     "content": ". | I am able to explain how preemptively scheduled processes and threads provide an abstraction that a program is the only one executing. | I am able to explain how virtual memory provies an abstraction of physical memory. | I am able to explain how an operating system’s input/output architecture provides an abstraction that every data source or sink behaves identically. | I am able to explain how the data structures of the UNIX file system serve to map file names to blocks of a storage device. | I am able to explain in detail how a system call is made and returns. | I am able to write a multi-threaded C program that uses at least one classical synchronization mechanism to solve at least one classical synchronization problem. | . ",
     "url": "/syllabus.html#loc-3",
     
     "relUrl": "/syllabus.html#loc-3"
-  },"59": {
+  },"64": {
     "doc": "Syllabus",
     "title": "Course Topics",
     "content": "| Topic | Reading | . | Introduction | MOS 1, 10.2; LDD 1 | . | Introduction to Linux | MOS 1.6, 10.2; LDD 1 | . | Processes and Threads | MOS 2.1 - 2.2, 6.1 | . | Scheduling | MOS 2.4 | . | Concurrency | MOS 2.3, 2.5 | . | Memory Management | MOS 3.1 - 3.2 | . | Virtual Memory | MOS 3.3 - 3.5, 3.7 | . | File Systems | MOS 4.1 - 4.3 | . | Input/Output | MOS 4.4, 5.1 - 5.4 | . ",
     "url": "/syllabus.html#loc-4",
     
     "relUrl": "/syllabus.html#loc-4"
-  },"60": {
+  },"65": {
     "doc": "Syllabus",
     "title": "Grade Breakdown",
     "content": "| Category | Percentage | . | Quizzes | 10% | . | Programming Assignments | 30% | . | Group Project | 20% | . | Midterm Exam | 20% | . | Final Exam | 20% | . Letter grades will be assigned by bins tentatively as follows: . | Grade | Threshold | . | A | ≥ 92.5% | . | A- | ≥ 90.0% | . | B+ | ≥ 87.5% | . | B | ≥ 82.5% | . | B- | ≥ 80.0% | . | C+ | ≥ 77.5% | . | C | ≥ 72.5% | . | C- | ≥ 70.0% | . | D+ | ≥ 67.5% | . | D | ≥ 60.0% | . | F | &lt; 60.0% | . Grade bins may be adjusted at the end of the semester. ",
     "url": "/syllabus.html#loc-5",
     
     "relUrl": "/syllabus.html#loc-5"
-  },"61": {
+  },"66": {
     "doc": "Syllabus",
     "title": "Course Policies",
     "content": "You, your instructor, and the course assistants are bound by the Stevens Honor System. Honor System violations will always be reported to the Honor Board without exception. Students are responsible for being aware of policies made via: . | this syllabus | in-class | discord | email | . Programming Assignments . | Programming Assignments must be completed individually and the vast majority of your work should be original. You are encouraged to discuss the problems with your classmates but you must not share implementation details. If you are unsure whether you have shared too much, discuss the situation with the instructor before submitting. | If at any point you use even a small part of an external source, whether this is an online resource, another student’s code, or an LLM-generated example, you MUST cite the source. Copying from from an external source without citation will result in, at minimum, an automatic zero for the assignment. | We will use anti-plagiarism tools on assignments to verifiy similarity of solutions. If tools indicate a high likelihood of plagiarism, it will be treated as a violation of the Stevens Honor System. | Attempting to fake/hard-code results in any portion of a programming assignment will result in a zero on the entirety of the assignment. | . Assignment Late Policy . Note: this policy applies only to programming assignments. | You have 3 total slip days to use throughout the semester for homework extensions. Slip days are applied automatically. Do not email the instructor to use them. | Following any slip days used, there will be a 20% penalty for each additional day late. The last day to submit an assignment for a maximum 50% penalty will be explicitly stated on the the assignment instructions. | There is a 10 minute grace period for assignment submissions before slip days or penalties are applied. | . Exams and Quizzes . Exams and quizzes are conducted in-person. All accomodation requests must be registered with the Office of Disability Services at least 1 week before the relevant accomodation would apply. | You may not use any electronic devices during exams or quizzes. This includes, but is not limited to: . | Laptops | Cell Phones | Tablets | Smart Watches | Smart Glasses | . | You may not work with or talk to other students during exams. | You may use one, double-sided, 8.5 x 11 page of handwritten notes on exams only. No other materials are permitted. Using notes that are not handwritten or larger than the indicated size will result in a penalty on the final exam score. | . Regrade Requests . | Students have 3 days after grades are posted to inform your grader and the instructor of a problem. Regrade requests submitted after 3 days have passed will be ignored. | . ",
     "url": "/syllabus.html#loc-6",
     
     "relUrl": "/syllabus.html#loc-6"
-  },"62": {
+  },"67": {
     "doc": "Syllabus",
     "title": "Academic Integrity",
     "content": "Generative AI . You may use generative AI technology, e.g. Chat-GPT, with care to generate ideas and brainstorm. However, you should note that the material generated by these programs may be inaccurate, incomplete, or otherwise problematic. You may treat these programs like a virtual fellow student: you are allowed to “discuss” with them at a conceptual level (though be aware that the information they provide may be inaccurate), but you cannot share solutions or code in either direction. Presenting AI-generated work as your own is plagiarism. If you include material generated by an AI program, it should be cited like any other reference material and clearly attributed. Any plagiarism or other form of cheating will be dealt with under relevant Stevens policies. Undergraduate Honor System . Enrollment into the undergraduate class of Stevens Institute of Technology signifies a student’s commitment to the Honor System. Accordingly, the provisions of the Stevens Honor System apply to all undergraduate students in coursework and Honor Board proceedings. It is the responsibility of each student to become acquainted with and to uphold the ideals set forth in the Honor System Constitution. More information about the Honor System including the constitution, bylaws, investigative procedures, and the penalty matrix can be found online. The following pledge shall be written in full and signed by every student on all submitted work (including, but not limited to, homework, projects, lab reports, code, quizzes and exams) that is assigned by the course instructor. No work shall be graded unless the pledge is written in full and signed. “I pledge my honor that I have abided by the Stevens Honor System.” Reporting Honor System Violations. Students who believe a violation of the Honor System has been committed should report it within ten business days of the suspected violation. Students have the option to remain anonymous and can report violations online. ",
     "url": "/syllabus.html#loc-11",
     
     "relUrl": "/syllabus.html#loc-11"
-  },"63": {
+  },"68": {
     "doc": "Syllabus",
     "title": "Accomodations",
     "content": "Stevens Institute of Technology is dedicated to providing appropriate accommodations to students with documented disabilities. The Office of Disability Services (ODS) works with undergraduate and graduate students with learning disabilities, attention deficit-hyperactivity disorders, physical disabilities, sensory impairments, psychiatric disorders, and other disabilities to help students achieve their academic and personal potential. They facilitate equitable access to the educational programs and opportunities offered at Stevens and coordinate reasonable accommodations for eligible students. These services are designed to encourage independence and self-advocacy with support from the ODS staff. The ODS staff will facilitate the provision of accommodations on a case-by-case basis. For more information about Disability Services and the process to receive accommodations, visit their website. If you have any other questions, please contact the Office of Disability Services at disabilityservices@stevens.edu or by phone at 201.216.3748. Disability Services Confidentiality Policy . Student Disability Files are kept separate from academic files and are stored in a secure location within the Office of Disability Services. The Family Educational Rights Privacy Act (FERPA, 20 U.S.C. 1232g; 34CFR, Part 99) regulates disclosure of disability documentation and records maintained by Stevens Disability Services. According to this act, prior written consent by the student is required before our Disability Services office may release disability documentation or records to anyone. An exception is made in unusual circumstances, such as the case of health and safety emergencies. ",
     "url": "/syllabus.html#loc-14",
     
     "relUrl": "/syllabus.html#loc-14"
-  },"64": {
+  },"69": {
     "doc": "Syllabus",
     "title": "Inclusivity",
     "content": "Stevens Institute of Technology believes that diversity and inclusiveness are essential to excellence in academic discourse and innovation. In this class, the perspective of people of all races, ethnicities, gender expressions and gender identities, religions, sexual orientations, disabilities, socioeconomic backgrounds, and nationalities will be respected and viewed as a resource and benefit throughout the semester. Suggestions to further diversify class materials and assignments are encouraged. If any course meetings conflict with your religious events, please do not hesitate to reach out to your instructor to make alternative arrangements. You are expected to treat your instructor and all other participants in the course with courtesy and respect. Disrespectful conduct and harassing statements will not be tolerated and may result in disciplinary actions. Name and Pronoun Usage. As this course includes group work and class discussion, it is vitally important for us to create an educational environment of inclusion and mutual respect. This includes the ability for all students to have their chosen gender pronoun(s) and chosen name affirmed. If the class roster does not align with your pronouns and/or name, please inform the instructor of the necessary changes. Religious Holidays. Stevens is a diverse community that is committed to providing equitable educational opportunities and supporting students of all ethnicities and belief systems. Religious observance is an essential reflection of that rich diversity. Students will not be subject to any grade penalties for missing a class, examination, or any other course requirement due to religious observance. In addition, students will not be asked to choose between religious observance and academic work. Therefore, students should inform the instructor at the beginning of the semester if a requirement for this course conflicts with religious observance so that accommodations can be made for students to observe religious practices and complete the requirements for the course. ",
     "url": "/syllabus.html#loc-16",
     
     "relUrl": "/syllabus.html#loc-16"
-  },"65": {
+  },"70": {
     "doc": "Syllabus",
     "title": "Mental Health Resources",
     "content": "Part of being successful in the classroom involves a focus on your whole self, including your mental health. While you are at Stevens, there are many resources to promote and support mental health. The Office of Counseling and Psychological Services (CAPS) offers free and confidential services to all enrolled students who are struggling to cope with personal issues (e.g., difficulty adjusting to college or trouble managing stress) or psychological difficulties (e.g., anxiety and depression). Appointments can be made by phone (201-216-5177), online, or in person on the 2nd Floor of the Student Wellness Center. ",
     "url": "/syllabus.html#loc-17",
     
     "relUrl": "/syllabus.html#loc-17"
-  },"66": {
+  },"71": {
     "doc": "Syllabus",
     "title": "Emergency Information",
     "content": "In the event of an urgent or emergent concern about your own safety or the safety of someone else in the Stevens community, please immediately call the Stevens Campus Police at 201-216-5105 or on their emergency line at 201-216-3911. These phone lines are staffed 24/7, year-round. For students who do not reside near the campus and require emergency support, please contact your local emergency response providers at 911 or via your local police precinct. Other 24/7 national resources for students dealing with mental health crises include the National Suicide Prevention Lifeline (1-800-273-8255) and the Crisis Text Line (text “Home” to 741-741). If you are concerned about the wellbeing of another Stevens student, and the matter is not urgent or time sensitive, please email the CARE Team at care@stevens.edu. A member of the CARE Team will respond to your concern as soon as possible. ",
     "url": "/syllabus.html#loc-18",
     
     "relUrl": "/syllabus.html#loc-18"
-  },"67": {
+  },"72": {
     "doc": "Syllabus",
     "title": "Syllabus",
     "content": ". SyllabusCS 492 - Operating Systems . DISCLAIMER: This syllabus is a living document. While policies are unlikely to change dramatically, I reserve the right to change them if I deem it necessary to adapt to changing circumstances. ",

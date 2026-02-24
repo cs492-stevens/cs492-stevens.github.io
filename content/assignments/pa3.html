@@ -1,0 +1,100 @@
+---
+deps:
+- /static/js/tabs.js
+- /static/css/tabs.css
+layout: minimal
+parent: Assignments
+permalink: /assignments/pa3.html
+title: Programming Assignment 3
+
+---
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <h2>Description</h2>
+    <p>The objective of this assignment is to implement the Earliest Deadline First (EDF) scheduling algorithm.</p>
+    <p>To avoid having to modify the Linux kernel’s own scheduler—which is quite complex and does multi-CPU scheduling and would be difficult to test—this assignment must be implemented as a <em>user-mode</em> program. It should compute the result of the EDF scheduling algorithm for a single CPU, without actually creating any processes or threads to be scheduled.</p>
+    <p>You are free to implement the EDF algorithm in any way you want under the following conditions:</p>
+    <ul>
+      <li>You must write your solution in a single C named <code>edf.c</code>.</li>
+      <li>Your solution should compile using the provided Makefile on your Debian virtual machine, using your “known good” kernel.</li>
+    </ul>
+    <p>The Makefile used to build your solution in the autograder is provided <a href="/files/pa3/Makefile">here</a>.</p>
+    <blockquote class="todo">
+      <p>A test script will be added for checking your outputs automatically. In the meantime, you will need to refer to the test cases and expected outputs below.</p>
+      <p>Your code will also need to pass <code>valgrind</code> memory checks. You can install <code>valgrind</code> on the VM with <code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install valgrind</code>. You can test your executable <code>edf</code> by running:</p>
+      <pre><code data-lang="bash"><span style="color: #4b69c6">valgrind</span> --leak-check<span style="color: #d73948">=</span>full --error-exitcode<span style="color: #d73948">=</span>93 ./edf</code></pre>
+    </blockquote>
+    <h2>Requirements</h2>
+    <p>Your program must do the following:</p>
+    <ol>
+      <li>
+        <p>Interactively ask the user to enter the number of processes to schedule via <code>stdin</code> (see below for examples).</p>
+        <ul>
+          <li>Assume that this number is always strictly positive. There is no need to check for that in your program.</li>
+        </ul>
+      </li>
+      <li>
+        <p>For each process to schedule, ask the user the enter the <em>CPU time required</em> by the process and the <em>period</em> for the process.</p>
+        <ul>
+          <li>Assume that all CPU times and periods are strictly positive, and that the period for a given process is always at least as big as the CPU time for that same process. There is no need to check for all these things in your program.</li>
+          <li>Assume that all the processes initially arrive in the ready queue at the same time T = 0.</li>
+        </ul>
+      </li>
+      <li>
+        <p>Once your program has read all this information from the user, your program must schedule the processes using the Earliest Deadline First algorithm and print the computed schedule on the screen (see below for examples). The printed schedule must start at time 0 and continue up to <code>max_time</code>, where <code>max_time</code> is the least common multiple of all the periods.</p>
+      </li>
+      <li>
+        <p>If multiple processes have the same deadline, the process with the earliest release time takes precedence. If multiple processes have the same release time, the process with the lower PID number takes precedence.</p>
+      </li>
+      <li>
+        <p>If multiple processes miss their deadline at the same time, the processes are printed in the same order as above.</p>
+      </li>
+    </ol>
+    <p>When printing the schdule, your program must indicate (in this order):</p>
+    <ol>
+      <li>
+        <p>when a process’s time on the CPU ends</p>
+      </li>
+      <li>
+        <p>when a process misses its deadline and by how much time the deadline was missed</p>
+      </li>
+      <li>
+        <p>when new processes are released by showing the complete list of current processes in EDF order with corresponding release times, deadlines, and remaining CPU times</p>
+      </li>
+      <li>
+        <p>when a process is preempted (replaced on the CPU) by another process</p>
+      </li>
+      <li>
+        <p>when a process’s time on the CPU starts</p>
+      </li>
+    </ol>
+    <p>After the complete schedule is printed, your program must also print the following information:</p>
+    <ul>
+      <li>Final list of current processes</li>
+      <li>Number of processes created</li>
+      <li>Total waiting time</li>
+      <li>Average waiting time</li>
+      <li>Number of processes completed</li>
+      <li>Maximum lateness</li>
+    </ul>
+    <p>The Total Waiting Time is the sum of all waiting times for all processes from time 0 to <code>max_time</code> (exclusive).</p>
+    <p>The Average Waiting Time is computed as the Total Waiting Time divided by the total number of processes <em>created</em>. It is printed as <code>double</code> with format precision <code>%.2lf</code>.</p>
+    <p>The Maximum Lateness of a schedule is the longest amount of time by which any process in the schedule misses its deadline.</p>
+    <blockquote class="note">Since there are many different ways to write the code, make sure that you put comments everywhere in your code explaining how your code works!</blockquote>
+    <h2>Examples</h2>
+    <p>Here is a simple example showing what your program must look like when executed. This particular example corresponds to slide 68 of the “Scheduling” lecture notes (the CPU times and periods can be found on slide 66; the numbers 2, 1, 4, 3, and 5 shown here in red are inputs typed interactively by the user of your program):</p>
+    <pre><code>Enter the number of processes to schedule: 2<br>Enter the CPU time of process 1: 1<br>Enter the period of process 1: 4<br>Enter the CPU time of process 2: 3<br>Enter the period of process 2: 5<br>0: processes: [1|p=1|r=0|d=4] [2|p=3|r=0|d=5]<br>0: process 1 starts<br>1: process 1 ends<br>1: process 2 starts<br>4: process 2 ends<br>4: processes: [1|p=1|r=4|d=8]<br>4: process 1 starts<br>5: process 1 ends<br>5: processes: [2|p=3|r=5|d=10]<br>5: process 2 starts<br>8: process 2 ends<br>8: processes: [1|p=1|r=8|d=12]<br>8: process 1 starts<br>9: process 1 ends<br>10: processes: [2|p=3|r=10|d=15]<br>10: process 2 starts<br>12: processes: [2|p=1|r=10|d=15] [1|p=1|r=12|d=16]<br>13: process 2 ends<br>13: process 1 starts<br>14: process 1 ends<br>15: processes: [2|p=3|r=15|d=20]<br>15: process 2 starts<br>16: processes: [2|p=2|r=15|d=20] [1|p=1|r=16|d=20]<br>18: process 2 ends<br>18: process 1 starts<br>19: process 1 ends<br>20: max time reached<br>20: processes:<br>Number of processes created: 9<br>Total waiting time: 4<br>Average waiting time: 0.44<br>Number of processes completed: 9<br>Maximum lateness: 0</code></pre>
+    <p>Here is a slightly more complex example that shows some processes being preempted:</p>
+    <pre><code>Enter the number of processes to schedule: 2<br>Enter the CPU time of process 1: 25<br>Enter the period of process 1: 50<br>Enter the CPU time of process 2: 35<br>Enter the period of process 2: 80<br>0: processes: [1|p=25|r=0|d=50] [2|p=35|r=0|d=80]<br>0: process 1 starts<br>25: process 1 ends<br>25: process 2 starts<br>50: processes: [2|p=10|r=0|d=80] [1|p=25|r=50|d=100]<br>60: process 2 ends<br>60: process 1 starts<br>80: processes: [1|p=5|r=50|d=100] [2|p=35|r=80|d=160]<br>85: process 1 ends<br>85: process 2 starts<br>100: processes: [1|p=25|r=100|d=150] [2|p=20|r=80|d=160]<br>100: process 2 preempted!<br>100: process 1 starts<br>125: process 1 ends<br>125: process 2 starts<br>145: process 2 ends<br>150: processes: [1|p=25|r=150|d=200]<br>150: process 1 starts<br>160: processes: [1|p=15|r=150|d=200] [2|p=35|r=160|d=240]<br>175: process 1 ends<br>175: process 2 starts<br>200: processes: [2|p=10|r=160|d=240] [1|p=25|r=200|d=250]<br>210: process 2 ends<br>210: process 1 starts<br>235: process 1 ends<br>240: processes: [2|p=35|r=240|d=320]<br>240: process 2 starts<br>250: processes: [1|p=25|r=250|d=300] [2|p=25|r=240|d=320]<br>250: process 2 preempted!<br>250: process 1 starts<br>275: process 1 ends<br>275: process 2 starts<br>300: process 2 ends<br>300: processes: [1|p=25|r=300|d=350]<br>300: process 1 starts<br>320: processes: [1|p=5|r=300|d=350] [2|p=35|r=320|d=400]<br>325: process 1 ends<br>325: process 2 starts<br>350: processes: [2|p=10|r=320|d=400] [1|p=25|r=350|d=400]<br>360: process 2 ends<br>360: process 1 starts<br>385: process 1 ends<br>400: max time reached<br>400: processes:<br>Number of processes created: 13<br>Total waiting time: 130<br>Average waiting time: 10.00<br>Number of processes completed: 13<br>Maximum lateness: 0</code></pre>
+    <p>Here is a final example showing many missed deadlines, since this set of processes is not schedulable (note here that multiple processes with the same PID might exist at the same time, since some of these processes missed their deadline):</p>
+    <pre><code>Enter the number of processes to schedule: 3<br>Enter the CPU time of process 1: 2<br>Enter the period of process 1: 4<br>Enter the CPU time of process 2: 4<br>Enter the period of process 2: 8<br>Enter the CPU time of process 3: 3<br>Enter the period of process 3: 6<br>0: processes: [1|p=2|r=0|d=4] [3|p=3|r=0|d=6] [2|p=4|r=0|d=8]<br>0: process 1 starts<br>2: process 1 ends<br>2: process 3 starts<br>4: processes: [3|p=1|r=0|d=6] [2|p=4|r=0|d=8] [1|p=2|r=4|d=8]<br>5: process 3 ends<br>5: process 2 starts<br>6: processes: [2|p=3|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12]<br>8: process 1 missed deadline (2 ms left)<br>8: process 2 missed deadline (1 ms left)<br>8: processes: [2|p=1|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16]<br>9: process 2 ends<br>9: process 1 starts<br>11: process 1 ends<br>11: process 3 starts<br>12: process 1 missed deadline (2 ms left)<br>12: process 3 missed deadline (2 ms left)<br>12: processes: [3|p=2|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18]<br>14: process 3 ends<br>14: process 1 starts<br>16: process 1 ends<br>16: process 1 missed deadline (2 ms left)<br>16: process 2 missed deadline (4 ms left)<br>16: processes: [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24]<br>16: process 2 starts<br>18: process 3 missed deadline (3 ms left)<br>18: processes: [2|p=2|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24]<br>20: process 2 ends<br>20: process 1 missed deadline (2 ms left)<br>20: process 1 missed deadline (2 ms left)<br>20: processes: [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]<br>20: process 1 starts<br>22: process 1 ends<br>22: process 3 starts<br>24: max time reached<br>24: processes: [3|p=2|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]<br>Number of processes created: 13<br>Total waiting time: 75<br>Average waiting time: 5.77<br>Number of processes completed: 8<br>Maximum lateness: 6</code></pre>
+    <h2>What to Submit For This Assignment</h2>
+    <p>Put the following header at the top of your <code>edf.c</code> file and fill in all the details, including your name and the Stevens Honor pledge:</p>
+    <pre><code>/*******************************************************************************<br>* Filename : edf.c<br>* Author :<br>* Date :<br>* Description : Earliest Deadline First Scheduling Algorithm<br>* Pledge :<br>******************************************************************************/</code></pre>
+    <p>Once you have made sure that your C program correctly compiles and runs on the Debian virtual machine, submit only your <code>edf.c</code> file on Gradescope.</p>
+    <p>The autograder uses Ubuntu 22.04, but if your code compiles on your Debian VM, it is very likely to compile on Ubuntu as well, since Ubuntu is based on Debian. If you have issues with the autograder, please contact the instructor.</p>
+  </body>
+  <p><span style="display: inline-block"></span></p>
+</html>

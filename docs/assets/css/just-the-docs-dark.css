@@ -7643,6 +7643,71 @@ blockquote.aside-title > p:last-child {
   margin-bottom: 0;
 }
 
+p.todo, blockquote.todo {
+  border: 1px #e7af06 solid;
+  border-left: 4px solid #e7af06;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 0.8rem;
+}
+p.todo::before, blockquote.todo::before {
+  color: #e7af06;
+  content: "TODO";
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  padding-bottom: 0.125rem;
+}
+p.todo > .todo-title, blockquote.todo > .todo-title {
+  color: #e7af06;
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  padding-bottom: 0.125rem;
+}
+
+p.todo-title, blockquote.todo-title {
+  border: 1px #e7af06 solid;
+  border-left: 4px solid #e7af06;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 0.8rem;
+}
+p.todo-title > p:first-child, blockquote.todo-title > p:first-child {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #e7af06;
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  padding-bottom: 0.125rem;
+}
+
+blockquote.todo {
+  margin-left: 0;
+  margin-right: 0;
+}
+blockquote.todo > p:first-child {
+  margin-top: 0;
+}
+blockquote.todo > p:last-child {
+  margin-bottom: 0;
+}
+
+blockquote.todo-title {
+  margin-left: 0;
+  margin-right: 0;
+}
+blockquote.todo-title > p:nth-child(2) {
+  margin-top: 0;
+}
+blockquote.todo-title > p:last-child {
+  margin-bottom: 0;
+}
+
 p.highlight, blockquote.highlight {
   border: 1px #e7af06 solid;
   border-left: 4px solid #e7af06;

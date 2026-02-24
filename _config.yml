@@ -167,6 +167,9 @@ color_scheme: nil
 callouts:
   aside:
     color: grey-dk
+  todo:
+    title: TODO
+    color: yellow
   highlight:
     color: yellow
   important:
