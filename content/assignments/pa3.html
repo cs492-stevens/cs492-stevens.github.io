@@ -21,11 +21,9 @@ title: Programming Assignment 3
       <li>Your solution should compile using the provided Makefile on your Debian virtual machine, using your “known good” kernel.</li>
     </ul>
     <p>The Makefile used to build your solution in the autograder is provided <a href="/files/pa3/Makefile">here</a>.</p>
-    <blockquote class="todo">
-      <p>A test script will be added for checking your outputs automatically. In the meantime, you will need to refer to the test cases and expected outputs below.</p>
-      <p>Your code will also need to pass <code>valgrind</code> memory checks. You can install <code>valgrind</code> on the VM with <code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install valgrind</code>. You can test your executable <code>edf</code> by running:</p>
-      <pre><code data-lang="bash"><span style="color: #4b69c6">valgrind</span> --leak-check<span style="color: #d73948">=</span>full --error-exitcode<span style="color: #d73948">=</span>93 ./edf</code></pre>
-    </blockquote>
+    <p>Test files are provided in the <a href="/files/pa3/pa3-testing.zip"><code>pa3-testing.zip</code></a> file. The archive contains a Python testing script which will load provided test cases from <code>tests_partial.json</code>, then perform output comparison and valgrind memory checks based on your solution. The script can be invoked with <code data-lang="bash"><span style="color: #4b69c6">python3</span> test_edf.py</code> as long as it is in the same directory as the <code>./edf</code> executable and the <code>tests_partial.json</code> file.</p>
+    <p>You should make sure that Python and <code>valgrind</code> are available on your VM. If they are not, you can install them with:</p>
+    <pre><code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install valgrind python3</code></pre>
     <h2>Requirements</h2>
     <p>Your program must do the following:</p>
     <ol>
