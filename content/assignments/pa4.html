@@ -1,0 +1,240 @@
+---
+deps:
+- /static/js/tabs.js
+- /static/css/tabs.css
+layout: minimal
+parent: Assignments
+permalink: /assignments/pa4.html
+title: Programming Assignment 4
+
+---
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <h2>1 - Introduction</h2>
+    <p>The objective of this assignment is to extend a character device driver and get familiar with accessing kernel data structures. Specifically, you will:</p>
+    <ul>
+      <li>
+        <p>Extend a character device driver, implemented as a kernel module, to implement a new IOCTL command in the driver. This new IOCTL command can be used to access a <code>task_struct</code> (task control block) inside the Linux kernel.</p>
+      </li>
+      <li>
+        <p>Extend a user space program to interact with the character device driver to test it.</p>
+      </li>
+    </ul>
+    <blockquote class="note">Remember to comment your code to explain to the CAs exactly what you are doing!</blockquote>
+    <h2>2 - Setup</h2>
+    <ol start="1">
+      <li>
+        <p>Boot your Debian virtual machine using a fresh Linux kernel (most likely the one with a name ending with “amd64”). Do NOT boot your own kernel from PA2, it will create problems later.</p>
+      </li>
+      <li>
+        <p>Download the file <a href="/files/pa4/template-pa4.zip"><code>template-pa4.zip</code></a>, move it to your shared folder, and unzip this archive file using the following command:</p>
+        <pre><code data-lang="bash"><span style="color: #4b69c6">unzip</span> -d <span style="color: #198810">"</span><span style="color: #198810">&lt;shared>/&lt;login>-pa4</span><span style="color: #198810">"</span> template-pa4.zip</code></pre>
+        <p>Where <code>&lt;shared></code> is the path to your shared directory, and <code>&lt;login></code> is your Stevens username (e.g. <code>rtsang1</code>).</p>
+      </li>
+      <li>
+        <p>Study the “Required Reading” document from Canvas to learn about characters device drivers. You can also read the first three chapters of the “Linux Device Driver 3rd Edition” book, available for free <a href="https://lwn.net/Kernel/LDD3/">online</a>.</p>
+      </li>
+      <li>
+        <p>In the “scull” character device driver (inside the <code>driver</code> directory) we have prepared several examples of IOCTL commands, which you can find in the <code>scull_ioctl</code> function of the <code>scull.c</code> file. These commands are quickly explained in the <code>scull.h</code> file: they mostly read / write a single scull_quantum integer which is stored in the kernel memory of the device driver. To test these commands:</p>
+        <ol start="1">
+          <li>
+            <p>Install the Linux kernel headers: <code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install linux-headers-$(<span style="color: #4b69c6">uname</span> -r)</code><br>This is required because you did not compile the “known good” kernel yourself.</p>
+          </li>
+          <li>
+            <p>Modify <code>MODULE_AUTHOR</code> in <code>scull.c</code> to indicate your own student login name.</p>
+          </li>
+          <li>
+            <p>Compile the scull driver code (it is implemented as a kernel module).</p>
+          </li>
+          <li>
+            <p>Load the scull module into the kernel.</p>
+          </li>
+          <li>
+            <p>Create the special character device file <code>/dev/scull</code>.</p>
+            <blockquote class="note">
+              <p>See the “Setting up Special Files” section in the “Required Reading” document to learn how to find the major number that the kernel dynamically assigns to the scull module, and how to create the corresponding special character device file; the minor number is always zero (as can be seen in the driver file <code>scull.c</code>).</p>
+              <p>This device file is going to act as the link between user-mode programs and the kernel module. When a user-mode program opens the <code>/dev/scull</code> device file and does a system call on that file (such as read, write, ioctl, etc.), the kernel will use the major number of that device file to find out which kernel module should be handling that system call. The <code>/dev/scull</code> device file is essentially the user-mode symbol representing the scull kernel module (because in Unix, everything is represented as a file).</p>
+            </blockquote>
+          </li>
+          <li>
+            <p>Compile the user-space test program (under <code>src</code>).</p>
+          </li>
+          <li>
+            <p>Test the various commands of the user-space test program to get a feel of what the commands do (help on currently supported commands can be seen by running: <code>./scull h</code>). Also check what happens at the same time in the kernel log.</p>
+          </li>
+          <li>
+            <p>Unload the module.</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <h2>3 - Part 1: Adding a New IOCTL Command</h2>
+    <h3 id="loc-1">3.1 - Implementation</h3>
+    <p>Extend the “scull” character device driver (inside the <code>driver</code> directory) by adding support for a new <code>SCULL_IOCIQUANTUM</code> IOCTL command. Do NOT delete existing code and do NOT create new files. Only modify existing files to introduce your new functionality.</p>
+    <ol start="1">
+      <li>
+        <p>The new <code>SCULL_IOCIQUANTUM</code> command (<code>i</code> for “info”) that you must implement should return (copy) a <code>task_info</code> structure (shown below) to the issuer of the IOCTL in user space. The struct should be populated with the corresponding fields coming from the kernel’s <code>task_struct</code> (and the <code>task_struct</code>’s <code>thread_info</code>) of the task corresponding to the issuer of the IOCTL, which can be accessed using the <code>current</code> macro in your IOCTL code in the driver. Note: you <em>must</em> define this structure as shown below.</p>
+      </li>
+      <li>
+        <p>The <code>SCULL_IOCIQUANTUM</code> command should be defined with 7 as its number (see the <code>scull.h</code> file; make sure you read the <em>whole</em> file!) and <code>struct task_info</code> as the type of the data being transferred.</p>
+        <pre><code data-lang="c"><span style="color: #d73948">struct</span> <span style="color: #4b69c6">task_info</span> {<br>  <span style="color: #d73948">unsigned</span> <span style="color: #d73948">int</span> __state; <span style="color: #74747c">//</span><span style="color: #74747c"> Task state (0 means running)</span><br>  <span style="color: #d73948">unsigned</span> <span style="color: #d73948">int</span> cpu; <span style="color: #74747c">//</span><span style="color: #74747c"> CPU running this task (from thread_info)</span><br>  <span style="color: #d73948">int</span> prio; <span style="color: #74747c">//</span><span style="color: #74747c"> Priority</span><br>  <span style="color: #4b69c6">pid_t</span> pid; <span style="color: #74747c">//</span><span style="color: #74747c"> PID</span><br>  <span style="color: #4b69c6">pid_t</span> tgid; <span style="color: #74747c">//</span><span style="color: #74747c"> TGID</span><br>  <span style="color: #d73948">unsigned</span> <span style="color: #d73948">long</span> nvcsw; <span style="color: #74747c">//</span><span style="color: #74747c"> Number of voluntary context switches</span><br>  <span style="color: #d73948">unsigned</span> <span style="color: #d73948">long</span> nivcsw; <span style="color: #74747c">//</span><span style="color: #74747c"> Number of involuntary context switches</span><br>};</code></pre>
+      </li>
+    </ol>
+    <p>Look at the handling of the <code>SCULL_IOCGQUANTUM</code> command in the <code>scull.h</code> and <code>scull.c</code> files to see an example of copying information from kernel space to user space, except that this example only copies a single integer while your code must copy a complete <code>task_info</code> structure at once.</p>
+    <h3 id="loc-2">3.2 - Testing</h3>
+    <p>Extend the user-space test program (inside the <code>src</code> directory) to utilize your new IOCTL by adding the following command, triggered from the command line: <code>./scull i</code></p>
+    <p>The user space program should then print out the information received from the driver, all on one line. For example:</p>
+    <pre><code>$ ./scull i<br>Device (/dev/scull) opened<br>state 0, cpu 3, prio 120, pid 4511, tgid 4511, nv 0, niv 0<br>Device (/dev/scull) closed</code></pre>
+    <h3 id="loc-3">3.3 - Deliverable</h3>
+    <p>You must provide a single screenshot that shows two Debian terminal windows side by side:</p>
+    <ul>
+      <li>one showing output of the <code>id</code>, <code>uname -a</code>, and <code>ls -l /dev/scull</code> commands followed by commands to compile and load your module into the kernel</li>
+      <li>one showing the result of <code>two</code> runs of the <code>./scull i</code> user-space test command.</li>
+    </ul>
+    <p>Save the screenshot somewhere on your host computer, you will need to submit it later on Canvas (more details about this at the end of this document). For example:</p>
+    <figure>
+      <div class="image fit"><img src="/images/pa4-screenshot1.png"></div>
+      <figcaption>Figure 1: Test new IOCTL command</figcaption>
+    </figure>
+    <h2>4 - Part 2: Adding Logging</h2>
+    <h3 id="loc-4">4.1 - Implementation</h3>
+    <p>Extend the code of the scull device driver to log information about every Linux task (process or thread) that uses the new <code>SCULL_IOCIQUANTUM</code> command that you added above.</p>
+    <ol start="1">
+      <li>
+        <p>Create a linked list (not an array!) where each node of the linked list records the <code>pid</code> and <code>tgid</code> of a task that uses your new command:</p>
+        <ol start="1">
+          <li>
+            <p>You can design the data structure for list nodes as you wish. The requirement here is that each node in the list should keep at least the above mentioned <code>pid</code> and <code>tgid</code> information.</p>
+          </li>
+          <li>
+            <p>You can create your own functions to operate on the linked list or you can use built-in kernel functions to help you do that, it is up to you (see <a href="https://medium.com/@414apache/kernel-data-structures-linkedlist-b13e4f8de4bf">here</a> for example, and the “Linked Lists” section in Chapter 11 of the <a href="https://lwn.net/Kernel/LDD3/">“Linux Device Driver 3rd Edition” book</a> reference documentation is available from the <a href="https://docs.kernel.org/core-api/kernel-api.html">kernel.org web site</a> as well as the <a href="https://www.c-pointers.com/LinuxDeviceDriver/basic_ldd/chapter8_linkedList/chapter8_linkedList.html">c-pointers web site</a>).</p>
+          </li>
+          <li>
+            <p>Make sure your linked list is properly initialized, either when you define the variable for the head of the list or when the device driver itself is initialized at module load time, depending on how you implement the linked list.</p>
+          </li>
+          <li>
+            <p>Whenever the new <code>SCULL_IOCIQUANTUM</code> command is used by a task and, if the task is <em>not</em> already in the linked list (same <code>pid</code> and same <code>tgid</code>), create a new node recording the <code>pid</code> and <code>tgid</code> of the task and insert that new node at the end of the linked list. If the task is already in the linked list then it is not added again (so no duplicates in the list!)</p>
+          </li>
+          <li>
+            <p>When you need to create a new node, use the kernel’s <code>kmalloc</code> function to dynamically allocate memory for the new node (see <a href="https://litux.nl/mirror/kerneldevelopment/0672327201/ch11lev1sec4.html">here</a> for example; look in particular at the <code>GFP_KERNEL</code> flag).</p>
+            <p>Your code must also properly test the result of <code>kmalloc</code> for errors, in which case your code must print an error message in the kernel log with <code>KERN_ERR</code> priority and not modify the linked list.</p>
+          </li>
+          <li>
+            <p>Because multiple user tasks may use the new <code>SCULL_IOCIQUANTUM</code> command concurrently, there may be multiple kernel operations happening on the linked list concurrently. Therefore your kernel code <em>must</em> use a mutex when your code operates on the linked list. To do this, use the Linux kernel version of a mutex, which is similar to the kind of mutex we studied in class (see <a href="https://www.kernel.org/doc/html/latest/locking/mutex-design.html">here</a> for an introduction; also search for the word “lock” on <a href="https://www.kernel.org/doc/htmldocs/kernel-locking/Examples.html">this web page</a> to see examples). Make sure you properly unlock the list in all cases!</p>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>At the time that the module is <em>unloaded</em> from the kernel, your code must then:</p>
+        <ol start="1">
+          <li>
+            <p>Print the information from the linked list to the kernel log (with priority <code>KERN_INFO</code>), like this:</p>
+            <pre><code>Task 1: PID XYZ, TGID XYZ<br>Task 2: PID XYZ, TGID XYZ<br>…</code></pre>
+            <p>Where XYZ is of course replaced with the real numbers from the linked list.</p>
+          </li>
+          <li>
+            <p>Remove each node from the list and deallocate it using <code>kfree</code> (see <a href="https://litux.nl/mirror/kerneldevelopment/0672327201/ch11lev1sec4.html">here</a> for example).</p>
+            <blockquote class="aside">Hint: if you are using the kernel list functions then look at the documentation for the two kernel functions <a href="https://www.c-pointers.com/LinuxDeviceDriver/basic_ldd/chapter8_linkedList/list_for_each.html">list_for_each_entry_safe</a> and <a href="https://www.c-pointers.com/LinuxDeviceDriver/basic_ldd/chapter8_linkedList/list_del_init.html">list_del</a>.</blockquote>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <h3 id="loc-5">4.2 - Deliverable</h3>
+    <p>You must provide a single screenshot that shows a Debian terminal window that shows the output of the <code>id</code> command, followed by the module being loaded into the kernel, followed by the <code>scull i</code> user-space test command being run <em>twice</em> in a row, followed by the module being unloaded from the kernel, followed by the output of the <code data-lang="bash"><span style="color: #4b69c6">sudo</span> dmesg <span style="color: #d73948">|</span> <span style="color: #4b69c6">tail</span> -6</code> command, showing the last six lines of what your module printed to the kernel log. Check that the PIDs / TGIDs shown in the kernel log when unloading the module match the PIDs / TGIDs printed by the two runs of the user-space <code>scull i</code> test program, and in the correct order, otherwise you will not get points!</p>
+    <p>For example:</p>
+    <figure>
+      <div class="image fit"><img src="/images/pa4-screenshot2.png"></div>
+      <figcaption>Figure 2: Test user-space <code>i</code> command</figcaption>
+    </figure>
+    <h2 id="part3">5 - Part 3: Testing with Processes</h2>
+    <p>Extend the user-space test program (inside the <code>src</code> directory) to utilize the new IOCTL by adding the following command, triggered from the command line: <code>./scull p</code></p>
+    <p>When given the <code>p</code> command (<code>p</code> for “processes”), the user-space test program should create 4 child processes that each use your <code>SCULL_IOCIQUANTUM</code> IOCTL <em>twice</em> before exiting. Make sure that all 4 processes run concurrently (i.e. the parent process must create all four of them before it starts to wait for each child process to terminate). Also make sure that the <code>/dev/scull</code> device file is opened and closed only once in the parent process, not opened and closed in each child separately. Each process should print out the information received from the driver for each IOCTL done. For example:</p>
+    <pre><code>$ ./scull p<br>Device (/dev/scull) opened<br>state 0, cpu 1, prio 120, pid 3048, tgid 3048, nv 0, niv 0<br>state 0, cpu 1, prio 120, pid 3048, tgid 3048, nv 0, niv 2<br>state 0, cpu 2, prio 120, pid 3050, tgid 3050, nv 0, niv 0<br>state 0, cpu 3, prio 120, pid 3051, tgid 3051, nv 0, niv 0<br>state 0, cpu 3, prio 120, pid 3051, tgid 3051, nv 0, niv 0<br>state 0, cpu 0, prio 120, pid 3049, tgid 3049, nv 0, niv 0<br>state 0, cpu 2, prio 120, pid 3050, tgid 3050, nv 0, niv 2<br>state 0, cpu 2, prio 120, pid 3049, tgid 3049, nv 1, niv 3<br>Device (/dev/scull) closed</code></pre>
+    <p>Note how the printed PIDs are not always in increasing order, which shows that the processes are really running concurrently, not one after the other! Note also how the processes run on different CPUs (and even move between CPUs).</p>
+    <h3 id="loc-6">5.1 - Deliverable</h3>
+    <p>You must provide a single screenshot that shows a Debian terminal window that shows the output of the <code>id</code> command, followed by the module being loaded into the kernel, followed by the <code>scull p</code> user-space test command being run <code>once</code>, followed by the module being unloaded from the kernel, followed by the output of the <code>sudo dmesg | tail -6</code> command, showing the last six lines of what your module printed to the kernel log. Check that the PIDs / TGIDs shown in the kernel log when unloading the module match the PIDs / TGIDs printed by the single run of the user-space “scull p” test program, otherwise you will not get points! Each PID / TGID pair must also only appear once in the kernel log because duplicates are forbidden in the linked list kept by the character device driver’s code. For example:</p>
+    <figure>
+      <div class="image fit"><img src="/images/pa4-screenshot3.png"></div>
+      <figcaption>Figure 3: Test user-space <code>p</code> command</figcaption>
+    </figure>
+    <h2 id="part4">6 - Part 4: Testing with Threads</h2>
+    <p>Extend the user-space test program (inside the <code>src</code> directory) to utilize the new IOCTL by adding the following command, triggered from the command line: <code>./scull t</code></p>
+    <p>When given the <code>t</code> command (<code>t</code> for “threads”), the user-space test program should create 4 threads that each use your <code>SCULL_IOCIQUANTUM</code> IOCTL <em>twice</em> before exiting. Make sure that all 4 threads run concurrently (i.e. the main thread must create all four of them before it starts to wait for each thread to terminate). Also make sure that the <code>/dev/scull</code> device file is opened and closed only once in the main thread, not opened and closed in each new thread separately.</p>
+    <blockquote class="aside">Hint: give the address of the variable <code>fd</code> as the fourth argument of <code>pthread_create</code>; the thread function will then receive this address as its pointer argument.</blockquote>
+    <p>Each thread should print out the information received from the driver for each IOCTL done. For example:</p>
+    <pre><code>$ ./scull t<br>Device (/dev/scull) opened<br>state 0, cpu 0, prio 120, pid 3620, tgid 3618, nv 0, niv 0<br>state 0, cpu 0, prio 120, pid 3620, tgid 3618, nv 0, niv 2<br>state 0, cpu 1, prio 120, pid 3621, tgid 3618, nv 0, niv 0<br>state 0, cpu 2, prio 120, pid 3622, tgid 3618, nv 0, niv 0<br>state 0, cpu 1, prio 120, pid 3622, tgid 3618, nv 1, niv 0<br>state 0, cpu 2, prio 120, pid 3619, tgid 3618, nv 0, niv 0<br>state 0, cpu 3, prio 120, pid 3619, tgid 3618, nv 1, niv 3<br>state 0, cpu 1, prio 120, pid 3621, tgid 3618, nv 0, niv 3<br>Device (/dev/scull) closed</code></pre>
+    <p>Note how the printed PIDs are not in increasing order, which shows that the threads are really running concurrently, not one after the other! Note also how all the threads have the same TGID but different PIDs. Finally, note how the threads run on different CPUs (and even move between CPUs).</p>
+    <h3 id="loc-7">6.1 - Deliverable</h3>
+    <p>You must provide a single screenshot that shows a Debian terminal window that shows the output of the <code>id</code> command, followed by the module being loaded into the kernel, followed by the <code>scull t</code> user-space test command being run <code>once</code>, followed by the module being unloaded from the kernel, followed by the output of the <code data-lang="bash"><span style="color: #4b69c6">sudo</span> dmesg <span style="color: #d73948">|</span> <span style="color: #4b69c6">tail</span> -6</code> command, showing the last six lines of what your module printed to the kernel log. Check that the PIDs / TGIDs shown in the kernel log when unloading the module match the PIDs / TGIDs printed by the single run of the user-space <code>scull t</code> test program, otherwise you will not get points! Each PID / TGID pair must also only appear once in the kernel log because duplicates are forbidden in the linked list kept by the character device driver’s code. For example:</p>
+    <figure>
+      <div class="image fit"><img src="/images/pa4-screenshot4.png"></div>
+      <figcaption>Figure 4: Test user-space <code>t</code> command</figcaption>
+    </figure>
+    <h2>7 - Deliverables</h2>
+    <p>Remember to put comments everywhere in your code to explain to the CAs what your code is doing! Check that your code still works after adding the comments!</p>
+    <p>Once both your kernel module and your user-space test program work, execute <code>make clean</code> in both the <code>~/&lt;login>-pa4/driver/</code> and <code>~/&lt;login>-pa4/src/</code> directories to delete any extraneous files there (replace <code>&lt;login></code> with your student login name, of course).</p>
+    <p>In the top level of the same <code>~/&lt;login>-pa4</code> submission directory, create a PDF file named <code>screenshots.pdf</code> that contains:</p>
+    <ol start="1">
+      <li>
+        <p>Your full name.</p>
+      </li>
+      <li>
+        <p>The Stevens Honor pledge.</p>
+      </li>
+      <li>
+        <p>The four screenshots you created above: one for each of <a href="#loc-3">Section 3.3</a>, <a href="#loc-5">Section 4.2</a>, <a href="#loc-6">Section 5.1</a>, and <a href="#loc-7">Section 6.1</a>. Make sure the screenshots are clearly readable.</p>
+      </li>
+      <li>
+        <p>Also add a short explanation before each screenshot so the Course Assistants know what you are trying to show in those screenshots.</p>
+      </li>
+    </ol>
+    <p>At this point the <code>~/&lt;login>-pa4</code> directory must contain all the files you were given in the original zip file (with some of them modified by you, of course), plus your PDF file containing the screenshots, nothing more, nothing less.</p>
+    <p>For example:</p>
+    <pre><code>rtsang1-pa4<br>├── Makefile<br>├── screenshots.pdf<br>├── driver<br>│   ├── Makefile<br>│   ├── scull.c<br>│   └── scull.h<br>└── src<br>    ├── Makefile<br>    └── scull.c</code></pre>
+    <p>Create your submission zip file by running <code data-lang="bash"><span style="color: #4b69c6">make</span> zip</code> at the top level of the directory.</p>
+    <p>Once you have correctly created the file <code>&lt;login>-pa4.zip</code>, copy it to the host OS using your shared folder, <strong><em>double-check its content to make sure it contains everything</em></strong>, then submit it on Gradescope.</p>
+    <h2>8 - Rubric</h2>
+    <table>
+      <tr>
+        <td>20%</td>
+        <td>Code for <a href="#loc-1">Section 3.1</a></td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Code for <a href="#loc-2">Section 3.2</a></td>
+      </tr>
+      <tr>
+        <td>5%</td>
+        <td>Screenshot for <a href="#loc-3">Section 3.3</a></td>
+      </tr>
+      <tr>
+        <td>20%</td>
+        <td>Code for <a href="#loc-4">Section 4.1</a></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Screenshot for <a href="#loc-5">Section 4.2</a></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Code for <a href="#part3">Section 5</a></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Screenshot for <a href="#loc-6">Section 5.1</a></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Code for <a href="#part4">Section 6</a></td>
+      </tr>
+      <tr>
+        <td>10%</td>
+        <td>Screenshot for <a href="#loc-7">Section 6.1</a></td>
+      </tr>
+    </table>
+    <blockquote class="important">You do not get points for screenshots unless the corresponding code is submitted too. So for example you will not get points for the first screenshot listed above if you do not also provide the corresponding code implementing the requirements of <a href="#loc-2">Section 3.2</a>. Screenshots alone will not get you any points at all. So make sure you double check everything before you submit on Gradescope.</blockquote>
+  </body>
+  <p><span style="display: inline-block"></span></p>
+</html>
