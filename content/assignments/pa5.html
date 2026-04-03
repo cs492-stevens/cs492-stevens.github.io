@@ -133,7 +133,7 @@ title: Programming Assignment 5
       <li>
         <p>Add synchronization code to <code>scull_read</code> and <code>scull_write</code> to ensure safe concurrent access to the message queue, as we saw in class in the concurrency lectures. Use sleeping / waking synchronization functions, not busy-waiting ones.</p>
         <blockquote class="important">
-          <p>You must use only semaphores and mutexes for synchronization (otherwise you will lose points) and use the <em>interruptible</em> variants (both for semaphores and mutexes), so that the functions can be interrupted if you decide to terminate the processes early using a signal (e.g., through Ctrl-c from the keyboard).</p>
+          <p>You must use only semaphores and mutexes for synchronization (otherwise you will lose points) and use the <em>interruptible</em> variants (both for <a href="https://elixir.bootlin.com/linux/v6.12.74/source/kernel/locking/semaphore.c#L69">semaphores</a> and <a href="https://elixir.bootlin.com/linux/v6.12.74/source/kernel/locking/mutex.c#L970">mutexes</a>), so that the functions can be interrupted if you decide to terminate the processes early using a signal (e.g., through Ctrl-c from the keyboard).</p>
           <p>Make sure your code checks and returns an appropriate error on early termination, and does not leave any semaphore or mutex still locked!</p>
         </blockquote>
       </li>
