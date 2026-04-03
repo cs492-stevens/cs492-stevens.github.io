@@ -48,19 +48,19 @@
     
     "relUrl": "/"
   },"7": {
-    "doc": "Lectures",
-    "title": "Lectures",
-    "content": " ",
-    "url": "/lectures/",
-    
-    "relUrl": "/lectures/"
-  },"8": {
     "doc": "Assignments",
     "title": "Assignments",
     "content": " ",
     "url": "/assignments/",
     
     "relUrl": "/assignments/"
+  },"8": {
+    "doc": "Lectures",
+    "title": "Lectures",
+    "content": " ",
+    "url": "/lectures/",
+    
+    "relUrl": "/lectures/"
   },"9": {
     "doc": "Lecture 01 Annotated",
     "title": "Lecture 01 Annotated",
@@ -664,90 +664,146 @@
     
     "relUrl": "/assignments/pa4.html"
   },"95": {
+    "doc": "Programming Assignment 5",
+    "title": "1 - Introduction",
+    "content": "The objective of this assignment is to implement a kernel-based first-in-first-out (FIFO) message queue by extending a barebone character device driver. This message queue can be used by multiple producers and consumers to exchange data at the same time so with this assignment you will also get more practice with synchronization primitives. Specifically, you will: . | Extend a character device driver, implemented as a kernel module, to implement a FIFO message queue that supports multiple producers and consumers. | Extend a user space program to interact with the character device driver to test it. | . ",
+    "url": "/assignments/pa5.html",
+    
+    "relUrl": "/assignments/pa5.html"
+  },"96": {
+    "doc": "Programming Assignment 5",
+    "title": "2 - Setup",
+    "content": ". | Boot your Debian virtual machine using your “known good” Linux kernel (most likely the one with a name ending with amd64). | Download the file template-pa5.zip, move it to your shared folder, and unzip this archive file using the command: . unzip -d \"&lt;shared>/&lt;login>-pa5\" template-pa5.zip . Where &lt;shared> is the path to your shared directory, and &lt;login> is your Stevens username (e.g. rtsang1). | In the “scull” character device driver (inside the driver directory) we have prepared one IOCTL command, which you can find in the scull_ioctl function of the scull.c file. This command returns the size of a queue element (in other words, the maximum length of any message exchanged between a producer and consumer), although the queue itself is not implemented yet (this will be your job below). The scull.c file also contains two scull_read and scull_write functions which currently do nothing except write an informational message to the kernel log. To test the code: . | Modify MODULE_AUTHOR in scull.c to indicate your own student login name. | Compile the scull driver code (it is implemented as a kernel module). | Load the module into the kernel. Also check what happens at the same time in the kernel log. | Create the special character device file /dev/scull with the correct major number for the “scull” module (see Programming Assignment 4 if you do not remember how to do this). | By default, the /dev/scull pseudofile is created with root-only access permissions. To enable read and write permissions, execute the following command: . sudo chmod o+rw /dev/scull . (o indicates “other users”) . | Compile the user-space producer and consumer programs (inside the src directory). | Test the consumer and producer programs to get a feel for what they do. Also check what happens at the same time in the kernel log. | Unload the module. | . | . ",
+    "url": "/assignments/pa5.html",
+    
+    "relUrl": "/assignments/pa5.html"
+  },"97": {
+    "doc": "Programming Assignment 5",
+    "title": "3 - Part 1: Implementing the Message Queue",
+    "content": "Extend the “scull” character device driver (inside the driver directory) by implementing a FIFO message queue that can store up to N messages (N is called scull_fifo_size in the code), each of size ELEMSZ characters (called scull_fifo_elemsz in the code). The provided code is written in such a way that N and ELEMSZ can be configured at module load time through module parameters (see below). Do not make any assumption in your own code about the values of N and ELEMSZ, except that you can assume that they are always positive integers. The only limits for N and ELEMSZ should be kernel memory availability, not anything in your implementation. Do NOT delete existing code and do NOT create new files. Only modify existing files to introduce your functionality. Your tasks: . | Allocate the message queue as a flat array of characters when the module is loaded into the kernel, and correctly free the message queue when the module is unloaded. Do not implement it in any other way. Not as a list; not as an array of structures; not as multiple arrays. Yes I am forcing you to practice pointer arithmetic. Information on memory allocation and deallocation in the kernel can be found on kernel.org. | You must check whether your memory allocation succeeds or not; if not, you should return an error. | Because processes can store less than ELEMSZ characters of data in a given message, you will also need to store the number of characters actually written in the element. See the Figure 1. where for example the length “len” for the first message is less than ELEMSZ, and so the “len” value needs to always be stored as part of the array, in front of the data for the message proper. The type you use for ‘len“ in your code must match the type used by the scull_read and scull_write functions for the length of a message. Figure 1: Memory model for message queue entries | Since you need to use a flat array to implement a FIFO message queue, you will also need two pointers to manage this array as a circular buffer (do not use any integer type or you will lose points): . | start to indicate the oldest full array element where the next (oldest) message can be read; . | end to indicate the oldest empty array element where the next (newest) message can be written. | . Make sure these two pointers are properly initialized when the module is loaded! . | . | Implement the scull_read (consumer) message queue operation in the device driver. A placeholder function is already in driver/scull.c that currently does nothing except print a message in the kernel log. Complete this function to perform the following: . | Consume the first entry in the queue and copy its data to the provided buf parameter, or block if the queue is empty. If count (the size of buf) is less than the available data, only copy count bytes to buf and ignore the rest. | Return the number of bytes copied to buf if successful, -EFAULT if copying fails, or -EINVAL if a parameter is invalid. | f_pos is unused. | Print “scull read” at level KERN_INFO just before the entry data is copied to buf. | . Because the size of the queue elements (ELEMSZ) is not known at compile time, you will need to do pointer arithmetic when updating the start pointer after a read. Also make sure that start properly wraps around at the end of the array back to the beginning, as necessary, to correctly implement a circular buffer. | Implement the scull_write (producer) message queue operation in the device driver. A placeholder function is already in driver/scull.c that currently does nothing except print a message in the kernel log. Complete this function to perform the following: . | Produce a message by copying count bytes from buf into the next empty queue entry, or block if the queue is full. If count is greater than ELEMSZ, only copy ELEMSZ bytes and ignore the rest. | Return the number of bytes copied if successful, -EFAULT if copying fails, or -EINVAL if a parameter is invalid. | f_pos is unused. | Print “scull write” at level KERN_INFO just before data is copied from buf to the entry. | . Again, because the size ELEMSZ of the FIFO elements is not known at compile time, you will need to do pointer arithmetic when updating the end pointer after a write. Also make sure that end properly wraps around at the end of the array back to the beginning, as necessary, to correctly implement a circular buffer. | Add synchronization code to scull_read and scull_write to ensure safe concurrent access to the message queue, as we saw in class in the concurrency lectures. Use sleeping / waking synchronization functions, not busy-waiting ones. You must use only semaphores and mutexes for synchronization (otherwise you will lose points) and use the interruptible variants (both for semaphores and mutexes), so that the functions can be interrupted if you decide to terminate the processes early using a signal (e.g., through Ctrl-c from the keyboard). Make sure your code checks and returns an appropriate error on early termination, and does not leave any semaphore or mutex still locked! . | . ",
+    "url": "/assignments/pa5.html#part1",
+    
+    "relUrl": "/assignments/pa5.html#part1"
+  },"98": {
+    "doc": "Programming Assignment 5",
+    "title": "4 - Part 2: Modifying the User-Space Test Programs",
+    "content": ". | Modify the code of the producer (inside the src directory) to use your own name as the message rather than “Ryan Tsang” (nothing else). Note how the string is written to the message queue without the trailing \\0 character. | Modify the code of the consumer so that it reads (and prints) the complete data from a queue element. Do not assume that the consumer program knows in advance the size of each queue element. The driver already implements an IOCTL command (SCULL_IOCGETELEMSZ) to return the size of a queue element (ELEMSZ) to user-space processes and this is what your code must use to learn the maximum size allowed for a message. Use this IOCTL command in the consumer code to dynamically allocate a user-space buffer of the right size before reading a queue element. Make sure that a \\0 exists at the end of the data in the buffer before printing the data. Also make sure the user-space buffer is properly deallocated when it is not needed anymore. | . ",
+    "url": "/assignments/pa5.html#part2",
+    
+    "relUrl": "/assignments/pa5.html#part2"
+  },"99": {
+    "doc": "Programming Assignment 5",
+    "title": "5 - Part 3: Testing the Message Queue",
+    "content": ". | Load the module with a large scull_fifo_size and a small scull_fifo_elemsz. Start 2 producers and then 2 consumers. For example: . $ sudo insmod ../driver/scull.ko scull_fifo_size=10 scull_fifo_elemsz=3 $ ./producer p 2 Device (/dev/scull) opened write: Ryan Tsangwrite: Ryan TsangDevice (/dev/scull) closed $ ./consumer p 2 Device (/dev/scull) opened read: Rya read: Rya Device (/dev/scull) closed . You must provide a single screenshot that shows a Debian terminal window that shows output similar to what is shown above (including the insmod command used), followed by the output of the id command. | Reload the module with a large scull_fifo_size and a large scull_fifo_elemsz. Start 2 producers and then 2 consumers. For example: . $ sudo insmod ../driver/scull.ko scull_fifo_size=10 scull_fifo_elemsz=30 $ ./producer p 2 Device (/dev/scull) opened write: Ryan Tsangwrite: Ryan TsangDevice (/dev/scull) closed $ ./consumer p 2 Device (/dev/scull) opened read: Ryan Tsangread: Ryan TsangDevice (/dev/scull) closed . You must provide a single screenshot that shows a Debian terminal window that shows output similar to what is shown above (including the insmod command used), followed by the output of the id command. | Open 3 terminal windows, one for showing the kernel log, one for reloading the module and starting the producers, and one for starting the consumers. | Reload the module with scull_fifo_size=2 and scull_fifo_elemsz=30. | Start 5 producers and show that some of them block waiting for consumers in kernel log. Use Ctrl-C to kill the remaining producers. | Then start 5 consumers and wait until they block. Use Ctrl-C to kill the remaining consumers. | . Show in the kernel log that some of them print messages while the remaining consumers block waiting for producers. For example: . Figure 2: Screenshot of blocked, then killed producers and consumers. You must provide a single screenshot that shows a Debian terminal window that shows output similar to what is shown above (including the insmod command used), followed by the output of the id command. | Clear the terminal windows for the producer and consumer processes. | Reload the module with the same values for scull_fifo_size and scull_fifo_elemsz as in the previous test. | Start 5 producers in the first terminal. When they block, do not kill the process. | Then start 5 consumers in the second terminal and allow the processes to complete. | . Show that all blocked producers and all consumers then terminate, and that the reads and writes are interleaved in the kernel log. For example: . Figure 3: Screenshot of producers and consumers with interleaved reads and writes You must provide a single screenshot that shows both Debian terminal windows that show output similar to what is shown above (including the insmod command used), followed by the output of the id command (in either of the two terminal windows). | You should also check that the same thing works fine if you start the 5 consumers before starting the 5 producers (no need to provide any screenshot for this). | . ",
+    "url": "/assignments/pa5.html#part3",
+    
+    "relUrl": "/assignments/pa5.html#part3"
+  },"100": {
+    "doc": "Programming Assignment 5",
+    "title": "6 - Deliverables",
+    "content": "Once both your kernel module and your user-space test program work, execute make clean in both the ~/&lt;login>-pa5/driver/ and ~/&lt;login>-pa5/src/ directories to delete any extraneous files there (replace &lt;login> with your student login name, of course). In the top level of the same ~/&lt;login>-pa5 submission directory, create a PDF file named screenshots.pdf that contains: . | Your full name. | The Stevens Honor pledge. | The four screenshots you created above: one for each of Listing 1, Listing 2, Figure 2, Figure 3. Make sure the screenshots are clearly readable. | Also add a short explanation before each screenshot so the Course Assistants know what you are trying to show in those screenshots. | . At this point the ~/&lt;login>-pa5 directory must contain all the files you were given in the original zip file (with some of them modified by you, of course), plus your PDF file containing the screenshots, nothing more, nothing less. For example: . rtsang1-pa5├── Makefile├── screenshots.pdf├── driver│   ├── Makefile│   ├── scull.c│   └── scull.h└── src ├── Makefile ├── producer.c └── consumer.c . Create your submission zip file by running make zip at the top level of the directory. Once you have correctly created the file &lt;login>-pa5.zip, copy it to the host OS using your shared folder, double-check its content to make sure it contains everything, then submit it on Gradescope. ",
+    "url": "/assignments/pa5.html",
+    
+    "relUrl": "/assignments/pa5.html"
+  },"101": {
+    "doc": "Programming Assignment 5",
+    "title": "7 - Rubric",
+    "content": "| 60% | Code for Section 3 | . | 20% | Code for Section 4 | . | 20% | Screenshots for Section 5 | . You do not get points for screenshots unless the corresponding code is submitted too. Screenshots alone will not get you any points at all. So make sure you double check everything before you submit on Gradescope. ",
+    "url": "/assignments/pa5.html",
+    
+    "relUrl": "/assignments/pa5.html"
+  },"102": {
+    "doc": "Programming Assignment 5",
+    "title": "Programming Assignment 5",
+    "content": ". ",
+    "url": "/assignments/pa5.html",
+    
+    "relUrl": "/assignments/pa5.html"
+  },"103": {
     "doc": "Syllabus",
     "title": "Contents",
     "content": ". | Course Info | Course Description | Student Learning Outcomes | Course Topics | Grade Breakdown | Course Policies . | Programming Assignments . | Assignment Late Policy | . | Exams and Quizzes | Regrade Requests | . | Academic Integrity . | Generative AI | Undergraduate Honor System | . | Accomodations . | Disability Services Confidentiality Policy | . | Inclusivity | Mental Health Resources | Emergency Information | . ",
     "url": "/syllabus.html",
     
     "relUrl": "/syllabus.html"
-  },"96": {
+  },"104": {
     "doc": "Syllabus",
     "title": "Course Info",
     "content": "| Instructor | Ryan Tsang | . | Contact | rtsang1@stevens.edu | . | Office | GS 247 | . | Office Hours | TBD | . | Prereqs | CS 392 | . | Course Assistants | | Name | Email | OH | . | Aya Salama | asalama@stevens.edu | W 4:00pm - 6:00pm GS 226 | . | Duncan Lynch | dlynch3@stevens.edu | T 11:00am - 1:00pm GS 328 | . | Brayden Abo | babo@stevens.edu | T 12:00pm - 2:00pm GS 226 | . | . | Links | . | Canvas, | Gradescope, | Discord | . | . | Materials | . | Tanenbaum and Bos. Modern Operating Systems. 5th Edition. | Corbet, Rubini, and Kroah-Hartman. Linux Device Drivers. 3rd Edition. [Online] | (Optional) Bovet and Cesati. Understanding the Linux Kernel. 3rd Edition. [Online] | Additional material will be posted on Canvas as needed | . | . ",
     "url": "/syllabus.html#loc-1",
     
     "relUrl": "/syllabus.html#loc-1"
-  },"97": {
+  },"105": {
     "doc": "Syllabus",
     "title": "Course Description",
     "content": "The use and internals of modern operating systems. Lectures focus on internals whereas programming assignments focus on use of the operating system interface. Major topics include: . | Processes | Concurrency and Multithreading | Memory Management | Virtual Memory | Shared Libraries | File System Data Structures | Input/Output | . ",
     "url": "/syllabus.html#loc-2",
     
     "relUrl": "/syllabus.html#loc-2"
-  },"98": {
+  },"106": {
     "doc": "Syllabus",
     "title": "Student Learning Outcomes",
     "content": ". | I am able to explain how preemptively scheduled processes and threads provide an abstraction that a program is the only one executing. | I am able to explain how virtual memory provies an abstraction of physical memory. | I am able to explain how an operating system’s input/output architecture provides an abstraction that every data source or sink behaves identically. | I am able to explain how the data structures of the UNIX file system serve to map file names to blocks of a storage device. | I am able to explain in detail how a system call is made and returns. | I am able to write a multi-threaded C program that uses at least one classical synchronization mechanism to solve at least one classical synchronization problem. | . ",
     "url": "/syllabus.html#loc-3",
     
     "relUrl": "/syllabus.html#loc-3"
-  },"99": {
+  },"107": {
     "doc": "Syllabus",
     "title": "Course Topics",
     "content": "| Topic | Reading | . | Introduction | MOS 1, 10.2; LDD 1 | . | Introduction to Linux | MOS 1.6, 10.2; LDD 1 | . | Processes and Threads | MOS 2.1 - 2.2, 6.1 | . | Scheduling | MOS 2.4 | . | Concurrency | MOS 2.3, 2.5 | . | Memory Management | MOS 3.1 - 3.2 | . | Virtual Memory | MOS 3.3 - 3.5, 3.7 | . | File Systems | MOS 4.1 - 4.3 | . | Input/Output | MOS 4.4, 5.1 - 5.4 | . ",
     "url": "/syllabus.html#loc-4",
     
     "relUrl": "/syllabus.html#loc-4"
-  },"100": {
+  },"108": {
     "doc": "Syllabus",
     "title": "Grade Breakdown",
     "content": "| Category | Percentage | . | Quizzes | 10% | . | Programming Assignments | 30% | . | Group Project | 20% | . | Midterm Exam | 20% | . | Final Exam | 20% | . Letter grades will be assigned by bins tentatively as follows: . | Grade | Threshold | . | A | ≥ 92.5% | . | A- | ≥ 90.0% | . | B+ | ≥ 87.5% | . | B | ≥ 82.5% | . | B- | ≥ 80.0% | . | C+ | ≥ 77.5% | . | C | ≥ 72.5% | . | C- | ≥ 70.0% | . | D+ | ≥ 67.5% | . | D | ≥ 60.0% | . | F | &lt; 60.0% | . Grade bins may be adjusted at the end of the semester. ",
     "url": "/syllabus.html#loc-5",
     
     "relUrl": "/syllabus.html#loc-5"
-  },"101": {
+  },"109": {
     "doc": "Syllabus",
     "title": "Course Policies",
     "content": "You, your instructor, and the course assistants are bound by the Stevens Honor System. Honor System violations will always be reported to the Honor Board without exception. Students are responsible for being aware of policies made via: . | this syllabus | in-class | discord | email | . Programming Assignments . | Programming Assignments must be completed individually and the vast majority of your work should be original. You are encouraged to discuss the problems with your classmates but you must not share implementation details. If you are unsure whether you have shared too much, discuss the situation with the instructor before submitting. | If at any point you use even a small part of an external source, whether this is an online resource, another student’s code, or an LLM-generated example, you MUST cite the source. Copying from from an external source without citation will result in, at minimum, an automatic zero for the assignment. | We will use anti-plagiarism tools on assignments to verifiy similarity of solutions. If tools indicate a high likelihood of plagiarism, it will be treated as a violation of the Stevens Honor System. | Attempting to fake/hard-code results in any portion of a programming assignment will result in a zero on the entirety of the assignment. | . Assignment Late Policy . Note: this policy applies only to programming assignments. | You have 3 total slip days to use throughout the semester for homework extensions. Slip days are applied automatically. Do not email the instructor to use them. | Following any slip days used, there will be a 20% penalty for each additional day late. The last day to submit an assignment for a maximum 50% penalty will be explicitly stated on the the assignment instructions. | There is a 10 minute grace period for assignment submissions before slip days or penalties are applied. | . Exams and Quizzes . Exams and quizzes are conducted in-person. All accomodation requests must be registered with the Office of Disability Services at least 1 week before the relevant accomodation would apply. | You may not use any electronic devices during exams or quizzes. This includes, but is not limited to: . | Laptops | Cell Phones | Tablets | Smart Watches | Smart Glasses | . | You may not work with or talk to other students during exams. | You may use one, double-sided, 8.5 x 11 page of handwritten notes on exams only. No other materials are permitted. Using notes that are not handwritten or larger than the indicated size will result in a penalty on the final exam score. | . Regrade Requests . | Students have 3 days after grades are posted to inform your grader and the instructor of a problem. Regrade requests submitted after 3 days have passed will be ignored. | . ",
     "url": "/syllabus.html#loc-6",
     
     "relUrl": "/syllabus.html#loc-6"
-  },"102": {
+  },"110": {
     "doc": "Syllabus",
     "title": "Academic Integrity",
     "content": "Generative AI . You may use generative AI technology, e.g. Chat-GPT, with care to generate ideas and brainstorm. However, you should note that the material generated by these programs may be inaccurate, incomplete, or otherwise problematic. You may treat these programs like a virtual fellow student: you are allowed to “discuss” with them at a conceptual level (though be aware that the information they provide may be inaccurate), but you cannot share solutions or code in either direction. Presenting AI-generated work as your own is plagiarism. If you include material generated by an AI program, it should be cited like any other reference material and clearly attributed. Any plagiarism or other form of cheating will be dealt with under relevant Stevens policies. Undergraduate Honor System . Enrollment into the undergraduate class of Stevens Institute of Technology signifies a student’s commitment to the Honor System. Accordingly, the provisions of the Stevens Honor System apply to all undergraduate students in coursework and Honor Board proceedings. It is the responsibility of each student to become acquainted with and to uphold the ideals set forth in the Honor System Constitution. More information about the Honor System including the constitution, bylaws, investigative procedures, and the penalty matrix can be found online. The following pledge shall be written in full and signed by every student on all submitted work (including, but not limited to, homework, projects, lab reports, code, quizzes and exams) that is assigned by the course instructor. No work shall be graded unless the pledge is written in full and signed. “I pledge my honor that I have abided by the Stevens Honor System.” Reporting Honor System Violations. Students who believe a violation of the Honor System has been committed should report it within ten business days of the suspected violation. Students have the option to remain anonymous and can report violations online. ",
     "url": "/syllabus.html#loc-11",
     
     "relUrl": "/syllabus.html#loc-11"
-  },"103": {
+  },"111": {
     "doc": "Syllabus",
     "title": "Accomodations",
     "content": "Stevens Institute of Technology is dedicated to providing appropriate accommodations to students with documented disabilities. The Office of Disability Services (ODS) works with undergraduate and graduate students with learning disabilities, attention deficit-hyperactivity disorders, physical disabilities, sensory impairments, psychiatric disorders, and other disabilities to help students achieve their academic and personal potential. They facilitate equitable access to the educational programs and opportunities offered at Stevens and coordinate reasonable accommodations for eligible students. These services are designed to encourage independence and self-advocacy with support from the ODS staff. The ODS staff will facilitate the provision of accommodations on a case-by-case basis. For more information about Disability Services and the process to receive accommodations, visit their website. If you have any other questions, please contact the Office of Disability Services at disabilityservices@stevens.edu or by phone at 201.216.3748. Disability Services Confidentiality Policy . Student Disability Files are kept separate from academic files and are stored in a secure location within the Office of Disability Services. The Family Educational Rights Privacy Act (FERPA, 20 U.S.C. 1232g; 34CFR, Part 99) regulates disclosure of disability documentation and records maintained by Stevens Disability Services. According to this act, prior written consent by the student is required before our Disability Services office may release disability documentation or records to anyone. An exception is made in unusual circumstances, such as the case of health and safety emergencies. ",
     "url": "/syllabus.html#loc-14",
     
     "relUrl": "/syllabus.html#loc-14"
-  },"104": {
+  },"112": {
     "doc": "Syllabus",
     "title": "Inclusivity",
     "content": "Stevens Institute of Technology believes that diversity and inclusiveness are essential to excellence in academic discourse and innovation. In this class, the perspective of people of all races, ethnicities, gender expressions and gender identities, religions, sexual orientations, disabilities, socioeconomic backgrounds, and nationalities will be respected and viewed as a resource and benefit throughout the semester. Suggestions to further diversify class materials and assignments are encouraged. If any course meetings conflict with your religious events, please do not hesitate to reach out to your instructor to make alternative arrangements. You are expected to treat your instructor and all other participants in the course with courtesy and respect. Disrespectful conduct and harassing statements will not be tolerated and may result in disciplinary actions. Name and Pronoun Usage. As this course includes group work and class discussion, it is vitally important for us to create an educational environment of inclusion and mutual respect. This includes the ability for all students to have their chosen gender pronoun(s) and chosen name affirmed. If the class roster does not align with your pronouns and/or name, please inform the instructor of the necessary changes. Religious Holidays. Stevens is a diverse community that is committed to providing equitable educational opportunities and supporting students of all ethnicities and belief systems. Religious observance is an essential reflection of that rich diversity. Students will not be subject to any grade penalties for missing a class, examination, or any other course requirement due to religious observance. In addition, students will not be asked to choose between religious observance and academic work. Therefore, students should inform the instructor at the beginning of the semester if a requirement for this course conflicts with religious observance so that accommodations can be made for students to observe religious practices and complete the requirements for the course. ",
     "url": "/syllabus.html#loc-16",
     
     "relUrl": "/syllabus.html#loc-16"
-  },"105": {
+  },"113": {
     "doc": "Syllabus",
     "title": "Mental Health Resources",
     "content": "Part of being successful in the classroom involves a focus on your whole self, including your mental health. While you are at Stevens, there are many resources to promote and support mental health. The Office of Counseling and Psychological Services (CAPS) offers free and confidential services to all enrolled students who are struggling to cope with personal issues (e.g., difficulty adjusting to college or trouble managing stress) or psychological difficulties (e.g., anxiety and depression). Appointments can be made by phone (201-216-5177), online, or in person on the 2nd Floor of the Student Wellness Center. ",
     "url": "/syllabus.html#loc-17",
     
     "relUrl": "/syllabus.html#loc-17"
-  },"106": {
+  },"114": {
     "doc": "Syllabus",
     "title": "Emergency Information",
     "content": "In the event of an urgent or emergent concern about your own safety or the safety of someone else in the Stevens community, please immediately call the Stevens Campus Police at 201-216-5105 or on their emergency line at 201-216-3911. These phone lines are staffed 24/7, year-round. For students who do not reside near the campus and require emergency support, please contact your local emergency response providers at 911 or via your local police precinct. Other 24/7 national resources for students dealing with mental health crises include the National Suicide Prevention Lifeline (1-800-273-8255) and the Crisis Text Line (text “Home” to 741-741). If you are concerned about the wellbeing of another Stevens student, and the matter is not urgent or time sensitive, please email the CARE Team at care@stevens.edu. A member of the CARE Team will respond to your concern as soon as possible. ",
     "url": "/syllabus.html#loc-18",
     
     "relUrl": "/syllabus.html#loc-18"
-  },"107": {
+  },"115": {
     "doc": "Syllabus",
     "title": "Syllabus",
     "content": ". SyllabusCS 492 - Operating Systems . DISCLAIMER: This syllabus is a living document. While policies are unlikely to change dramatically, I reserve the right to change them if I deem it necessary to adapt to changing circumstances. ",
