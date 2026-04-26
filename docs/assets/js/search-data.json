@@ -48,19 +48,19 @@
     
     "relUrl": "/"
   },"7": {
-    "doc": "Assignments",
-    "title": "Assignments",
-    "content": " ",
-    "url": "/assignments/",
-    
-    "relUrl": "/assignments/"
-  },"8": {
     "doc": "Lectures",
     "title": "Lectures",
     "content": " ",
     "url": "/lectures/",
     
     "relUrl": "/lectures/"
+  },"8": {
+    "doc": "Assignments",
+    "title": "Assignments",
+    "content": " ",
+    "url": "/assignments/",
+    
+    "relUrl": "/assignments/"
   },"9": {
     "doc": "Lecture 01 Annotated",
     "title": "Lecture 01 Annotated",
@@ -846,90 +846,146 @@
     
     "relUrl": "/assignments/pa5.html"
   },"121": {
+    "doc": "Final Project",
+    "title": "1 - Introduction",
+    "content": "For your final project, you and your group will be impelenting a disk-based file system called FSX492, which is a simple derivation of the UNIX Fast File System (FFS). You will be using the Linux FUSE (Filesystem in Userspace) interface to implement a file system as a user-space process. Instead of a physical disk, you will be provided with a file containing a virtual disk, which you will access through a simulated block device interface. You must work in groups of 2 or 3 students. You must register your group on Canvas. You will submit your project on Gradescope. ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"122": {
+    "doc": "Final Project",
+    "title": "2 - Background",
+    "content": "We provide some light background and helpfule links on FUSE and the file system format you will be constructing to give you a high-level overview. The template source code is documented fairly thoroughly and you are expected to read it as well for additional context. 2.1 - FUSE . FUSE (Filesystem in Userspace) is an interface for userspace programs to export a filesystem to the Linux kernel. The FUSE project consists of two components: the fuse kernel module (maintained in the regular kernel repositories) and the libfuse userspace library (maintained in this repository). libfuse provides the reference implementation for communicating with the FUSE kernel module. A FUSE file system is typically implemented as a standalone application that links with libfuse. libfuse provides functions to mount the file system, unmount it, read requests from the kernel, and send responses back. libfuse offers two APIs: a “high-level”, synchronous API, and a “low-level” asynchronous API. In both cases, incoming requests from the kernel are passed to the main program using callbacks. When using the high-level API, the callbacks may work with file names and paths instead of inodes, and processing of a request finishes when the callback function returns. When using the low-level API, the callbacks must work with inodes and responses must be sent explicitly using a separate set of API functions. — libfuse Documentation . Figure 1: FUSE file system architecture When you use an application that invokes a file system syscall, (such as open, read, write, or close) the kernel will redirect these syscalls to the virtual file system (VFS). When those calls access files in the FUSE file system, they will be forwarded to the FUSE kernel module, which will in turn invoke the corresponding callbacks registered in the user-space process (e.g. fsx492). This can be seen in Figure 1. The user-space program must define some subset of callbacks that libfuse expects. Due to all the redirections, FUSE file systems are much slower than kernel-based file systems; however, they are much easier to implement and debug. Some helpful links: . | Geoff Kuenning’s (Harvey Mudd) FUSE Documentation | libfuse source | libfuse documentation . | libfuse operations documentation | . | . 2.2 - FSX492 Description . The FSX492 file system is a simplified deriviative of the UNIX Fast File System. The disk image layout is shown in Figure 2. Figure 2: FSX492 disk image layout Definitions for contents of the superblock, inodes, and directory entries can be found in fsx492.h, and many details are documented in the file system. There are a few things worth noting here: . | Inodes are UNIX-style inodes, and many fields are functionally equivalent (see the copy_stat function in fsx492.c). The file system uses the inode to represent both files and directories (type stored in mode field and accessible via the standard mode_t macros). There are 6 direct data block pointers, 1 singly-indirect block pointer, and 1 doubly-indirect block pointer, giving a maximum file size of over 64 MB. This is significantly larger than the test image size of 1MB, but you should still be able to support files on that order. | The root directory is always inode 1. Inode 0 is reserved as a null-like value. | Directories do not make use of either indirect block pointer, only the 6 direct block pointers. This means that directory sizes are capped at 192 entries. | Directory entries (fsx492_dirent) make use of bitfields. Note that bitfield order in the memory layout is not guaranteed to be the same across compilers or architectures, so be careful when doing bitfield unpacking in the real world. | . | Helper functions for the inode and block bitmaps are defined for you. They make use of the fd_set type, used for the select syscall. | . ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"123": {
+    "doc": "Final Project",
+    "title": "3 - Setup",
+    "content": "You will need to do develop in your Debian VM as you cannot easily mount the file system within a Docker container. If you know of a way to do so without relying on running a privileged container, please let me know. | Boot your Debian VM to a clean kernel (ending in amd64). | Install the necessary packages for development: . sudo apt install libfuse3-dev pkg-config fuse3 . | Confirm that the FUSE kernel module is loaded in Debian: lsmod | grep fuse . | Download the file template-project.zip, move it to your shared folder, and unzip this archive with the following command: . unzip -d \"&lt;shared>/&lt;login1>-&lt;login2>-&lt;login3>-project\" template-project.zip . Where &lt;shared> is the path to your shared directory, and each &lt;login#> is a Stevens login (e.g. rtsang1) for each of your group’s members. | Change to your project directory and compile the provided project code. Compilation should produce a fsx492 executable. This is the FUSE client program, which registers the file system callback functions you will be defining. | Run the following commands: . mkdir ./testfscp data/test.img.bkp data/test.img./fsx492 -d -s --img data/test.img ./testfs . This will create a new directory in the project at which to mount your file system, create a clean test image from the backup image, and attempt to mount the image at ./testfs. If you are curious what the flags mean, run ./fsx492 --help. At this point, the project is still blank and toward the end of the ouptut should be the lines: . fsx492_initfailed to read superblock . This error should be resolved after blkdev.c is implemented. | . The following commands will likely be also be helpful at some point: . | mount | grep \"fsx492\" # confirm if the file system is currently mounted | fusermount -u &lt;path/to/mount/folder> # unmount the filesystem if `fsx492` crashed&#x20; | . ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"124": {
+    "doc": "Final Project",
+    "title": "4 - Testing and Debugging",
+    "content": "After you have implemented blkdev.c, you will will be able to start testing and debugging your code. We have provided some structure to help with both manual and automated integration testing. 4.1 - Manual . When testing manually, you will simply run the fsx492 program to mount the file system and interact with it via standard command line utilities. When you are done testing the program and wish to unmount it, you can kill the process with Ctrl-C. The FUSE client automatically registers an interrupt handler for the kill signal to gracefully clean up and unmount the file system, so long as it is implemented correctly. Executingfsx492 without any flags will cause it to run in the background by default, so your logging output (printf and fprintf) will not be visible. To run the executable in the foreground, use the -f or -d flags. When executing in the foreground, you will need to interact with the file system via a separate terminal instance. Additionally, FUSE clients execute in multi-threaded mode by default, which will make logged output much more difficult to parse. To run in single-threaded mode, use the -s flag. You are not expected to make your implementation thread-safe, so you should pretty much always be using -s. If your program crashes after mounting, it will leave the mountpoint in a broken state, as the interrupt handler will not run. You must run fusermount -u &lt;mountpoint>&#x20; to manually unmount the broken filesystem before attempting to mount again. For convenience, we have included 2 .PHONY targets in the Makefile: . | make reset will automatically unmount the file system from ./testfs and restore the data/test.img from the backup. | make mount will mount the filesystem at ./testfs. | . While printf debugging is a perfectly viable strategy for this project, you are also able to run the fsx492 executable under GDB and Valgrind. To run under GDB: . $ gdb fsx492GNU gdb (Debian 16.3-1) 16.3Copyright (C) 2024 Free Software Foundation, Inc....Reading symbols from fsx492...(gdb) handle SIGINT print nostop passSIGINT is used by the debugger.Are you sure you want to change it? (y or n) ySignal Stop Print Pass to program DescriptionSIGINT No Yes Yes Interrupt(gdb) run -s -d --img data/test.img ./testfs . Attempting to kill the program using Ctrl-C while running it under gdb will not actually kill the program due to how gdb intercepts signals. To allow our program to interact with signals, we must explicitly tell GDB to (1) forward the signal to the program (“pass”) and (2) prevent GDB from stopping itself while forwarding the signal (“nostop”), as shown above. If you forget to do this and quit GDB, the cleanup code will not run and you will have to manually unmount the filesystem with fusermount. To run under Valgrind: . $ valgrind --leak-check=full ./fsx492 -s -d --img data/test.img ./testfs . Valgrind functions by executing the program in an emulated virtual machine, so expect it to run significantly slower. 4.2 - Automated . We have also provided a Python framework for automated tests in test.py, which we will expect you to fill out to exercise all of your implemented functions. You can run test.py --help to see a list of its arguments . The test.py script works by launching 2 threads: one to mount the file system, and one to run the test itself. Tests are defined as global functions whose names are prefixed by test_. They take a single argument mountpoint, which is a string containing the path to the directory where the file system was mounted. Each test is meant to execute a sequence of file operations (using any standard library modules you like), with failure conditions indicated with assert statements. There are two sample tests provided as an example. You must run tests one at a time, as they are destructive to the test image. The test script will restore the test image from its backup before executing the test function to ensure repeatability. Therefore, your tests must be written with the assumption that they will be modifying a clean image file. If you make modifications to the test image that you want to keep (for instance, during manual testing), you will need to save a copy of the image file before you invoke test.py, or the changes will be lost. The output of test.py will only show logs from the script itself; however, the logs from fsx492 will be saved in a text file named fsx492.log in the same directory. ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"125": {
+    "doc": "Final Project",
+    "title": "5 - Requirements",
+    "content": "Complete the implementation of the FSX492 file system. Make sure your code is reasonably well commented. If the grader cannot understand your code and it does not work, you will get no partial credit. The list of required functions and tests to implement are included as checklists in the README.md file. In addition to the required functionality, you can choose to implement additional features for extra credit. In particular, you can get credit for implementing symlinks and access control. We will expect you to add tests for that functionality as well. ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"126": {
+    "doc": "Final Project",
+    "title": "6 - Deliverables",
+    "content": "Use the Makefile to build your project submission zip file via make submission. This zip file should contain all of the relevant files to build and test your project. If there are additional artifacts to submit, you must update the SUBMISSION_FILES variable with the relative paths to the files to submit. As part of the submission, you must include a screenshots.pdf and the updated README.md file. The screenshots.pdf file should contain: . | The Stevens Honor pledge | A screenshot showing the output of each passed test case, along with a description stating the test case name, and what is done in the test.Note that you will still get the credit for writing the test, even if it does not pass. | . The README.md file should contain: . | The names and emails of all group members | The checkboxes filled in for all functions and tests implemented. | . Submit your zip file on Gradescope with the relevant group members added to your submission. ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"127": {
+    "doc": "Final Project",
+    "title": "7 - Rubric",
+    "content": "| 5% | blkdev_read | . | 5% | blkdev_write | . | 5% | blkdev_flush | . | 5% | blkdev_close | . | 4% | find_entry | . | 5% | _link | . | 5% | _unlink | . | 3% | fsx492_getattr | . | 3% | fsx492_opendir | . | 2% | fsx492_releasedir | . | 4% | fsx492_mkdir | . | 4% | fsx492_rmdir | . | 4% | fsx492_open | . | 2% | fsx492_release | . | 5% | fsx492_write | . | 2% | fsx492_link | . | 2% | fsx492_chmod | . | 7% | adding and removing files from subdirectories | . | 7% | adding then removing more than a block’s worth of directories atonce | . | 5% | overwriting a file (see open behavior) | . | 4% | opening a file in “append” mode (see open behavior) | . | 4% | counting hard links | . | 4% | update access/modification time | . | 4% | changing permissions (true access control optional) | . You do not get points for screenshots unless the corresponding code and test is submitted as well. Implementing symlinks can earn up to 5% extra credit. Implementing access control can earn up to 10% extra credit. These must not break required features. If they do, you will not receive any credit for partial implementation as grading would become prohibitively complex. ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"128": {
+    "doc": "Final Project",
+    "title": "Final Project",
+    "content": ". ",
+    "url": "/assignments/project.html",
+    
+    "relUrl": "/assignments/project.html"
+  },"129": {
     "doc": "Syllabus",
     "title": "Contents",
     "content": ". | Course Info | Course Description | Student Learning Outcomes | Course Topics | Grade Breakdown | Course Policies . | Programming Assignments . | Assignment Late Policy | . | Exams and Quizzes | Regrade Requests | . | Academic Integrity . | Generative AI | Undergraduate Honor System | . | Accomodations . | Disability Services Confidentiality Policy | . | Inclusivity | Mental Health Resources | Emergency Information | . ",
     "url": "/syllabus.html",
     
     "relUrl": "/syllabus.html"
-  },"122": {
+  },"130": {
     "doc": "Syllabus",
     "title": "Course Info",
     "content": "| Instructor | Ryan Tsang | . | Contact | rtsang1@stevens.edu | . | Office | GS 247 | . | Office Hours | TBD | . | Prereqs | CS 392 | . | Course Assistants | | Name | Email | OH | . | Aya Salama | asalama@stevens.edu | W 4:00pm - 6:00pm GS 226 | . | Duncan Lynch | dlynch3@stevens.edu | T 11:00am - 1:00pm GS 328 | . | Brayden Abo | babo@stevens.edu | T 12:00pm - 2:00pm GS 226 | . | . | Links | . | Canvas, | Gradescope, | Discord | . | . | Materials | . | Tanenbaum and Bos. Modern Operating Systems. 5th Edition. | Corbet, Rubini, and Kroah-Hartman. Linux Device Drivers. 3rd Edition. [Online] | (Optional) Bovet and Cesati. Understanding the Linux Kernel. 3rd Edition. [Online] | Additional material will be posted on Canvas as needed | . | . ",
     "url": "/syllabus.html#loc-1",
     
     "relUrl": "/syllabus.html#loc-1"
-  },"123": {
+  },"131": {
     "doc": "Syllabus",
     "title": "Course Description",
     "content": "The use and internals of modern operating systems. Lectures focus on internals whereas programming assignments focus on use of the operating system interface. Major topics include: . | Processes | Concurrency and Multithreading | Memory Management | Virtual Memory | Shared Libraries | File System Data Structures | Input/Output | . ",
     "url": "/syllabus.html#loc-2",
     
     "relUrl": "/syllabus.html#loc-2"
-  },"124": {
+  },"132": {
     "doc": "Syllabus",
     "title": "Student Learning Outcomes",
     "content": ". | I am able to explain how preemptively scheduled processes and threads provide an abstraction that a program is the only one executing. | I am able to explain how virtual memory provies an abstraction of physical memory. | I am able to explain how an operating system’s input/output architecture provides an abstraction that every data source or sink behaves identically. | I am able to explain how the data structures of the UNIX file system serve to map file names to blocks of a storage device. | I am able to explain in detail how a system call is made and returns. | I am able to write a multi-threaded C program that uses at least one classical synchronization mechanism to solve at least one classical synchronization problem. | . ",
     "url": "/syllabus.html#loc-3",
     
     "relUrl": "/syllabus.html#loc-3"
-  },"125": {
+  },"133": {
     "doc": "Syllabus",
     "title": "Course Topics",
     "content": "| Topic | Reading | . | Introduction | MOS 1, 10.2; LDD 1 | . | Introduction to Linux | MOS 1.6, 10.2; LDD 1 | . | Processes and Threads | MOS 2.1 - 2.2, 6.1 | . | Scheduling | MOS 2.4 | . | Concurrency | MOS 2.3, 2.5 | . | Memory Management | MOS 3.1 - 3.2 | . | Virtual Memory | MOS 3.3 - 3.5, 3.7 | . | File Systems | MOS 4.1 - 4.3 | . | Input/Output | MOS 4.4, 5.1 - 5.4 | . ",
     "url": "/syllabus.html#loc-4",
     
     "relUrl": "/syllabus.html#loc-4"
-  },"126": {
+  },"134": {
     "doc": "Syllabus",
     "title": "Grade Breakdown",
     "content": "| Category | Percentage | . | Quizzes | 10% | . | Programming Assignments | 30% | . | Group Project | 20% | . | Midterm Exam | 20% | . | Final Exam | 20% | . Letter grades will be assigned by bins tentatively as follows: . | Grade | Threshold | . | A | ≥ 92.5% | . | A- | ≥ 90.0% | . | B+ | ≥ 87.5% | . | B | ≥ 82.5% | . | B- | ≥ 80.0% | . | C+ | ≥ 77.5% | . | C | ≥ 72.5% | . | C- | ≥ 70.0% | . | D+ | ≥ 67.5% | . | D | ≥ 60.0% | . | F | &lt; 60.0% | . Grade bins may be adjusted at the end of the semester. ",
     "url": "/syllabus.html#loc-5",
     
     "relUrl": "/syllabus.html#loc-5"
-  },"127": {
+  },"135": {
     "doc": "Syllabus",
     "title": "Course Policies",
     "content": "You, your instructor, and the course assistants are bound by the Stevens Honor System. Honor System violations will always be reported to the Honor Board without exception. Students are responsible for being aware of policies made via: . | this syllabus | in-class | discord | email | . Programming Assignments . | Programming Assignments must be completed individually and the vast majority of your work should be original. You are encouraged to discuss the problems with your classmates but you must not share implementation details. If you are unsure whether you have shared too much, discuss the situation with the instructor before submitting. | If at any point you use even a small part of an external source, whether this is an online resource, another student’s code, or an LLM-generated example, you MUST cite the source. Copying from from an external source without citation will result in, at minimum, an automatic zero for the assignment. | We will use anti-plagiarism tools on assignments to verifiy similarity of solutions. If tools indicate a high likelihood of plagiarism, it will be treated as a violation of the Stevens Honor System. | Attempting to fake/hard-code results in any portion of a programming assignment will result in a zero on the entirety of the assignment. | . Assignment Late Policy . Note: this policy applies only to programming assignments. | You have 3 total slip days to use throughout the semester for homework extensions. Slip days are applied automatically. Do not email the instructor to use them. | Following any slip days used, there will be a 20% penalty for each additional day late. The last day to submit an assignment for a maximum 50% penalty will be explicitly stated on the the assignment instructions. | There is a 10 minute grace period for assignment submissions before slip days or penalties are applied. | . Exams and Quizzes . Exams and quizzes are conducted in-person. All accomodation requests must be registered with the Office of Disability Services at least 1 week before the relevant accomodation would apply. | You may not use any electronic devices during exams or quizzes. This includes, but is not limited to: . | Laptops | Cell Phones | Tablets | Smart Watches | Smart Glasses | . | You may not work with or talk to other students during exams. | You may use one, double-sided, 8.5 x 11 page of handwritten notes on exams only. No other materials are permitted. Using notes that are not handwritten or larger than the indicated size will result in a penalty on the final exam score. | . Regrade Requests . | Students have 3 days after grades are posted to inform your grader and the instructor of a problem. Regrade requests submitted after 3 days have passed will be ignored. | . ",
     "url": "/syllabus.html#loc-6",
     
     "relUrl": "/syllabus.html#loc-6"
-  },"128": {
+  },"136": {
     "doc": "Syllabus",
     "title": "Academic Integrity",
     "content": "Generative AI . You may use generative AI technology, e.g. Chat-GPT, with care to generate ideas and brainstorm. However, you should note that the material generated by these programs may be inaccurate, incomplete, or otherwise problematic. You may treat these programs like a virtual fellow student: you are allowed to “discuss” with them at a conceptual level (though be aware that the information they provide may be inaccurate), but you cannot share solutions or code in either direction. Presenting AI-generated work as your own is plagiarism. If you include material generated by an AI program, it should be cited like any other reference material and clearly attributed. Any plagiarism or other form of cheating will be dealt with under relevant Stevens policies. Undergraduate Honor System . Enrollment into the undergraduate class of Stevens Institute of Technology signifies a student’s commitment to the Honor System. Accordingly, the provisions of the Stevens Honor System apply to all undergraduate students in coursework and Honor Board proceedings. It is the responsibility of each student to become acquainted with and to uphold the ideals set forth in the Honor System Constitution. More information about the Honor System including the constitution, bylaws, investigative procedures, and the penalty matrix can be found online. The following pledge shall be written in full and signed by every student on all submitted work (including, but not limited to, homework, projects, lab reports, code, quizzes and exams) that is assigned by the course instructor. No work shall be graded unless the pledge is written in full and signed. “I pledge my honor that I have abided by the Stevens Honor System.” Reporting Honor System Violations. Students who believe a violation of the Honor System has been committed should report it within ten business days of the suspected violation. Students have the option to remain anonymous and can report violations online. ",
     "url": "/syllabus.html#loc-11",
     
     "relUrl": "/syllabus.html#loc-11"
-  },"129": {
+  },"137": {
     "doc": "Syllabus",
     "title": "Accomodations",
     "content": "Stevens Institute of Technology is dedicated to providing appropriate accommodations to students with documented disabilities. The Office of Disability Services (ODS) works with undergraduate and graduate students with learning disabilities, attention deficit-hyperactivity disorders, physical disabilities, sensory impairments, psychiatric disorders, and other disabilities to help students achieve their academic and personal potential. They facilitate equitable access to the educational programs and opportunities offered at Stevens and coordinate reasonable accommodations for eligible students. These services are designed to encourage independence and self-advocacy with support from the ODS staff. The ODS staff will facilitate the provision of accommodations on a case-by-case basis. For more information about Disability Services and the process to receive accommodations, visit their website. If you have any other questions, please contact the Office of Disability Services at disabilityservices@stevens.edu or by phone at 201.216.3748. Disability Services Confidentiality Policy . Student Disability Files are kept separate from academic files and are stored in a secure location within the Office of Disability Services. The Family Educational Rights Privacy Act (FERPA, 20 U.S.C. 1232g; 34CFR, Part 99) regulates disclosure of disability documentation and records maintained by Stevens Disability Services. According to this act, prior written consent by the student is required before our Disability Services office may release disability documentation or records to anyone. An exception is made in unusual circumstances, such as the case of health and safety emergencies. ",
     "url": "/syllabus.html#loc-14",
     
     "relUrl": "/syllabus.html#loc-14"
-  },"130": {
+  },"138": {
     "doc": "Syllabus",
     "title": "Inclusivity",
     "content": "Stevens Institute of Technology believes that diversity and inclusiveness are essential to excellence in academic discourse and innovation. In this class, the perspective of people of all races, ethnicities, gender expressions and gender identities, religions, sexual orientations, disabilities, socioeconomic backgrounds, and nationalities will be respected and viewed as a resource and benefit throughout the semester. Suggestions to further diversify class materials and assignments are encouraged. If any course meetings conflict with your religious events, please do not hesitate to reach out to your instructor to make alternative arrangements. You are expected to treat your instructor and all other participants in the course with courtesy and respect. Disrespectful conduct and harassing statements will not be tolerated and may result in disciplinary actions. Name and Pronoun Usage. As this course includes group work and class discussion, it is vitally important for us to create an educational environment of inclusion and mutual respect. This includes the ability for all students to have their chosen gender pronoun(s) and chosen name affirmed. If the class roster does not align with your pronouns and/or name, please inform the instructor of the necessary changes. Religious Holidays. Stevens is a diverse community that is committed to providing equitable educational opportunities and supporting students of all ethnicities and belief systems. Religious observance is an essential reflection of that rich diversity. Students will not be subject to any grade penalties for missing a class, examination, or any other course requirement due to religious observance. In addition, students will not be asked to choose between religious observance and academic work. Therefore, students should inform the instructor at the beginning of the semester if a requirement for this course conflicts with religious observance so that accommodations can be made for students to observe religious practices and complete the requirements for the course. ",
     "url": "/syllabus.html#loc-16",
     
     "relUrl": "/syllabus.html#loc-16"
-  },"131": {
+  },"139": {
     "doc": "Syllabus",
     "title": "Mental Health Resources",
     "content": "Part of being successful in the classroom involves a focus on your whole self, including your mental health. While you are at Stevens, there are many resources to promote and support mental health. The Office of Counseling and Psychological Services (CAPS) offers free and confidential services to all enrolled students who are struggling to cope with personal issues (e.g., difficulty adjusting to college or trouble managing stress) or psychological difficulties (e.g., anxiety and depression). Appointments can be made by phone (201-216-5177), online, or in person on the 2nd Floor of the Student Wellness Center. ",
     "url": "/syllabus.html#loc-17",
     
     "relUrl": "/syllabus.html#loc-17"
-  },"132": {
+  },"140": {
     "doc": "Syllabus",
     "title": "Emergency Information",
     "content": "In the event of an urgent or emergent concern about your own safety or the safety of someone else in the Stevens community, please immediately call the Stevens Campus Police at 201-216-5105 or on their emergency line at 201-216-3911. These phone lines are staffed 24/7, year-round. For students who do not reside near the campus and require emergency support, please contact your local emergency response providers at 911 or via your local police precinct. Other 24/7 national resources for students dealing with mental health crises include the National Suicide Prevention Lifeline (1-800-273-8255) and the Crisis Text Line (text “Home” to 741-741). If you are concerned about the wellbeing of another Stevens student, and the matter is not urgent or time sensitive, please email the CARE Team at care@stevens.edu. A member of the CARE Team will respond to your concern as soon as possible. ",
     "url": "/syllabus.html#loc-18",
     
     "relUrl": "/syllabus.html#loc-18"
-  },"133": {
+  },"141": {
     "doc": "Syllabus",
     "title": "Syllabus",
     "content": ". SyllabusCS 492 - Operating Systems . DISCLAIMER: This syllabus is a living document. While policies are unlikely to change dramatically, I reserve the right to change them if I deem it necessary to adapt to changing circumstances. ",
