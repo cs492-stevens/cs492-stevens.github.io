@@ -76,7 +76,7 @@ title: Final Project
         <pre><code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install libfuse3-dev pkg-config fuse3</code></pre>
       </li>
       <li>
-        <p>Confirm that the FUSE kernel module is loaded in Debian: <code data-lang="bash"><span style="color: #4b69c6">lsmod</span> <span style="color: #d73948">|</span> <span style="color: #4b69c6">grep</span> fuse</code></p>
+        <p>Confirm that the FUSE kernel module is loaded in Debian: <code data-lang="bash"><span style="color: #4b69c6">sudo</span> cat /proc/filesystems <span style="color: #d73948">|</span> <span style="color: #4b69c6">grep</span> fuse</code></p>
       </li>
       <li>
         <p>Download the file <a href="/files/project/template-project.zip"><code>template-project.zip</code></a>, move it to your shared folder, and unzip this archive with the following command:</p>
