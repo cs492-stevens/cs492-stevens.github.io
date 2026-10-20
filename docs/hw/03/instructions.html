@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/assets/css/base.css"><link rel="stylesheet" href="/assets/css/layout.css"><link rel="stylesheet" href="/assets/css/navigation.css"><link rel="stylesheet" href="/assets/css/content.css"><link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/theme.css"></head><body><header class="side-bar"><div class="site-header"><a class="site-title" href="/">cs492-f26</a><span style="white-space: pre-wrap">&#x20;</span><button class="site-button" id="menu-button" aria-label="Menu" aria-expanded="false"><svg class="jtd-icon jtd-icon-menu" aria-hidden="true"><use href="/assets/icons/symbols.svg#menu"></use></svg></button></div><nav class="jtd-nav" aria-label="Main"><ul class="jtd-nav-list"><li class="jtd-nav-item" data-nav-id="home"><a class="jtd-nav-link" href="/index.html">Home</a></li><li class="jtd-nav-item" data-nav-id="syllabus"><a class="jtd-nav-link" href="/syllabus.html">Syllabus</a></li><li class="jtd-nav-item" data-nav-id="lec"><div class="jtd-nav-section"><button class="jtd-nav-section-toggle" type="button" aria-expanded="true" aria-controls="jtd-nav-children-lec"><span class="jtd-nav-section-title">Lectures</span><span style="white-space: pre-wrap">&#x20;</span><svg class="jtd-icon jtd-icon-chevron-right" aria-hidden="true"><use href="/assets/icons/symbols.svg#chevron-right"></use></svg></button></div><ul class="jtd-nav-list" id="jtd-nav-children-lec"><li class="jtd-nav-item" data-nav-id="notes:u00+00+intro"><a class="jtd-nav-link" href="/lec/u00+00+intro/notes.html">N-U0: Intro</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+00+os-concepts"><a class="jtd-nav-link" href="/lec/u01+00+os-concepts/notes.html">N-U1: OS Concepts</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+00+os-concepts"><a class="jtd-nav-link" href="/lec/u01+00+os-concepts/annotated.html">A-U1: OS Concepts</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+01+hardware-review"><a class="jtd-nav-link" href="/lec/u01+01+hardware-review/notes.html">N-U1: Hardware Review</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+01+hardware-review"><a class="jtd-nav-link" href="/lec/u01+01+hardware-review/annotated.html">A-U1: Hardware Review</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+02+io"><a class="jtd-nav-link" href="/lec/u01+02+io/notes.html">N-U1: Input/Output</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+02+io"><a class="jtd-nav-link" href="/lec/u01+02+io/annotated.html">A-U1: Input/Output</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+03+unix"><a class="jtd-nav-link" href="/lec/u01+03+unix/notes.html">N-U1: UNIX</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+03+unix"><a class="jtd-nav-link" href="/lec/u01+03+unix/annotated.html">A-U1: UNIX</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+04+syscalls"><a class="jtd-nav-link" href="/lec/u01+04+syscalls/notes.html">N-U1: System Calls</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+04+syscalls"><a class="jtd-nav-link" href="/lec/u01+04+syscalls/annotated.html">A-U1: System Calls</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+05+processes"><a class="jtd-nav-link" href="/lec/u01+05+processes/notes.html">N-U1: Processes</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+05+processes"><a class="jtd-nav-link" href="/lec/u01+05+processes/annotated.html">A-U1: Processes</a></li><li class="jtd-nav-item" data-nav-id="notes:u01+06+threads"><a class="jtd-nav-link" href="/lec/u01+06+threads/notes.html">N-U1: Threads</a></li><li class="jtd-nav-item" data-nav-id="annotated:u01+06+threads"><a class="jtd-nav-link" href="/lec/u01+06+threads/annotated.html">A-U1: Threads</a></li><li class="jtd-nav-item" data-nav-id="notes:u02+00+scheduling"><a class="jtd-nav-link" href="/lec/u02+00+scheduling/notes.html">N-U2: Scheduling</a></li><li class="jtd-nav-item" data-nav-id="annotated:u02+00+scheduling"><a class="jtd-nav-link" href="/lec/u02+00+scheduling/annotated.html">A-U2: Scheduling</a></li></ul></li><li class="jtd-nav-item active" data-nav-id="hw"><div class="jtd-nav-section"><button class="jtd-nav-section-toggle" type="button" aria-expanded="true" aria-controls="jtd-nav-children-hw"><span class="jtd-nav-section-title">Homework</span><span style="white-space: pre-wrap">&#x20;</span><svg class="jtd-icon jtd-icon-chevron-right" aria-hidden="true"><use href="/assets/icons/symbols.svg#chevron-right"></use></svg></button></div><ul class="jtd-nav-list" id="jtd-nav-children-hw"><li class="jtd-nav-item" data-nav-id="hw1"><a class="jtd-nav-link" href="/hw/01/instructions.html">01: Interrupts and Console</a></li><li class="jtd-nav-item" data-nav-id="hw2"><a class="jtd-nav-link" href="/hw/02/instructions.html">02: User Space and System Calls</a></li><li class="jtd-nav-item active" data-nav-id="hw3"><a class="jtd-nav-link active" href="/hw/03/instructions.html">03: Earliest Deadline First</a></li><li class="jtd-nav-item" data-nav-id="env-setup"><a class="jtd-nav-link" href="/hw/setup.html">Environment Setup</a></li></ul></li></ul></nav><nav class="header-links" aria-label="Auxiliary"><ul class="header-links-list"><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="/" aria-label="home"><svg class="jtd-icon jtd-icon-flowbite-home-outline" aria-hidden="true" style="width: 2em; height: 2em;"><use href="/assets/icons/flowbite.svg#flowbite-home-outline"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://sit.instructure.com/courses/189235" aria-label="canvas"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/canvas.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://www.gradescope.com/courses/1382339" aria-label="gradescope"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/gradescope.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://discord.gg/BrG2kuYqM" aria-label="discord"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/discord.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://github.com/cs492-stevens" aria-label="github"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/git-alt.svg"></use></svg></a></li></ul></nav><div class="site-footer">CS492 Fall 2026</div></header><div class="main" id="top"><div class="main-header main-header-default" id="main-header"><nav class="header-links" aria-label="Auxiliary"><ul class="header-links-list"><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="/" aria-label="home"><svg class="jtd-icon jtd-icon-flowbite-home-outline" aria-hidden="true" style="width: 2em; height: 2em;"><use href="/assets/icons/flowbite.svg#flowbite-home-outline"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://sit.instructure.com/courses/189235" aria-label="canvas"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/canvas.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://www.gradescope.com/courses/1382339" aria-label="gradescope"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/gradescope.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://discord.gg/BrG2kuYqM" aria-label="discord"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/discord.svg"></use></svg></a></li><li class="header-links-item"><a class="header-link header-link-icon" target="_blank" rel="noreferrer" href="https://github.com/cs492-stevens" aria-label="github"><svg class="jtd-icon" style="width:1.75em;height:1.75em"><use href="/assets/icons/git-alt.svg"></use></svg></a></li></ul></nav></div><div class="main-content-wrap"><nav class="breadcrumb-nav" aria-label="Breadcrumb"><ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item breadcrumb-nav-root"><a href="/">Home</a></li><li class="breadcrumb-nav-list-item"><span>Homework</span></li><li class="breadcrumb-nav-list-item"><a href="/hw/03/instructions.html">03: Earliest Deadline First</a></li></ol></nav><div class="main-content" id="main-content"><main class="jtd-page"><h2 id="loc-1">Homework 3</h2><p><strong>Due Date</strong>: <strong>Friday, 10/30/2026, 11:59 PM</strong></p><h2 id="loc-2">Instructions</h2><ol><li><p>You may work together with other students on this assignment. <em><strong>You must list the names and <code>stevens.edu</code> addresses of anyone you work with.</strong></em> <em><strong>You are still responsible for submitting this assignment individually</strong></em></p></li><li><p>The use of LLM-based tools on this assignment is allowed. <strong>You must document the model(s) used, (e.g. gpt5.6-sol) and how it was used (e.g. planning, coding, research on &lt;topic>, spell-checking)</strong></p></li><li><p>All external sources of code must be cited if used. Submitting work that is not your own without citation is plagiarism.</p></li><li><p>Your source code submissions will be managed via GitHub.</p></li><li><p>Your written submissions will be managed via Gradescope.</p></li></ol><h2 id="hw3-intro">Introduction</h2><p>The objective of this assignment is to implement the Earliest Deadline First (EDF) scheduling algorithm.</p><p>To avoid having to modify the Linux kernel’s own scheduler—which is quite complex and does multi-CPU scheduling and would be difficult to test—this assignment must be implemented as a <em>user-mode</em> program. It should compute the result of the EDF scheduling algorithm for a single CPU, without actually creating any processes or threads to be scheduled.</p><p>You are free to implement the EDF algorithm in any way you want under the following conditions:</p><ul><li>You must write your solution in a single C named <code>edf.c</code>.</li><li>Your solution should compile using the provided Makefile in a Debian-based Linux environment.</li></ul><p>Test files are provided in the <a href="hw3-template.zip"><code>hw3-template.zip</code></a> file. The archive contains a Python testing script which will load provided test cases from <code>tests.json</code>, then perform output comparison and valgrind memory checks based on your solution. The script can be invoked with:</p><pre><code data-lang="bash"><span style="color: #4b69c6">python3</span> test_edf.py ./edf tests.json</code></pre><p>as long as it is in the same directory as the <code>./edf</code> executable and the <code>tests.json</code> file.</p><h3 id="loc-3">Development Environment</h3><p>For this assignment, the development environment does not matter too much; however, in future assignments, you will be expected to set up and use <a href="/hw/setup.html"><code>cs492-env</code></a>.</p><p>For testing purposes, you must have Python and <code>valgrind</code> installed. <code>valgrind</code> is a Unix-specific tool, so you will need to use a Linux VM if you are on Windows.</p><p>On a Debian-based Linux distribution, you can install them with:</p><pre><code data-lang="bash"><span style="color: #4b69c6">sudo</span> apt install valgrind python3</code></pre><h2 id="hw3-requirements">Requirements</h2><aside id="task1" class="jtd-callout jtd-callout-task" data-kind="task"><div class="jtd-callout-title">Task 1</div><div class="jtd-callout-body"><p>Your program must do the following:</p><ol><li><p>Interactively ask the user to enter the number of processes to schedule via <code>stdin</code> (see below for examples).</p><ul><li>Assume that this number is always strictly positive. There is no need to check for that in your program.</li></ul></li><li><p>For each process to schedule, ask the user the enter the <em>CPU time required</em> by the process and the <em>period</em> for the process.</p><ul><li>Assume that all CPU times and periods are strictly positive, and that the period for a given process is always at least as big as the CPU time for that same process. There is no need to check for all these things in your program.</li><li>Assume that all the processes initially arrive in the ready queue at the same time T = 0.</li></ul></li><li><p>Once your program has read all this information from the user, your program must schedule the processes using the Earliest Deadline First algorithm and print the computed schedule on the screen (see below for examples). The printed schedule must start at time 0 and continue up to <code>max_time</code>, where <code>max_time</code> is the least common multiple of all the periods.</p></li><li><p>If multiple processes have the same deadline, the process with the earliest release time takes precedence. If multiple processes have the same release time, the process with the lower PID number takes precedence.</p></li><li><p>If multiple processes miss their deadline at the same time, the processes are printed in the same order as above.</p></li></ol><p>When printing the schdule, your program must indicate (in this order):</p><ol><li><p>when a process’s time on the CPU ends</p></li><li><p>when a process misses its deadline and by how much time the deadline was missed</p></li><li><p>when new processes are released by showing the complete list of current processes in EDF order with corresponding release times, deadlines, and remaining CPU times</p></li><li><p>when a process is preempted (replaced on the CPU) by another process</p></li><li><p>when a process’s time on the CPU starts</p></li></ol><p>After the complete schedule is printed, your program must also print the following information:</p><ul><li>Final list of current processes</li><li>Number of processes created</li><li>Total waiting time</li><li>Average waiting time</li><li>Number of processes completed</li><li>Maximum lateness</li></ul></div></aside><p>The Total Waiting Time is the sum of all waiting times for all processes from time 0 to <code>max_time</code> (exclusive).</p><p>The Average Waiting Time is computed as the Total Waiting Time divided by the total number of processes <em>created</em>. It is printed as <code>double</code> with format precision <code>%.2lf</code>.</p><p>The Maximum Lateness of a schedule is the longest amount of time by which any process in the schedule misses its deadline.</p><h2 id="hw3-examples">Examples</h2><p>Here is a simple example showing what your program must look like when executed. This particular example corresponds to the example from the Real-Time Scheduling lecture notes. The CPU times and periods can be found there; the numbers 2, 1, 4, 3, and 5 shown here are inputs typed interactively by the user of your program:</p><pre><code>Enter the number of processes to schedule: 2
+Enter the CPU time of process 1: 1
+Enter the period of process 1: 4
+Enter the CPU time of process 2: 3
+Enter the period of process 2: 5
+
+0: processes: [1|p=1|r=0|d=4] [2|p=3|r=0|d=5]
+0: process 1 starts
+1: process 1 ends
+1: process 2 starts
+4: process 2 ends
+4: processes: [1|p=1|r=4|d=8]
+4: process 1 starts
+5: process 1 ends
+5: processes: [2|p=3|r=5|d=10]
+5: process 2 starts
+8: process 2 ends
+8: processes: [1|p=1|r=8|d=12]
+8: process 1 starts
+9: process 1 ends
+10: processes: [2|p=3|r=10|d=15]
+10: process 2 starts
+12: processes: [2|p=1|r=10|d=15] [1|p=1|r=12|d=16]
+13: process 2 ends
+13: process 1 starts
+14: process 1 ends
+15: processes: [2|p=3|r=15|d=20]
+15: process 2 starts
+16: processes: [2|p=2|r=15|d=20] [1|p=1|r=16|d=20]
+18: process 2 ends
+18: process 1 starts
+19: process 1 ends
+20: max time reached
+20: processes:
+Number of processes created: 9
+Total waiting time: 4
+Average waiting time: 0.44
+Number of processes completed: 9
+Maximum lateness: 0</code></pre><p>Here is a slightly more complex example that shows some processes being preempted:</p><pre><code>Enter the number of processes to schedule: 2
+Enter the CPU time of process 1: 25
+Enter the period of process 1: 50
+Enter the CPU time of process 2: 35
+Enter the period of process 2: 80
+
+0: processes: [1|p=25|r=0|d=50] [2|p=35|r=0|d=80]
+0: process 1 starts
+25: process 1 ends
+25: process 2 starts
+50: processes: [2|p=10|r=0|d=80] [1|p=25|r=50|d=100]
+60: process 2 ends
+60: process 1 starts
+80: processes: [1|p=5|r=50|d=100] [2|p=35|r=80|d=160]
+85: process 1 ends
+85: process 2 starts
+100: processes: [1|p=25|r=100|d=150] [2|p=20|r=80|d=160]
+100: process 2 preempted!
+100: process 1 starts
+125: process 1 ends
+125: process 2 starts
+145: process 2 ends
+150: processes: [1|p=25|r=150|d=200]
+150: process 1 starts
+160: processes: [1|p=15|r=150|d=200] [2|p=35|r=160|d=240]
+175: process 1 ends
+175: process 2 starts
+200: processes: [2|p=10|r=160|d=240] [1|p=25|r=200|d=250]
+210: process 2 ends
+210: process 1 starts
+235: process 1 ends
+240: processes: [2|p=35|r=240|d=320]
+240: process 2 starts
+250: processes: [1|p=25|r=250|d=300] [2|p=25|r=240|d=320]
+250: process 2 preempted!
+250: process 1 starts
+275: process 1 ends
+275: process 2 starts
+300: process 2 ends
+300: processes: [1|p=25|r=300|d=350]
+300: process 1 starts
+320: processes: [1|p=5|r=300|d=350] [2|p=35|r=320|d=400]
+325: process 1 ends
+325: process 2 starts
+350: processes: [2|p=10|r=320|d=400] [1|p=25|r=350|d=400]
+360: process 2 ends
+360: process 1 starts
+385: process 1 ends
+400: max time reached
+400: processes:
+Number of processes created: 13
+Total waiting time: 130
+Average waiting time: 10.00
+Number of processes completed: 13
+Maximum lateness: 0</code></pre><p>Here is a final example showing many missed deadlines, since this set of processes is not schedulable (note here that multiple processes with the same PID might exist at the same time, since some of these processes missed their deadline):</p><pre><code>Enter the number of processes to schedule: 3
+Enter the CPU time of process 1: 2
+Enter the period of process 1: 4
+Enter the CPU time of process 2: 4
+Enter the period of process 2: 8
+Enter the CPU time of process 3: 3
+Enter the period of process 3: 6
+
+0: processes: [1|p=2|r=0|d=4] [3|p=3|r=0|d=6] [2|p=4|r=0|d=8]
+0: process 1 starts
+2: process 1 ends
+2: process 3 starts
+4: processes: [3|p=1|r=0|d=6] [2|p=4|r=0|d=8] [1|p=2|r=4|d=8]
+5: process 3 ends
+5: process 2 starts
+6: processes: [2|p=3|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12]
+8: process 1 missed deadline (2 ms left)
+8: process 2 missed deadline (1 ms left)
+8: processes: [2|p=1|r=0|d=8] [1|p=2|r=4|d=8] [3|p=3|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16]
+9: process 2 ends
+9: process 1 starts
+11: process 1 ends
+11: process 3 starts
+12: process 1 missed deadline (2 ms left)
+12: process 3 missed deadline (2 ms left)
+12: processes: [3|p=2|r=6|d=12] [1|p=2|r=8|d=12] [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18]
+14: process 3 ends
+14: process 1 starts
+16: process 1 ends
+16: process 1 missed deadline (2 ms left)
+16: process 2 missed deadline (4 ms left)
+16: processes: [2|p=4|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24]
+16: process 2 starts
+18: process 3 missed deadline (3 ms left)
+18: processes: [2|p=2|r=8|d=16] [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24]
+20: process 2 ends
+20: process 1 missed deadline (2 ms left)
+20: processes: [1|p=2|r=12|d=16] [3|p=3|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]
+20: process 1 starts
+22: process 1 ends
+22: process 3 starts
+24: max time reached
+24: processes: [3|p=1|r=12|d=18] [1|p=2|r=16|d=20] [2|p=4|r=16|d=24] [3|p=3|r=18|d=24] [1|p=2|r=20|d=24]
+Number of processes created: 13
+Total waiting time: 75
+Average waiting time: 5.77
+Number of processes completed: 8
+Maximum lateness: 6</code></pre><h2 id="hw3-deliverables">Deliverables</h2><p>For your submission, you will need to prepare a few files to upload on Gradescope:</p><ul><li>your single-file solution in a C source file named <code>edf.c</code></li><li>a written report named <code>report.pdf</code></li><li>a text file named <code>metadata.txt</code></li><li>an xz-compressed archive of all chatlog markdown files named <code>chatlogs.tar.xz</code></li></ul><h3 id="loc-4">Source Code</h3><p>Your source code file must compile to receive credit.</p><p>Correct output is worth 80% of the autograder score, while memory correctness is worth the remaining 20%.</p><p>Submit <em>only</em> the <code>edf.c</code> file on Gradescope.</p><h3 id="loc-5">Written Report</h3><p>Your report will have 2 parts, a technical description of your design, and your answers to some reflection questions.</p><aside id="task2" class="jtd-callout jtd-callout-task" data-kind="task"><div class="jtd-callout-title">Task 2</div><div class="jtd-callout-body"><p>In the technical description, <em>in your own words</em>:</p><ol><li><p>Describe the organization of your code.</p></li><li><p>Describe the data structures you defined and implemented.</p></li></ol><p>For the reflection portion, answer the following questions <em>in your own words</em>:</p><ol><li><p>What concepts from lecture did you encounter while doing this assignment? Did you find this assignment helpful in understanding them?</p></li><li><p>What new questions did you have while working on this assignment? What did you learn?</p></li><li><p>To what extent did you collborate with others or use generative AI for this assignment? What did that collaboration or usage look like?</p></li></ol></div></aside><h3 id="loc-6">Metadata</h3><p>Create a text file named <code>metadata.txt</code> that contains the following contents:</p><pre><code data-lang="text">hw: &lt;#>
+name: &lt;name>
+email: &lt;email>
+collaborators:
+- &lt;name1> (&lt;email1>)
+- &lt;name2> (&lt;email2>)
+- &lt;...>
+ai:
+- &lt;model>:
+  - &lt;usage1>
+  - &lt;usage2>
+  - &lt;...>
+- &lt;...>
+
+pledge: I pledge on my honor that I have abided by the Stevens Honor System.</code></pre><p>(replace <code>&lt;></code> items)</p><p><strong>You must follow the format exactly</strong>.</p><h3 id="loc-7">AI Chat Logs</h3><p>Follow this process for submitting AI chat logs:</p><ol><li><p>Create a directory for your chatlogs named <code>chatlogs-hw3</code> in your project root. <strong>Do not track this in git, as chatlogs can be massive</strong>.</p></li><li><p>For each chat instance used, export the log as a markdown file (<code>/export</code> in <code>opencode</code>) using the following naming convention:</p><pre><code>hw&lt;#>-task&lt;#>-&lt;model>-&lt;yyyy>-&lt;mm>-&lt;dd>-&lt;HHMM>.md</code></pre><p>Where:</p><ul><li><code>hw&lt;#></code>: homework number</li><li><code>task&lt;#></code>: homework task number you were working on</li><li><code>&lt;model></code>: LLM model version string</li><li><code>&lt;yyyy>-&lt;mm>-&lt;dd>-&lt;HHMM></code>: approximate timestamp when chat was saved (<code>HHMM</code> is 24-hour time).</li></ul></li><li><p>In the provided docker container, run:</p><pre><code data-lang="bash"><span style="color: #4b69c6">cd</span> chatlogs-hw3/
+<span style="color: #4b69c6">tar</span> -cJvf chatlogs.tar.xz <span style="color: #d73948">*</span>.md</code></pre></li></ol><h3 id="loc-8">Submission</h3><ol><li><p>Upload all four files on Gradescope:</p><ul><li><code>edf.c</code></li><li><code>report.pdf</code></li><li><code>metadata.txt</code></li><li><code>chatlogs.tar.xz</code></li></ul><p><strong>YOUR UPLOADS <em>MUST</em> PASS THE <code>file_check</code> AUTOGRADER TEST</strong>.</p></li></ol></main></div></div></div><script src="/assets/js/site.js"></script></body></html>
